@@ -1,0 +1,44 @@
+.CharacterCard{
+     border: 2px solid black;
+     border-radius:10px;
+     height:400px;
+     width:250px;
+     display: inline-flex;
+     margin: 5px;
+}
+
+.CharacterCardDetails {
+     display: block;
+     width: 100%;
+}
+
+.CharacterCardDetails h1 {
+     float: left;
+     padding-left: 5px;
+}
+.CharacterCardDetails h3, .CharacterCardDetails h5 {
+     text-align: center;
+}
+
+.SSR {
+     border: 2px solid gold;
+     box-shadow: 0 0 4px orangered;
+     animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.97);
+		box-shadow: 0 0 0 0 rgba(255, 20, 147, 0.7);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(255, 20, 147, 0);
+	}
+
+	100% {
+		transform: scale(0.97);
+		box-shadow: 0 0 0 0 rgba(255, 20, 147, 0);
+	}
+}
