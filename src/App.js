@@ -1,4 +1,4 @@
-import CharacterSummon from './containers/CharacterSummon/CharacterSummon';
+import CharacterSummon from './components/CharacterSummon/CharacterSummon';
 import NavBar from './components/NavBar/navbar';
 
 import './App.css';
