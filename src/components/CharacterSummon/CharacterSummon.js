@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../UI/Button/button';
-import CharacterCard from '../CharacterCard/characterCard';
+import CharacterCard from './CharacterCard/characterCard';
 
 //Set up ability to register and login
 //   By enabling this function, will be able to store each summoned character 
@@ -14,11 +14,9 @@ function CharacterSummon() {
 
      const [ summonedCharacters, setSummonedCharacters ] = useState(null);
      const [ summonCoins, setSummonCoins ] = useState(500);
+     //ownedCharacters should populate from our database
+     const [ ownedCharacters, setOwnedCharacters ] = useState(null);
 
-     // state = {
-     //      summonedCharacters: null,
-     //      coins: 500
-     // }
      //https://akbgacha.firebaseio.com/
 
      const getSummonRates = () => {
@@ -123,7 +121,6 @@ function CharacterSummon() {
                }
           }
           //Update the roll state with their characters, update their remaining coins
-          //this.setState({summonedCharacters: summon, coins: updatedCoins});
           setSummonCoins(updatedCoins);
           setSummonedCharacters(summon);
      }
