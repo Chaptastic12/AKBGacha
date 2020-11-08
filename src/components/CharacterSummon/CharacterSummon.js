@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../UI/Button/button';
 import CharacterCard from './CharacterCard/characterCard';
 
@@ -15,7 +15,54 @@ function CharacterSummon() {
      const [ summonedCharacters, setSummonedCharacters ] = useState(null);
      const [ summonCoins, setSummonCoins ] = useState(500);
      //ownedCharacters should populate from our database
-     const [ ownedCharacters, setOwnedCharacters ] = useState(null);
+     //const [ ownedCharacters, setOwnedCharacters ] = useState(null);
+
+     //Find out what banners are currently live so we can iterate through it
+     //and dispaly all active banners
+     useEffect(()=>{
+
+          // const newGameBanner = {
+          //      SSR : [
+          //           {name: 'Maeda Atsuko', rarity: 'SSR', specialty: 'Aitakatta'},
+          //           {name: 'Shinoda Mariko', rarity: 'SSR', specialty: 'Aitakatta'},
+          //           {name: 'Takahashi Minami', rarity: 'SSR', specialty: 'Aitakatta'},
+          //           {name: 'Oshima Mai', rarity: 'SSR', specialty: 'Aitakatta'},
+          //           {name: 'Minegishi Minami', rarity: 'SSR', specialty: 'Aitakatta'},
+          //      ],
+          //      SR : [
+          //           {name: 'Maeda Atsuko', rarity: 'SR', specialty: 'Oogoe Diamond' },
+          //           {name: 'Shinoda Mariko', rarity: 'SR', specialty: 'Oogoe Diamond' },
+          //           {name: 'Takahashi Minami', rarity: 'SR', specialty: 'Oogoe Diamond' },
+          //           {name: 'Oshima Mai', rarity: 'SR', specialty: 'Oogoe Diamond' },
+          //           {name: 'Minegishi Minami', rarity: 'SR', specialty: 'Oogoe Diamond'},
+          //      ],
+          //      R : [
+          //           {name: 'Maeda Atsuko', rarity: 'R', specialty: 'RIVER' },
+          //           {name: 'Shinoda Mariko', rarity: 'R', specialty: 'RIVER' },
+          //           {name: 'Takahashi Minami', rarity: 'R', specialty: 'RIVER' },
+          //           {name: 'Oshima Mai', rarity: 'R', specialty: 'RIVER' },
+          //           {name: 'Minegishi Minami', rarity: 'R', specialty: 'RIVER'},
+          //      ],
+          //      C : [
+          //           {name: 'Maeda Atsuko', rarity: 'C', specialty: 'AKBingo' },
+          //           {name: 'Shinoda Mariko', rarity: 'C', specialty: 'AKBingo' },
+          //           {name: 'Takahashi Minami', rarity: 'C', specialty: 'AKBingo' },
+          //           {name: 'Oshima Mai', rarity: 'C', specialty: 'AKBingo' },
+          //           {name: 'Minegishi Minami', rarity: 'C', specialty: 'AKBingo'},
+          //      ]
+          // }
+          // fetch('https://akbgacha.firebaseio.com/cardSummonBanners/newGameBanner.json', {
+          //      method: 'POST',
+          //      body: JSON.stringify(newGameBanner),
+          //      headers: { 'Content-Type' : 'application/json' }
+          // }).then(response => {
+          //      return response.json();  
+          // }).then(responseData => {
+          
+          // }).catch(error => {
+               
+          // });
+     }, []);
 
      //https://akbgacha.firebaseio.com/
 
@@ -77,6 +124,12 @@ function CharacterSummon() {
           let pulledChara = Cs[Math.floor(Math.random() * Cs.length)];
 
          return pulledChara;
+     }
+
+     const getPulledCard = (cardRarity, bannerName) =>{
+
+
+          //return pulledChara;
      }
 
      const getSummonCharacters = (numRolls) =>{
