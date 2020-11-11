@@ -12,60 +12,17 @@ import CharacterCard from './CharacterCard/characterCard';
 
 function CharacterSummon() {
 
-     const [ summonedCharacters, setSummonedCharacters ] = useState(null);
+     const [ summonedCharacters, setSummonedCharacters ] = useState([]);
      const [ summonCoins, setSummonCoins ] = useState(500);
      //ownedCharacters should populate from our database
      //const [ ownedCharacters, setOwnedCharacters ] = useState(null);
 
+     //get all of our active banners
+     const [ activeBanners, setActiveBanners ] = useState(null);
+
      //Find out what banners are currently live so we can iterate through it
      //and dispaly all active banners
-     useEffect(()=>{
-
-          // const newGameBanner = {
-          //      SSR : [
-          //           {name: 'Maeda Atsuko', rarity: 'SSR', specialty: 'Aitakatta'},
-          //           {name: 'Shinoda Mariko', rarity: 'SSR', specialty: 'Aitakatta'},
-          //           {name: 'Takahashi Minami', rarity: 'SSR', specialty: 'Aitakatta'},
-          //           {name: 'Oshima Mai', rarity: 'SSR', specialty: 'Aitakatta'},
-          //           {name: 'Minegishi Minami', rarity: 'SSR', specialty: 'Aitakatta'},
-          //      ],
-          //      SR : [
-          //           {name: 'Maeda Atsuko', rarity: 'SR', specialty: 'Oogoe Diamond' },
-          //           {name: 'Shinoda Mariko', rarity: 'SR', specialty: 'Oogoe Diamond' },
-          //           {name: 'Takahashi Minami', rarity: 'SR', specialty: 'Oogoe Diamond' },
-          //           {name: 'Oshima Mai', rarity: 'SR', specialty: 'Oogoe Diamond' },
-          //           {name: 'Minegishi Minami', rarity: 'SR', specialty: 'Oogoe Diamond'},
-          //      ],
-          //      R : [
-          //           {name: 'Maeda Atsuko', rarity: 'R', specialty: 'RIVER' },
-          //           {name: 'Shinoda Mariko', rarity: 'R', specialty: 'RIVER' },
-          //           {name: 'Takahashi Minami', rarity: 'R', specialty: 'RIVER' },
-          //           {name: 'Oshima Mai', rarity: 'R', specialty: 'RIVER' },
-          //           {name: 'Minegishi Minami', rarity: 'R', specialty: 'RIVER'},
-          //      ],
-          //      C : [
-          //           {name: 'Maeda Atsuko', rarity: 'C', specialty: 'AKBingo' },
-          //           {name: 'Shinoda Mariko', rarity: 'C', specialty: 'AKBingo' },
-          //           {name: 'Takahashi Minami', rarity: 'C', specialty: 'AKBingo' },
-          //           {name: 'Oshima Mai', rarity: 'C', specialty: 'AKBingo' },
-          //           {name: 'Minegishi Minami', rarity: 'C', specialty: 'AKBingo'},
-          //      ]
-          // }
-          // fetch('https://akbgacha.firebaseio.com/cardSummonBanners/newGameBanner.json', {
-          //      method: 'POST',
-          //      body: JSON.stringify(newGameBanner),
-          //      headers: { 'Content-Type' : 'application/json' }
-          // }).then(response => {
-          //      return response.json();  
-          // }).then(responseData => {
-          
-          // }).catch(error => {
-               
-          // });
-     }, []);
-
-     //https://akbgacha.firebaseio.com/
-
+     
      const getSummonRates = () => {
           //Set the rate to be a number between 0 -> 100
           //Can impact rates by adjusting the 100
@@ -74,65 +31,26 @@ function CharacterSummon() {
           return rate;
      }
 
-     const getSSR = () => {
-          const SSRs = [
-               {name: 'Maeda Atsuko', rarity: 'SSR', specialty: 'Aitakatta'},
-               {name: 'Shinoda Mariko', rarity: 'SSR', specialty: 'Aitakatta'},
-               {name: 'Takahashi Minami', rarity: 'SSR', specialty: 'Aitakatta'},
-               {name: 'Oshima Mai', rarity: 'SSR', specialty: 'Aitakatta'},
-               {name: 'Minegishi Minami', rarity: 'SSR', specialty: 'Aitakatta'},
-          ];
-
-          let pulledChara = SSRs[Math.floor(Math.random() * SSRs.length)];
-
-         return pulledChara;
-     }
-     const getSR = () => {
-          const SRs = [
-               {name: 'Maeda Atsuko', rarity: 'SR', specialty: 'Oogoe Diamond' },
-               {name: 'Shinoda Mariko', rarity: 'SR', specialty: 'Oogoe Diamond' },
-               {name: 'Takahashi Minami', rarity: 'SR', specialty: 'Oogoe Diamond' },
-               {name: 'Oshima Mai', rarity: 'SR', specialty: 'Oogoe Diamond' },
-               {name: 'Minegishi Minami', rarity: 'SR', specialty: 'Oogoe Diamond'},
-          ];
-
-          let pulledChara = SRs[Math.floor(Math.random() * SRs.length)];
-
-         return pulledChara;
-     }
-     const getR = () => {
-          const Rs = [
-               {name: 'Maeda Atsuko', rarity: 'R', specialty: 'RIVER' },
-               {name: 'Shinoda Mariko', rarity: 'R', specialty: 'RIVER' },
-               {name: 'Takahashi Minami', rarity: 'R', specialty: 'RIVER' },
-               {name: 'Oshima Mai', rarity: 'R', specialty: 'RIVER' },
-               {name: 'Minegishi Minami', rarity: 'R', specialty: 'RIVER'},
-          ];
-
-          let pulledChara = Rs[Math.floor(Math.random() * Rs.length)];
-         return pulledChara;
-     }
-     const getC= () => {
-          const Cs = [
-               {name: 'Maeda Atsuko', rarity: 'C', specialty: 'AKBingo' },
-               {name: 'Shinoda Mariko', rarity: 'C', specialty: 'AKBingo' },
-               {name: 'Takahashi Minami', rarity: 'C', specialty: 'AKBingo' },
-               {name: 'Oshima Mai', rarity: 'C', specialty: 'AKBingo' },
-               {name: 'Minegishi Minami', rarity: 'C', specialty: 'AKBingo'},
-          ];
-
-          let pulledChara = Cs[Math.floor(Math.random() * Cs.length)];
-
-         return pulledChara;
+     //needs to be async so that we can make it wait for the server response and return a correct value
+     async function getPulledCard (cardRarity, bannerName) {
+          let id;
+          if(bannerName=== 'aitakattaBanner'){
+               id = '-MLimsght8vjnD_BG4hD';
+          }
+          let responseChara = {};
+          await fetch(`https://akbgacha.firebaseio.com/cardSummonBanners/${bannerName}/${id}/${cardRarity}.json`)
+          .then(response => response.json())
+          .then(responseData => {
+               responseChara = responseData[Math.floor(Math.random() * Object.keys(responseData).length)];
+          })
+          .catch(error =>{
+               console.log('roll error');
+          });
+          return responseChara;
      }
 
-     const getPulledCard = (cardRarity, bannerName) =>{
-
-
-          //return pulledChara;
-     }
-
-     const getSummonCharacters = (numRolls) =>{
+     //needs to be async so that we can make it wait for the response from the getPulledCard function before continuing through the loop
+     async function getSummonCharacters (numRolls){
           //charge them for their rolls; they either do a roll 1 or 10.
           //Each roll would cost 5
           let cost  = 5;
@@ -154,35 +72,34 @@ function CharacterSummon() {
           for(let i=0; i < numRolls; i++){
                //for each iteration, get the pull rate
                let summonType =  getSummonRates();
-
                //If they roll a 0 or 1, they get an SSR
-               if(summonType === 0 || summonType >= 1){
-                    //Get which SSR they rolled
-                    summon[i] = getSSR();
+               if(summonType <= 1){
+                    summon.push(await getPulledCard('SSR', 'aitakattaBanner'));
                }
                //If they roll a 2 -> 13, they get an SR
                if(summonType > 1 && summonType <= 13){
-                    summon[i] = getSR();
+                    summon.push(await getPulledCard('SR', 'aitakattaBanner'));
                }
                //If they roll 14 -> 60, they get an R
                if(summonType > 13 && summonType <= 60){
-                    summon[i] = getR();
+                    summon.push(await getPulledCard('R', 'aitakattaBanner'));
                }
-               //If they roll above a 60, they get a C
-               if(summonType > 60){
-                    summon[i] = getC();
+               //If they roll above a 60 or 0, they get a C
+               if(summonType === 0 ||summonType > 60){
+                    summon.push(await getPulledCard('C', 'aitakattaBanner'));
                }
+               console.log(summon[i], i, numRolls, summonType);
           }
           //Update the roll state with their characters, update their remaining coins
           setSummonCoins(updatedCoins);
-          setSummonedCharacters(summon);
+          setSummonedCharacters(summon)
      }
 
      return (
                <div>
                     {summonedCharacters ? 
                          summonedCharacters.map(sumChara => {
-                              return <CharacterCard rarity={sumChara.rarity} name={sumChara.name} specialty={sumChara.specialty}/>
+                              return <CharacterCard rarity={sumChara.rarity} name={sumChara.name} specialty={sumChara.specialty} atk={sumChara.atk} def={sumChara.def} hp={sumChara.hp}/>
                          }) : 
                          <h1 style={{height: '350px'}}>Summon Below!</h1>
                     } 

@@ -14,7 +14,14 @@ const characterCard = (props) => {
                     <h1>{props.rarity}</h1>
                     <h3>{props.name}</h3>
                     <h5>{props.specialty}</h5>
+                    <div className={styles.CharacterCardStats}>
+                         <p>
+                              <span className={styles.hp}>HP {props.hp}</span> |  
+                              <span className={styles.atk}> ATK {props.atk}</span> | 
+                              <span className={styles.def}> DEF {props.def}</span></p>
+                    </div>
                </div>
+               
           </div>
      );
 }
