@@ -34,7 +34,7 @@ function CharacterSummon() {
      //needs to be async so that we can make it wait for the server response and return a correct value
      async function getPulledCard (cardRarity, bannerName) {
           let id;
-          if(bannerName=== 'aitakattaBanner'){
+          if(bannerName === 'aitakattaBanner'){
                id = '-MLimsght8vjnD_BG4hD';
           }
           let responseChara = {};
@@ -50,7 +50,8 @@ function CharacterSummon() {
      }
 
      //needs to be async so that we can make it wait for the response from the getPulledCard function before continuing through the loop
-     async function getSummonCharacters (numRolls){
+     async function getSummonCharacters (numRolls, bannerType){
+          setSummonedCharacters([]);
           //charge them for their rolls; they either do a roll 1 or 10.
           //Each roll would cost 5
           let cost  = 5;
@@ -74,19 +75,19 @@ function CharacterSummon() {
                let summonType =  getSummonRates();
                //If they roll a 0 or 1, they get an SSR
                if(summonType <= 1){
-                    summon.push(await getPulledCard('SSR', 'aitakattaBanner'));
+                    summon.push(await getPulledCard('SSR', bannerType));
                }
                //If they roll a 2 -> 13, they get an SR
                if(summonType > 1 && summonType <= 13){
-                    summon.push(await getPulledCard('SR', 'aitakattaBanner'));
+                    summon.push(await getPulledCard('SR', bannerType));
                }
                //If they roll 14 -> 60, they get an R
                if(summonType > 13 && summonType <= 60){
-                    summon.push(await getPulledCard('R', 'aitakattaBanner'));
+                    summon.push(await getPulledCard('R', bannerType));
                }
                //If they roll above a 60 or 0, they get a C
                if(summonType === 0 ||summonType > 60){
-                    summon.push(await getPulledCard('C', 'aitakattaBanner'));
+                    summon.push(await getPulledCard('C', bannerType));
                }
                console.log(summon[i], i, numRolls, summonType);
           }
@@ -99,14 +100,22 @@ function CharacterSummon() {
                <div>
                     {summonedCharacters ? 
                          summonedCharacters.map(sumChara => {
-                              return <CharacterCard rarity={sumChara.rarity} name={sumChara.name} specialty={sumChara.specialty} atk={sumChara.atk} def={sumChara.def} hp={sumChara.hp}/>
+                              return <CharacterCard 
+                                        key={sumChara.name + new Date() + Math.random()}
+                                        rarity={sumChara.rarity} 
+                                        name={sumChara.name} 
+                                        specialty={sumChara.specialty} 
+                                        atk={sumChara.atk} 
+                                        def={sumChara.def} 
+                                        hp={sumChara.hp} 
+                                        leaderSkillText={sumChara.leaderSkillText}/>
                          }) : 
                          <h1 style={{height: '350px'}}>Summon Below!</h1>
                     } 
 
                     <div>
-                         <Button numSummons='1' clicked= {getSummonCharacters}/>
-                         <Button numSummons='10' clicked= {getSummonCharacters}/>
+                         <Button numSummons='1' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
+                         <Button numSummons='10' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
                     </div>
                     {summonCoins}
                </div>

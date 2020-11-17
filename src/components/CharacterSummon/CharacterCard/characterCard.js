@@ -18,8 +18,10 @@ const characterCard = (props) => {
                          <p>
                               <span className={styles.hp}>HP {props.hp}</span> |  
                               <span className={styles.atk}> ATK {props.atk}</span> | 
-                              <span className={styles.def}> DEF {props.def}</span></p>
+                              <span className={styles.def}> DEF {props.def}</span>
+                         </p>
                     </div>
+                    <h4>{props.leaderSkillText}</h4>
                </div>
                
           </div>

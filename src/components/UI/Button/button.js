@@ -5,7 +5,7 @@ import style from './button.module.css';
 const button = (props) =>{
      return (
           <div className={style.Button}>
-               <button onClick={() => props.clicked(props.numSummons)}>Summon {props.numSummons}</button>
+               <button onClick={() => props.clicked(props.numSummons, props.bannerType)}>Summon {props.numSummons}</button>
           </div>
      )
 }
