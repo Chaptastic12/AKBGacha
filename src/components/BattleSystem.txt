@@ -1,0 +1,13 @@
+Battle system
+
+Team of 3 v 1 AI boss
+
+
+Each card has a Center Move, Backup Move, as well as a Team Leader skill if they are assigned the team leader slot.
+Each card has a base Health [Stamina 体力], Attack [Determination 決心] and Defense [Kanjou 感情]
+Each character will have their own health and will be knocked out when it drops to zero. Items will exist to reinvigorate them.
+Each character will have a 'type' associated with them
+
+Boss will be another Aidol with beefed up stats and skill set unique to that card.
+
+User will be able to create and set their team based off of cards that they've summoned. Leader skills will be applied to that team.

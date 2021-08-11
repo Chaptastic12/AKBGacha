@@ -23,7 +23,6 @@ const characterCard = (props) => {
                     </div>
                     <h4>{props.leaderSkillText}</h4>
                </div>
-               
           </div>
      );
 }
