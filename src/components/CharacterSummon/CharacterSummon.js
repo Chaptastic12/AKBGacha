@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid'
+
+import { gameBanners }  from '../../characterData';
+
 import Button from '../UI/Button/button';
 import CharacterCard from './CharacterCard/characterCard';
+import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
 
 //Set up ability to register and login
 //   By enabling this function, will be able to store each summoned character 
@@ -11,18 +16,20 @@ import CharacterCard from './CharacterCard/characterCard';
 //   Will need ReactRouter for to make it a SPA
 
 function CharacterSummon() {
+     const USE_DATABASE_TO_GET_CARDS = false;
 
      const [ summonedCharacters, setSummonedCharacters ] = useState([]);
      const [ summonCoins, setSummonCoins ] = useState(500);
      //ownedCharacters should populate from our database
      //const [ ownedCharacters, setOwnedCharacters ] = useState(null);
 
-     //get all of our active banners
-     const [ activeBanners, setActiveBanners ] = useState(null);
+     //Hold all of our active banners
+     //const [ activeBanners, setActiveBanners ] = useState(null);
+     //Will need to grab all banner names and store them here for our database if the banner is set to active. We just need the banner names for now
 
-     //Find out what banners are currently live so we can iterate through it
-     //and dispaly all active banners
-     
+     //Grab our function to add cards to the players inventory
+     const { addCardsRolledToPlayerInventory } = useContext(CharacterInventoryContext);
+
      const getSummonRates = () => {
           //Set the rate to be a number between 0 -> 100
           //Can impact rates by adjusting the 100
@@ -34,19 +41,45 @@ function CharacterSummon() {
      //needs to be async so that we can make it wait for the server response and return a correct value
      async function getPulledCard (cardRarity, bannerName) {
           let id;
-          if(bannerName === 'aitakattaBanner'){
-               id = '-MLimsght8vjnD_BG4hD';
+          switch(bannerName){
+               case 'aitakattaBanner': id = '-MLimsght8vjnD_BG4hD'; break;
+               default: alert('ERROR - Unable to get banner ID.'); break;
           }
-          let responseChara = {};
-          await fetch(`https://akbgacha.firebaseio.com/cardSummonBanners/${bannerName}/${id}/${cardRarity}.json`)
-          .then(response => response.json())
-          .then(responseData => {
-               responseChara = responseData[Math.floor(Math.random() * Object.keys(responseData).length)];
-          })
-          .catch(error =>{
-               console.log('roll error');
-          });
-          return responseChara;
+          // if(bannerName === 'aitakattaBanner'){
+          //      id = '-MLimsght8vjnD_BG4hD';
+          // }
+
+          //Check if we should be grabbing from our database or not
+          //If we don't, grab from our local file.
+          if(USE_DATABASE_TO_GET_CARDS === true){
+               let responseChara = {};
+               await fetch(`https://akbgacha.firebaseio.com/cardSummonBanners/${bannerName}/${id}/${cardRarity}.json`)
+               .then(response => response.json())
+               .then(responseData => {
+                    //From the data we get back, grab one of them.
+                    responseChara = responseData[Math.floor(Math.random() * Object.keys(responseData).length)];
+               })
+               .catch(error =>{
+                    console.log('ERROR - Unable to get character from database.');
+               });
+               return responseChara;
+          }else{
+               //Find the correct banner in our array of banners
+               for(let i=0; i < gameBanners.length; i++){
+                    if(gameBanners[i].bannerName === bannerName){
+                         //if we have found the correct banner, grab the correct rarity
+                         let cardRarityArray = gameBanners[i][cardRarity];
+
+                         //Need to copy the data, so we need to use the spread operator. Otherwise we will mutate the original card data
+                         let summonedCard = {...cardRarityArray[Math.floor(Math.random() * Object.keys(cardRarityArray).length)]};
+                         summonedCard.id = uuidv4();
+
+                         return summonedCard;
+
+                    }
+               }
+          }
+          
      }
 
      //needs to be async so that we can make it wait for the response from the getPulledCard function before continuing through the loop
@@ -73,6 +106,7 @@ function CharacterSummon() {
           for(let i=0; i < numRolls; i++){
                //for each iteration, get the pull rate
                let summonType =  getSummonRates();
+
                //If they roll a 0 or 1, they get an SSR
                if(summonType <= 1){
                     summon.push(await getPulledCard('SSR', bannerType));
@@ -89,11 +123,12 @@ function CharacterSummon() {
                if(summonType === 0 ||summonType > 60){
                     summon.push(await getPulledCard('C', bannerType));
                }
-               console.log(summon[i], i, numRolls, summonType);
           }
           //Update the roll state with their characters, update their remaining coins
+          //Add them to the players overall inventory
           setSummonCoins(updatedCoins);
           setSummonedCharacters(summon)
+          addCardsRolledToPlayerInventory(summon);
      }
 
      return (
@@ -101,7 +136,7 @@ function CharacterSummon() {
                     {summonedCharacters ? 
                          summonedCharacters.map(sumChara => {
                               return <CharacterCard 
-                                        key={sumChara.name + new Date() + Math.random()}
+                                        key={sumChara.id}
                                         rarity={sumChara.rarity} 
                                         name={sumChara.name} 
                                         specialty={sumChara.specialty} 

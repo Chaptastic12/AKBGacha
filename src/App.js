@@ -1,5 +1,10 @@
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+
 import CharacterSummon from './components/CharacterSummon/CharacterSummon';
+import CharacterInventory from './components/Inventory/Characters/CharacterInventory';
 import NavBar from './components/NavBar/navbar';
+
+import CharacterInventoryProvider from '../src/Shared/CharacterInventory-Context';
 
 import './App.css';
 
@@ -8,8 +13,20 @@ function App() {
   //...or use redux instead
   return (
       <div>
-        <NavBar />
-          <CharacterSummon />
+        <CharacterInventoryProvider>
+          <Router>
+            <NavBar />
+            <Switch>
+              <Route path='/:playerID/inventory/characters' exact>
+                <CharacterInventory />
+              </Route>
+              <Route path='/banners' exact>
+                <CharacterSummon />
+              </Route>
+              <Redirect to='/banners' exact />
+            </Switch>
+          </Router>
+        </CharacterInventoryProvider>
       </div>
     )
 }

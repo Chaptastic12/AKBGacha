@@ -3,12 +3,22 @@ import { createContext, useState } from 'react';
 const CharacterInventoryContext = createContext();
 
 const CharacterInventoryProvider = props =>{
+
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
+
+    //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
+    //This will have to make a call to the player specific inventory and update that record
 
     const addCardsRolledToPlayerInventory = (charactersFromRoll) =>{
         //Copy our old state and push the new cards into the array. Update our overall inventory with these new cards
         const previousState = [...charactersInPlayerInventory];
-        previousState.push(charactersFromRoll);
+        console.log(charactersFromRoll)
+        //Go through the array we get, and push each character into our inventory
+        for(let i=0; i < charactersFromRoll.length; i++){
+            //Push to our old state array
+            console.log(charactersFromRoll[i])
+            previousState.push(charactersFromRoll[i]);
+        }
 
         setCharactersInPlayerInventory(previousState);
     }
