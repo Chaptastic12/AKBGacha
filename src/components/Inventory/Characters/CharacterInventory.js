@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import CharacterCard from '../../CharacterSummon/CharacterCard/characterCard';
+import CharacterCard from '../../CharacterSummon/CharacterCard/CharacterCard';
 
 import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Context';
 
@@ -38,7 +38,6 @@ const CharacterInventory = props =>{
                     if(rarityA === 'SR' && rarityB !== ('SSR' || 'UR')){console.log(rarityA, rarityB, 'SR'); return -1; }
                     if(rarityA === 'R' && rarityB !== ('SR' || 'SSR' || 'UR')){console.log(rarityA, rarityB, 'R'); return -1; }
                     if(rarityA === 'C' && rarityB !== ('R' || 'SR' || 'SSR' || 'UR')){console.log(rarityA, rarityB, 'C'); return -1 }
-
                     if(rarityA === rarityB){ return 0 };
                     return 1;
                 });
@@ -61,7 +60,7 @@ const CharacterInventory = props =>{
         });
     
     return(<>
-        <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button><br />
+        <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button><br />
         {charactersInInventory}
     </>)

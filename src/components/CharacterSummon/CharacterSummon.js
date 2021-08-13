@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { gameBanners }  from '../../characterData';
 
 import Button from '../UI/Button/button';
-import CharacterCard from './CharacterCard/characterCard';
+import CharacterCard from './CharacterCard/CharacterCard';
 import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
 
 //Set up ability to register and login
