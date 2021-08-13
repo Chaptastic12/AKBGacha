@@ -12,11 +12,9 @@ const CharacterInventoryProvider = props =>{
     const addCardsRolledToPlayerInventory = (charactersFromRoll) =>{
         //Copy our old state and push the new cards into the array. Update our overall inventory with these new cards
         const previousState = [...charactersInPlayerInventory];
-        console.log(charactersFromRoll)
         //Go through the array we get, and push each character into our inventory
         for(let i=0; i < charactersFromRoll.length; i++){
             //Push to our old state array
-            console.log(charactersFromRoll[i])
             previousState.push(charactersFromRoll[i]);
         }
 

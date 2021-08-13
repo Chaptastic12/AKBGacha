@@ -7,6 +7,15 @@
      margin: 5px;
 }
 
+.CharacterCardSmall{
+     border: 1px solid black;
+     border-radius:2px;
+     height:140px;
+     width:100px;
+     display: inline-flex;
+     margin: 5px;
+}
+
 .CharacterCardDetails {
      display: block;
      width: 100%;

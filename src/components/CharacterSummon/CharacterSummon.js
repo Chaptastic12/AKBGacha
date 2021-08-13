@@ -19,9 +19,8 @@ function CharacterSummon() {
      const USE_DATABASE_TO_GET_CARDS = false;
 
      const [ summonedCharacters, setSummonedCharacters ] = useState([]);
+     //Will need to make this so it pulls from Context and not just a static 500
      const [ summonCoins, setSummonCoins ] = useState(500);
-     //ownedCharacters should populate from our database
-     //const [ ownedCharacters, setOwnedCharacters ] = useState(null);
 
      //Hold all of our active banners
      //const [ activeBanners, setActiveBanners ] = useState(null);
@@ -45,9 +44,6 @@ function CharacterSummon() {
                case 'aitakattaBanner': id = '-MLimsght8vjnD_BG4hD'; break;
                default: alert('ERROR - Unable to get banner ID.'); break;
           }
-          // if(bannerName === 'aitakattaBanner'){
-          //      id = '-MLimsght8vjnD_BG4hD';
-          // }
 
           //Check if we should be grabbing from our database or not
           //If we don't, grab from our local file.
@@ -136,6 +132,7 @@ function CharacterSummon() {
                     {summonedCharacters ? 
                          summonedCharacters.map(sumChara => {
                               return <CharacterCard 
+                                        fullSizedCard={true}
                                         key={sumChara.id}
                                         rarity={sumChara.rarity} 
                                         name={sumChara.name} 
