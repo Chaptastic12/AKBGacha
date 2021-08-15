@@ -10,8 +10,10 @@ const CharacterCard = (props) => {
      const [ showModal, setShowModal ] = useState(false);
      const [ showCard, setShowCard ] = useState(false);
 
+     console.log(props.fullSizedCard);
+
      let fullCard = <div className={props.rarity === 'SSR' ? 'CharacterCard SSR' : 'CharacterCard'}>
-                         {showCard ? <div className='CharacterCardDetails'>
+                         {showCard || props.fullSizedCard === undefined ? <div className='CharacterCardDetails'>
                               <h1>{props.rarity}</h1>
                               <h3>{props.name}</h3>
                               <h5>{props.specialty}</h5>
