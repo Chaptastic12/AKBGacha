@@ -70,6 +70,12 @@ const CharacterInventory = props =>{
                             }
                         }
                     }
+                    //If we're searching by Rarity only, then show only those cards
+                    if(searchFilter === 'rarity'){
+                        if(match.toUpperCase() === sub){
+                            searchedCharacters.push(sortedInv[i]);
+                        }
+                    }
                 }
                 setSortedInventory(searchedCharacters);
                 break;
@@ -102,6 +108,7 @@ const CharacterInventory = props =>{
             <select onClick={(e)=>setSearchFilter(e.target.value)}>
                 <option value='name'>Name</option>
                 <option value='specialty'>Speciality</option>
+                <option value='rarity'>Rarity</option>
             </select> 
             <input type='text' value={searchText} onChange={(e)=>setSearchText(e.target.value)}/>
             <button onClick={()=>sortCharactersInInventory('search')}>Search</button>
