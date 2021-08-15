@@ -6,6 +6,7 @@ import { gameBanners }  from '../../characterData';
 import Button from '../UI/Button/button';
 import CharacterCard from './CharacterCard/CharacterCard';
 import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
+import { UserDetailsContext } from '../../Shared/UserDetails-Context';
 
 //Set up ability to register and login
 //   By enabling this function, will be able to store each summoned character 
@@ -20,7 +21,7 @@ function CharacterSummon() {
 
      const [ summonedCharacters, setSummonedCharacters ] = useState([]);
      //Will need to make this so it pulls from Context and not just a static 500
-     const [ summonCoins, setSummonCoins ] = useState(500);
+     //const [ summonCoins, setSummonCoins ] = useState(500);
 
      //Hold all of our active banners
      //const [ activeBanners, setActiveBanners ] = useState(null);
@@ -28,6 +29,8 @@ function CharacterSummon() {
 
      //Grab our function to add cards to the players inventory
      const { addCardsRolledToPlayerInventory } = useContext(CharacterInventoryContext);
+     //Grab our coins from the userContext
+     const { usersCoins, updateUsersCoins } = useContext(UserDetailsContext);
 
      const getSummonRates = () => {
           //Set the rate to be a number between 0 -> 100
@@ -81,50 +84,40 @@ function CharacterSummon() {
      //needs to be async so that we can make it wait for the response from the getPulledCard function before continuing through the loop
      async function getSummonCharacters (numRolls, bannerType){
           setSummonedCharacters([]);
-          //charge them for their rolls; they either do a roll 1 or 10.
-          //Each roll would cost 5
-          let cost  = 5;
-          if(numRolls === '10'){
-               cost = 50;
-          }
-          //grab our old state
-          let oldCoins = summonCoins;
-          //Update the cost
-          let updatedCoins = oldCoins - cost;
-          //If the choice they picked would set them below 0, 
-          //Kick them out of this function to prevent this
-          if(updatedCoins < 0){
-               return alert('Insufficient coins');
-          }
 
-          //Fill our array with the cards they summoned
-          let summon = [];
-          for(let i=0; i < numRolls; i++){
-               //for each iteration, get the pull rate
-               let summonType =  getSummonRates();
+          //Check that the summon is valid based off their available coins and roll type
+          let validSummon = await updateUsersCoins(numRolls);
 
-               //If they roll a 0 or 1, they get an SSR
-               if(summonType <= 1){
-                    summon.push(await getPulledCard('SSR', bannerType));
+          if(validSummon){
+               //Fill our array with the cards they summoned
+               let summon = [];
+               for(let i=0; i < numRolls; i++){
+                    //for each iteration, get the pull rate
+                    let summonType =  getSummonRates();
+
+                    //If they roll a 0 or 1, they get an SSR
+                    if(summonType <= 1){
+                         summon.push(await getPulledCard('SSR', bannerType));
+                    }
+                    //If they roll a 2 -> 13, they get an SR
+                    if(summonType > 1 && summonType <= 13){
+                         summon.push(await getPulledCard('SR', bannerType));
+                    }
+                    //If they roll 14 -> 60, they get an R
+                    if(summonType > 13 && summonType <= 60){
+                         summon.push(await getPulledCard('R', bannerType));
+                    }
+                    //If they roll above a 60 or 0, they get a C
+                    if(summonType === 0 ||summonType > 60){
+                         summon.push(await getPulledCard('C', bannerType));
+                    }
                }
-               //If they roll a 2 -> 13, they get an SR
-               if(summonType > 1 && summonType <= 13){
-                    summon.push(await getPulledCard('SR', bannerType));
-               }
-               //If they roll 14 -> 60, they get an R
-               if(summonType > 13 && summonType <= 60){
-                    summon.push(await getPulledCard('R', bannerType));
-               }
-               //If they roll above a 60 or 0, they get a C
-               if(summonType === 0 ||summonType > 60){
-                    summon.push(await getPulledCard('C', bannerType));
-               }
+               //Update the roll state with their characters and add them to the players overall inventory
+               setSummonedCharacters(summon)
+               addCardsRolledToPlayerInventory(summon);
+          } else{
+               alert('Insufficient coins');
           }
-          //Update the roll state with their characters, update their remaining coins
-          //Add them to the players overall inventory
-          setSummonCoins(updatedCoins);
-          setSummonedCharacters(summon)
-          addCardsRolledToPlayerInventory(summon);
      }
 
      return (
@@ -149,7 +142,7 @@ function CharacterSummon() {
                          <Button numSummons='1' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
                          <Button numSummons='10' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
                     </div>
-                    {summonCoins}
+                    {usersCoins}
                </div>
      );
 }
