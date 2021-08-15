@@ -7,10 +7,11 @@ import './characterCard.css';
 
 const CharacterCard = (props) => {
 
-     const [showModal, setShowModal] = useState(false);
+     const [ showModal, setShowModal ] = useState(false);
+     const [ showCard, setShowCard ] = useState(false);
 
      let fullCard = <div className={props.rarity === 'SSR' ? 'CharacterCard SSR' : 'CharacterCard'}>
-                         <div className='CharacterCardDetails'>
+                         {showCard ? <div className='CharacterCardDetails'>
                               <h1>{props.rarity}</h1>
                               <h3>{props.name}</h3>
                               <h5>{props.specialty}</h5>
@@ -22,7 +23,7 @@ const CharacterCard = (props) => {
                                    </p>
                               </div>
                               <h4>{props.leaderSkillText}</h4>
-                         </div>
+                         </div> : <div className='CharacterCardDetails' onClick={()=>setShowCard(prevState=>!prevState)}>Click to show your card!</div>}
                     </div>
 
      if(props.fullSizedCard === true){

@@ -10,7 +10,6 @@ const CharacterInventory = props =>{
     const [ showSearchBar, setShowSearchBar ] = useState(false);
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
-    console.log(searchFilter)
 
     let sortedInv;
     const sortCharactersInInventory = sortBy =>{
@@ -35,11 +34,11 @@ const CharacterInventory = props =>{
                         let rarityA = a.rarity;
                         let rarityB = b.rarity;
     
-                        if(rarityA === 'UR'){ console.log(rarityA, rarityB, 'UR'); return -1; }
-                        if(rarityA === 'SSR' && rarityB !== 'UR'){console.log(rarityA, rarityB, 'SSR'); return -1; }
-                        if(rarityA === 'SR' && rarityB !== ('SSR' || 'UR')){console.log(rarityA, rarityB, 'SR'); return -1; }
-                        if(rarityA === 'R' && rarityB !== ('SR' || 'SSR' || 'UR')){console.log(rarityA, rarityB, 'R'); return -1; }
-                        if(rarityA === 'C' && rarityB !== ('R' || 'SR' || 'SSR' || 'UR')){console.log(rarityA, rarityB, 'C'); return -1 }
+                        if(rarityA === 'UR'){ return -1; }
+                        if(rarityA === 'SSR' && rarityB !== 'UR'){ return -1; }
+                        if(rarityA === 'SR' && rarityB !== ('SSR' || 'UR')){ return -1; }
+                        if(rarityA === 'R' && rarityB !== ('SR' || 'SSR' || 'UR')){ return -1; }
+                        if(rarityA === 'C' && rarityB !== ('R' || 'SR' || 'SSR' || 'UR')){ return -1 }
                         if(rarityA === rarityB){ return 0 };
                         return 1;
                     });
@@ -65,9 +64,7 @@ const CharacterInventory = props =>{
                     }
                     //If we're searching by specialty, there can be more than one so we need to interate over that array
                     if(searchFilter === 'specialty'){
-                        console.log(sortedInv[i]);
                         for(let j=0; j < match.length; j++){
-                            console.log(match[j]);
                             if(match[j].toUpperCase().startsWith(sub.slice(0, Math.max(match[j].length - 1, 1)))){
                                 searchedCharacters.push(sortedInv[i]);
                             }
