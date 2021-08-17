@@ -1,0 +1,11 @@
+Teams will be either 3-5 people. Maximum of 7 teams can be made.
+
+An array state will hold 7 arrays which represent each team, with 3-5 objects instead of the people on that team.
+
+The first card in the array that holds the team will be considered the leader.
+
+Have a button on the left to move backwards to the first team, and a button on the right to move forwards to the last team. Will simple be an incremental value that will be our index in the array of 7 teams.
+
+Below that, have the same setup as the CharacterInventory.js [basically, just import this]. 
+
+ADJUST THE CHARACTERINVENTORY.JS -> double click will now open the modal, single click will [if on the UserTeams.js file] add that card to the next open slot in the chosen team

@@ -5,6 +5,7 @@ const CharacterInventoryContext = createContext();
 const CharacterInventoryProvider = props =>{
 
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
+    const [ userTeams, setUserTeams ] = useState([[],[],[],[],[],[],[],[]]);
 
     //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
     //This will have to make a call to the player specific inventory and update that record
@@ -37,8 +38,35 @@ const CharacterInventoryProvider = props =>{
         //Some kind of reward can be added here later for removing the card; IE, returning coins, getting supplies, etc
     }
 
+    const addCharaToTeam = (teamIndex, characterID) =>{
+        let copyOfCurrentTeams = [...userTeams];
+        let characterToAdd;
+
+        //Assuming there is room on the team, allow them to add it. Otherwise, return an error message
+        if(copyOfCurrentTeams[teamIndex].length < 3){
+            //If there is room, find the character they want to add from their inventory
+            for(let i=0; i < charactersInPlayerInventory.length; i++){
+                //We have the right character when the IDs match
+                if(charactersInPlayerInventory[i].id === characterID){
+                    characterToAdd = charactersInPlayerInventory[i];
+                }
+            }
+            //Add the character we found to the array
+            copyOfCurrentTeams[teamIndex].push(characterToAdd); 
+        }else{
+            return alert('ERROR - Team is already full. Please add this character to a new team');
+        }
+
+        setUserTeams(copyOfCurrentTeams);
+
+
+        console.log(teamIndex, characterID);
+    }
+
     return <CharacterInventoryContext.Provider value={{
             charactersInPlayerInventory: charactersInPlayerInventory,
+            userTeams: userTeams,
+            addCharaToTeam: addCharaToTeam,
             addCardsRolledToPlayerInventory: addCardsRolledToPlayerInventory,
             deleteCardFromInventory: deleteCardFromInventory
         }}>

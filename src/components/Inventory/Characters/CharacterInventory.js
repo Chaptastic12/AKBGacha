@@ -1,15 +1,31 @@
 import React, { useContext, useState } from 'react';
 import CharacterCard from '../../CharacterSummon/CharacterCard/CharacterCard';
+import UserTeams from '../Teams/UserTeams';
 
 import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Context';
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, userTeams, addCharaToTeam } = useContext(CharacterInventoryContext);
+
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
     const [ showSearchBar, setShowSearchBar ] = useState(false);
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
+    const [ indexForTeam, setIndexForTeam ] = useState(0);
+    
+    const changeIndex = (change) =>{
+        switch(change){
+            case 'add': if(indexForTeam === 7){ break; } else { setIndexForTeam(prevState => prevState + 1) } break;
+            case 'decrease': if(indexForTeam === 0){ break } else { setIndexForTeam(prevState => prevState - 1) } break;
+            default: alert('ERROR in changing Index'); break;
+        }
+        console.log(indexForTeam);
+    }
+
+    const addCharacterToTeam = (charaId) =>{
+        addCharaToTeam(indexForTeam, charaId);
+    }
 
     let sortedInv;
     const sortCharactersInInventory = sortBy =>{
@@ -90,16 +106,22 @@ const CharacterInventory = props =>{
     let charactersInInventory = sortedInventory.map(character =>{
         return <CharacterCard 
                 key={character.id}
+                id={character.id}
                 rarity={character.rarity} 
                 name={character.name} 
                 specialty={character.specialty} 
                 atk={character.atk} 
                 def={character.def} 
                 hp={character.hp} 
-                leaderSkillText={character.leaderSkillText} />
+                leaderSkillText={character.leaderSkillText}
+                addCharacterToTeam={addCharacterToTeam} />
         });
     
+    //Based off the index we get by hitting the left our right arrows in UserTeams, grab our team in the userTeams index
+    let chosenTeam = userTeams[indexForTeam];
+    
     return(<>
+        <UserTeams adjustIndex={changeIndex} teamData={chosenTeam}/>
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button><br />

@@ -39,7 +39,7 @@ const CharacterCard = (props) => {
           return(<>
                     {/* If we don't pass fullSizedCard, then show a smaller version with limited details. On click of the small card, show a modal of the full card */}
                     {showModal && <div onClick={()=>setShowModal(prevState=>!prevState)}><ModalBackground><Modal>{fullCard}</Modal></ModalBackground></div>}
-                    <div className={props.rarity === 'SSR' ? 'CharacterCardSmall SSR' : 'CharacterCardSmall'} onClick={()=>setShowModal(prevState=>!prevState)}>
+                    <div className={props.rarity === 'SSR' ? 'CharacterCardSmall SSR' : 'CharacterCardSmall'} onClick={()=>props.addCharacterToTeam(props.id)}onDoubleClick={()=>setShowModal(prevState=>!prevState)}>
                          <div className='CharacterCardDetails'>
                               <h4>{props.rarity}</h4>
                               <h5>{props.name}<br/>

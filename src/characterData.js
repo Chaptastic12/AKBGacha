@@ -3,11 +3,11 @@ export const gameBanners = [{
     isActive: true,
     bannerName: 'aitakattaBanner',
     SSR: [
-            {characterID: 'aitakattaMaedaAtsuko', name: 'Maeda Atsuko', rarity: 'SSR', specialty: ['Aitakatta'], hp: 2500, def: 1200, atk: 1200, leaderSkill: {skill1:{type: 'def', value: 2}}, leaderSkillText: "All 'Aitakatta' members gain double defense", centerMove: {}, backupMove: {}},
-            {characterID: 'aitakattaOshimaMai', name: 'Oshima Mai', rarity: 'SSR', specialty: ['Aitakatta'], hp: 2200, def: 1200, atk: 1300, leaderSkill: {skill1:{type: 'atk', value: 1.5}}, leaderSkillText: "All 'Aitakatta' members gain 50% more attack", centerMove: {}, backupMove: {}},
-            {characterID: 'aitakattaTakahashiMinami', name: 'Takahashi Minami', rarity: 'SSR', specialty: ['Aitakatta'], hp: 2700, def: 1350, atk: 1000, leaderSkill: {skill1:{type: 'hp', value: 3}}, leaderSkillText: "All 'Aitakatta' members gain 300% hp", centerMove: {}, backupMove: {}},
-            {characterID: 'aitakattaShinodaMariko', name: 'Shinoda Mariko', rarity: 'SSR', specialty: ['Aitakatta'], hp: 2500, def: 1000, atk: 1500, leaderSkill: {skill1:{type: 'hp', value: 1.5}}, leaderSkillText: "All 'Aitakatta' members gain 50% more hp", centerMove: {}, backupMove: {}},
-            {characterID: 'aitakattaMinegishiMinami', name: 'Minegishi Minami', rarity: 'SSR', specialty: ['Aitakatta'], hp: 2000, def: 1100, atk: 1800, leaderSkill: {skill1:{type: 'atk', value: 3}}, leaderSkillText: "All 'Aitakatta members gain 300% more attack", centerMove: {}, backupMove: {}},
+            {characterID: 'aitakattaMaedaAtsuko', name: 'Maeda Atsuko', rarity: 'SSR', specialty: ['Aitakatta', 'Gen 1'], hp: 2500, def: 1200, atk: 1200, leaderSkill: {skill1:{type: 'def', value: 2}}, leaderSkillText: "All 'Aitakatta' members gain double defense", centerMove: {}, backupMove: {}},
+            {characterID: 'aitakattaOshimaMai', name: 'Oshima Mai', rarity: 'SSR', specialty: ['Aitakatta', 'Gen 1'], hp: 2200, def: 1200, atk: 1300, leaderSkill: {skill1:{type: 'atk', value: 1.5}}, leaderSkillText: "All 'Aitakatta' members gain 50% more attack", centerMove: {}, backupMove: {}},
+            {characterID: 'aitakattaTakahashiMinami', name: 'Takahashi Minami', rarity: 'SSR', specialty: ['Aitakatta', 'Gen 1'], hp: 2700, def: 1350, atk: 1000, leaderSkill: {skill1:{type: 'hp', value: 3}}, leaderSkillText: "All 'Aitakatta' members gain 300% hp", centerMove: {}, backupMove: {}},
+            {characterID: 'aitakattaShinodaMariko', name: 'Shinoda Mariko', rarity: 'SSR', specialty: ['Aitakatta', 'Gen 1'], hp: 2500, def: 1000, atk: 1500, leaderSkill: {skill1:{type: 'hp', value: 1.5}}, leaderSkillText: "All 'Aitakatta' members gain 50% more hp", centerMove: {}, backupMove: {}},
+            {characterID: 'aitakattaMinegishiMinami', name: 'Minegishi Minami', rarity: 'SSR', specialty: ['Aitakatta', 'Gen 1'], hp: 2000, def: 1100, atk: 1800, leaderSkill: {skill1:{type: 'atk', value: 3}}, leaderSkillText: "All 'Aitakatta members gain 300% more attack", centerMove: {}, backupMove: {}},
     ],
         SR: [
             {characterID: 'aitakattaKojimaHaruna', name: 'Kojima Haruna', rarity: 'SR', specialty: ['Bingo'], hp: 2300, def: 1400, atk: 1200, leaderSkill: {skill1: {type: 'hp', value: 1.25}}, leaderSkillText: "All 'Aitakatta' members gain 25% more defense", centerMove: {}, backupMove: {}},
