@@ -39,6 +39,7 @@ const CharacterInventoryProvider = props =>{
     }
 
     const addCharaToTeam = (teamIndex, characterID) =>{
+        console.log('adding chara');
         let copyOfCurrentTeams = [...userTeams];
         let characterToAdd;
 
@@ -56,17 +57,31 @@ const CharacterInventoryProvider = props =>{
         }else{
             return alert('ERROR - Team is already full. Please add this character to a new team');
         }
-
+        //Update our user team
         setUserTeams(copyOfCurrentTeams);
+    }
 
+    const removeCharaFromTeam = (teamIndex, characterID) =>{
+        console.log('removing chara');
+        let copyOfCurrentTeams = [...userTeams];
 
-        console.log(teamIndex, characterID);
+        console.log(copyOfCurrentTeams);
+        //Find the character in the team we want to remove
+        for(let i=0; i < copyOfCurrentTeams[teamIndex].length; i++){
+            //We have the right character when the IDs match. Splice it from the array
+            if(copyOfCurrentTeams[teamIndex][i].id === characterID){
+                copyOfCurrentTeams[teamIndex].splice(i, 1);
+            }
+        }
+        //Update our user team
+        setUserTeams(copyOfCurrentTeams);
     }
 
     return <CharacterInventoryContext.Provider value={{
             charactersInPlayerInventory: charactersInPlayerInventory,
             userTeams: userTeams,
             addCharaToTeam: addCharaToTeam,
+            removeCharaFromTeam: removeCharaFromTeam,
             addCardsRolledToPlayerInventory: addCardsRolledToPlayerInventory,
             deleteCardFromInventory: deleteCardFromInventory
         }}>

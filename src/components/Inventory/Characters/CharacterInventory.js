@@ -6,7 +6,7 @@ import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Co
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory, userTeams, addCharaToTeam } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
     const [ showSearchBar, setShowSearchBar ] = useState(false);
@@ -25,6 +25,10 @@ const CharacterInventory = props =>{
 
     const addCharacterToTeam = (charaId) =>{
         addCharaToTeam(indexForTeam, charaId);
+    }
+
+    const removeCharacterFromTeam = (charaId) =>{
+        removeCharaFromTeam(indexForTeam, charaId);
     }
 
     let sortedInv;
@@ -114,14 +118,15 @@ const CharacterInventory = props =>{
                 def={character.def} 
                 hp={character.hp} 
                 leaderSkillText={character.leaderSkillText}
-                addCharacterToTeam={addCharacterToTeam} />
+                addCharacterToTeam={addCharacterToTeam}
+                teamView={false} />
         });
     
     //Based off the index we get by hitting the left our right arrows in UserTeams, grab our team in the userTeams index
     let chosenTeam = userTeams[indexForTeam];
     
     return(<>
-        <UserTeams adjustIndex={changeIndex} teamData={chosenTeam}/>
+        <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam}/>
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button><br />
