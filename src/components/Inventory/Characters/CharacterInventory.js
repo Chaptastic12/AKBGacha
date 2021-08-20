@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import CharacterCard from '../../CharacterSummon/CharacterCard/CharacterCard';
 import UserTeams from '../Teams/UserTeams';
 
@@ -6,13 +6,17 @@ import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Co
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
     const [ showSearchBar, setShowSearchBar ] = useState(false);
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
-    const [ indexForTeam, setIndexForTeam ] = useState(0);
+    const [ indexForTeam, setIndexForTeam ] = useState(userTeamIndex);
+
+    useEffect(()=>{
+        saveUserTeamIndex(indexForTeam);
+    },[indexForTeam, saveUserTeamIndex])
     
     const changeIndex = (change) =>{
         switch(change){
@@ -20,7 +24,6 @@ const CharacterInventory = props =>{
             case 'decrease': if(indexForTeam === 0){ break } else { setIndexForTeam(prevState => prevState - 1) } break;
             default: alert('ERROR in changing Index'); break;
         }
-        console.log(indexForTeam);
     }
 
     const addCharacterToTeam = (charaId) =>{
@@ -49,7 +52,7 @@ const CharacterInventory = props =>{
                 break;
             case 'rarity':
                 //Run it twice to get correct results
-                for(let i=0; i<2; i++){
+                for(let i=0; i<3; i++){
                     sortedInv.sort((a,b) =>{
                         let rarityA = a.rarity;
                         let rarityB = b.rarity;

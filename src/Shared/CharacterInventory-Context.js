@@ -6,6 +6,7 @@ const CharacterInventoryProvider = props =>{
 
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
     const [ userTeams, setUserTeams ] = useState([[],[],[],[],[],[],[],[]]);
+    const [ userTeamIndex, setUserTeamIndex ] = useState(0);
 
     //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
     //This will have to make a call to the player specific inventory and update that record
@@ -39,7 +40,6 @@ const CharacterInventoryProvider = props =>{
     }
 
     const addCharaToTeam = (teamIndex, characterID) =>{
-        console.log('adding chara');
         let copyOfCurrentTeams = [...userTeams];
         let characterToAdd;
 
@@ -62,7 +62,6 @@ const CharacterInventoryProvider = props =>{
     }
 
     const removeCharaFromTeam = (teamIndex, characterID) =>{
-        console.log('removing chara');
         let copyOfCurrentTeams = [...userTeams];
 
         console.log(copyOfCurrentTeams);
@@ -77,9 +76,17 @@ const CharacterInventoryProvider = props =>{
         setUserTeams(copyOfCurrentTeams);
     }
 
+    //Get and save the last index of the userTeams array that the user was on so that we can default to that index
+    const saveUserTeamIndex = index =>{
+        setUserTeamIndex(index);
+        console.log(index);
+    }
+
     return <CharacterInventoryContext.Provider value={{
             charactersInPlayerInventory: charactersInPlayerInventory,
             userTeams: userTeams,
+            userTeamIndex: userTeamIndex,
+            saveUserTeamIndex: saveUserTeamIndex,
             addCharaToTeam: addCharaToTeam,
             removeCharaFromTeam: removeCharaFromTeam,
             addCardsRolledToPlayerInventory: addCardsRolledToPlayerInventory,

@@ -16,10 +16,16 @@ const UserTeams = props =>{
                 removeCharacterFromTeam={props.removeCharacterFromTeam}
                 teamView={true}/>
     });
+
+    let teamLeaderSkill = 'Create a team with an SSR+ Leader to see skill'
+    if(props.teamData[0]){
+        teamLeaderSkill = props.teamData[0].leaderSkillText;
+    }
     return <div>
         <button onClick={()=>props.adjustIndex('decrease')}>Left</button>
             {displayTeam}
         <button onClick={()=>props.adjustIndex('add')}>Right</button>
+        <div><b>Leader Skill: </b>{teamLeaderSkill}</div>
     </div>
 }
 
