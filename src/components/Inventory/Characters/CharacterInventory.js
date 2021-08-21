@@ -51,7 +51,7 @@ const CharacterInventory = props =>{
                 setSortedInventory(sortedInv);
                 break;
             case 'rarity':
-                //Run it twice to get correct results
+                //Run it thrice to ensure correct results
                 for(let i=0; i<3; i++){
                     sortedInv.sort((a,b) =>{
                         let rarityA = a.rarity;
