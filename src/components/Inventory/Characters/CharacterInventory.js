@@ -18,10 +18,14 @@ const CharacterInventory = props =>{
         saveUserTeamIndex(indexForTeam);
     },[indexForTeam, saveUserTeamIndex])
     
+    //Ensure that we are looking at the right time to update by changing the index that we use to pick the right team in the array
     const changeIndex = (change) =>{
         switch(change){
+            //If we are already at the end team, break out. Otherwise, increment
             case 'add': if(indexForTeam === 7){ break; } else { setIndexForTeam(prevState => prevState + 1) } break;
+            //If we are already at the beginning of the team, break out. Otherwise, decrement
             case 'decrease': if(indexForTeam === 0){ break } else { setIndexForTeam(prevState => prevState - 1) } break;
+            //Throw an error if we run into some kind of issue
             default: alert('ERROR in changing Index'); break;
         }
     }
