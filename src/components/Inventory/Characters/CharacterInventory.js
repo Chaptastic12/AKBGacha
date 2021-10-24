@@ -38,6 +38,7 @@ const CharacterInventory = props =>{
         removeCharaFromTeam(indexForTeam, charaId);
     }
 
+    //Sort our characters dependent on how the user wants to sort it
     let sortedInv;
     const sortCharactersInInventory = sortBy =>{
         //Needs to be this way for Rarity sort to work
