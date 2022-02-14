@@ -13,6 +13,7 @@ const navBar = () =>{
           <div>
                <NavLink to='/nplayerID/inventory/characters'>View Inventory</NavLink>
                <NavLink to='/banners'>Summon</NavLink>
+               <NavLink to='/play/songBattle/test'>Play</NavLink>
           </div>
      </>);
 }

@@ -4,6 +4,8 @@ import CharacterSummon from './components/CharacterSummon/CharacterSummon';
 import CharacterInventory from './components/Inventory/Characters/CharacterInventory';
 import NavBar from './components/NavBar/navbar';
 
+import SongChallenge from './components/SongChallenge/SongChallenge';
+
 import CharacterInventoryProvider from '../src/Shared/CharacterInventory-Context';
 import UserDetailsProvider from '../src/Shared/UserDetails-Context';
 
@@ -19,12 +21,9 @@ function App() {
             <Router>
               <NavBar />
               <Switch>
-                <Route path='/:playerID/inventory/characters' exact>
-                  <CharacterInventory />
-                </Route>
-                <Route path='/banners' exact>
-                  <CharacterSummon />
-                </Route>
+                <Route path='/:playerID/inventory/characters' exact component={CharacterInventory} />
+                <Route path='/banners' exact component={CharacterSummon} />
+                <Route path='/play/songBattle/:songID' exact component={SongChallenge} />
                 <Redirect to='/banners' exact />
               </Switch>
             </Router>
