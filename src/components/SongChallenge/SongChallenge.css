@@ -1,7 +1,11 @@
+.SongChallenge{
+  height: 100vh;
+  width: 100vw;
+}
+
 .track-container {
     display: flex;
     flex: 1 0 auto;
-    height: 100vh;
   }
   
   .track {
@@ -12,9 +16,9 @@
 .note {
     position: absolute;
     opacity: 0;
-    width: 150px;
+    width: calc(100vw / 7);
     height: 10px;
-    animation: moveDown 5s linear 3s;
+    animation: moveDown 3s linear 3s;
 }
 
 @keyframes moveDown {
@@ -23,36 +27,39 @@
     100% {top: 550px; opacity: 0}
  }
   
+ .key-container {
+  display: flex;
+  flex: 0 0 15%;
+  margin-top:500px;
+}
 
- @keyframes moveDownFade {
-    0% { top: -1.5rem; }
-    60% { opacity: 1; }
-    80% { opacity: 0; }
-    98% { top: 100%; opacity: 0; }
-    100% { top: 105%; opacity: 0; }
-  }
-  
-  @keyframes fade {
-    10% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-  
-  @keyframes scaleFade {
-    0% {
-      opacity: 1;
-    }
-  
-    100% {
-      opacity: 0;
-      width: 4rem;
-      height: 4rem;
-    }
-  }
-  
-  @keyframes scaleBorder {
-    100% {
-      width: 10rem;
-      height: 10rem;
-      border: 2px solid transparent;
-    }
-  }
+.key {
+  flex: 0 0 calc(100% / 7);
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+  text-align: center;
+  position: relative;
+  font-size: 1.6rem;
+  height: 100px;
+  width: 150px;
+  border-top: 1px solid red;
+}
+
+.key--red {
+  background: var(--key-red);
+}
+
+.key--blue {
+  background: var(--key-blue);
+}
+
+.key--orange {
+  background: var(--key-orange);
+}
+
+.key span {
+  font-weight: bold;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  padding-top: .5rem;
+}
