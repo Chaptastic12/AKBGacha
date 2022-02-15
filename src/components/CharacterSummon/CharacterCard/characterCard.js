@@ -37,7 +37,9 @@ const CharacterCard = (props) => {
      if(props.teamView){
           onClickHandler = ()=>props.removeCharacterFromTeam(props.id);
      }else{
-          onClickHandler = ()=>props.addCharacterToTeam(props.id)
+          if(!props.inTeam){
+               onClickHandler = ()=>props.addCharacterToTeam(props.id)
+          }
      }
 
      //fullSizedCard is currently only passed from CharacterSummon.js
@@ -47,7 +49,8 @@ const CharacterCard = (props) => {
           return(<>
                     {/* If we don't pass fullSizedCard, then show a smaller version with limited details. On click of the small card, show a modal of the full card */}
                     {showModal && <div onClick={()=>setShowModal(prevState=>!prevState)}><ModalBackground><Modal>{fullCard}</Modal></ModalBackground></div>}
-                    <div className={props.rarity === 'SSR' ? 'CharacterCardSmall SSR' : 'CharacterCardSmall'} 
+                    <div className={props.rarity === 'SSR' ? 'CharacterCardSmall SSR' : 'CharacterCardSmall'}
+                         className={`CharacterCardSmall ${props.rarity === 'SSR' && 'SSR'} ${props.inTeam && 'CardInTeam'}`}
                          onClick={onClickHandler}
                          onDoubleClick={()=>setShowModal(prevState=>!prevState)}
                     >

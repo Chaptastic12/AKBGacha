@@ -115,7 +115,14 @@ const CharacterInventory = props =>{
         }
     }
 
+    //Based off the index we get by hitting the left our right arrows in UserTeams, grab our team in the userTeams index
+    let chosenTeam = userTeams[indexForTeam];
+
     let charactersInInventory = sortedInventory.map(character =>{
+
+        //Check if the card already exists in the current team; If it is, gray out and don't allow click;
+        const checkInTeam = chosenTeam.filter(teamChara => teamChara.id === character.id);
+
         return <CharacterCard 
                 key={character.id}
                 id={character.id}
@@ -127,11 +134,11 @@ const CharacterInventory = props =>{
                 hp={character.hp} 
                 leaderSkillText={character.leaderSkillText}
                 addCharacterToTeam={addCharacterToTeam}
-                teamView={false} />
+                teamView={false} 
+                inTeam={checkInTeam.length > 0} />
         });
     
-    //Based off the index we get by hitting the left our right arrows in UserTeams, grab our team in the userTeams index
-    let chosenTeam = userTeams[indexForTeam];
+
     
     return(<>
         <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam}/>
