@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useEffect } from 'react/cjs/react.development';
 
 import './SongChallenge.css'
@@ -19,12 +19,10 @@ const SongChallenge = props => {
     let startTime;
     let keypress;
     let tracks;
-    let accuracyText
-
-    var combo = 0;
-    var maxCombo = 0;
-    var score = 0;
-    var comboText;
+    let combo = 0;
+    let comboText;
+    let maxCombo = 0;
+    let score = 0;
 
     let a = {
         color: 'red',
@@ -41,57 +39,57 @@ const SongChallenge = props => {
             { duration: 3, delay: 0.5, hitTime: 3.5 },
             { duration: 3, delay: 1, hitTime: 4 },
             { duration: 3, delay: 1.25, hitTime: 4.25 },
-            { duration: 3, delay: 2, hitTime: 5 }
+            { duration: 3, delay: 2.1, hitTime: 5.1 }
         ]
     }
 
     let d = {
         color: 'green',
         notes: [
-            { duration: 3, delay: 0},
-            { duration: 3, delay: 1},
-            { duration: 3, delay: 2.25},
-            { duration: 3, delay: 3}
+            { duration: 3, delay: 0, hitTime: 3 },
+            { duration: 3, delay: 1, hitTime: 4 },
+            { duration: 3, delay: 2.25, hitTime: 5.25 },
+            { duration: 3, delay: 3, hitTime: 6 }
         ]
     }
 
     let j = {
         color: 'yellow',
         notes: [
-            { duration: 3, delay: 0.75},
-            { duration: 3, delay: 1.25},
-            { duration: 3, delay: 2},
-            { duration: 3, delay: 2.5}
+            { duration: 3, delay: 0.75, hitTime: 3.75 },
+            { duration: 3, delay: 1.25, hitTime: 4.25 },
+            { duration: 3, delay: 2, hitTime: 5 },
+            { duration: 3, delay: 2.5, hitTime: 5.5 }
         ]
     }
 
     let k = {
         color: 'purple',
         notes: [
-            { duration: 3, delay: 0},
-            { duration: 3, delay: 0.75},
-            { duration: 3, delay: 2.25},
-            { duration: 3, delay: 3.5}
+            { duration: 3, delay: 0, hitTime: 3 },
+            { duration: 3, delay: 0.75, hitTime: 3.75 },
+            { duration: 3, delay: 2.25, hitTime: 5.25 },
+            { duration: 3, delay: 3.5, hitTime: 6.5 }
         ]
     }
 
     let l = {
         color: 'gray',
         notes: [
-            { duration: 3, delay: 0.5},
-            { duration: 3, delay: 1},
-            { duration: 3, delay: 2},
-            { duration: 3, delay: 3}
+            { duration: 3, delay: 0.5, hitTime: 3.5 },
+            { duration: 3, delay: 1, hitTime: 4 },
+            { duration: 3, delay: 2, hitTime: 5 },
+            { duration: 3, delay: 3, hitTime: 6 }
         ]
     }
 
     let space = {
         color: 'violet',
         notes: [
-            { duration: 3, delay: 1},
-            { duration: 3, delay: 2},
-            { duration: 3, delay: 3},
-            { duration: 3, delay: 4}
+            { duration: 3, delay: 1, hitTime: 4 },
+            { duration: 3, delay: 2, hitTime: 5 },
+            { duration: 3, delay: 3, hitTime: 6 },
+            { duration: 3, delay: 4, hitTime: 7 }
         ]
     }
 
@@ -104,7 +102,7 @@ const SongChallenge = props => {
     const initializeSongComponents = () =>{
         let noteEle, trackEle;
 
-        while (trackContainer.hasChildNodes()) {
+        while(trackContainer.hasChildNodes()){
             trackContainer.removeChild(trackContainer.lastChild);
         }
         
@@ -135,14 +133,11 @@ const SongChallenge = props => {
             let index = event.target.classList.item(1)[6];
 
             console.log('miss')
-
-            // console.log(event.target.parentNodea)
             displayAccuracy('miss');
             updateHits('miss');
             updateCombo('miss');
             updateMaxCombo();
             //removeNoteFromTrack(event.target.parentNode, event.target);
-            updateNext(index);
         })
     }
 
@@ -194,22 +189,22 @@ const SongChallenge = props => {
         let hitJudgement;
 
         //Ensure they are even remotely close to the detection area
-        if(accuracy > (perfectHit - 1)){
+        console.log(accuracy, (perfectHit - 0.3))
+        if(accuracy > (perfectHit - (perfectHit - 0.5) )){
             return;
         }
 
         hitJudgement = getHitJudgement(accuracy);
-        console.log(hitJudgement)
-        // displayAccuracy(hitJudgement);
-        // showHitEffect(index);
-        // updateHits(hitJudgement);
-        // updateCombo(hitJudgement);
-        // updateMaxCombo();
-        // calculateScore(hitJudgement);
+        displayAccuracy(hitJudgement);
+        showHitEffect(index);
+        updateHits(hitJudgement);
+        updateCombo(hitJudgement);
+        updateMaxCombo();
+        calculateScore(hitJudgement);
+        showScore();
         removeNoteFromTrack(tracks[index], tracks[index].firstChild);
         timesHit[index]++;
 
-        // updateNext(index);
     }
 
     const getHitJudgement = accuracy =>{
@@ -225,7 +220,12 @@ const SongChallenge = props => {
     }
     
     const displayAccuracy = accuracy =>{
-        accuracyText = accuracy;
+        let accuracyText = document.createElement('div');
+        document.querySelector('.hit__accuracy').remove();
+        accuracyText.classList.add('hit__accuracy');
+        accuracyText.classList.add('hit__accuracy--' + accuracy)
+        accuracyText.innerHTML = accuracy;
+        document.querySelector('.hit').appendChild(accuracyText)
     }
 
     const showHitEffect = index =>{
@@ -237,19 +237,27 @@ const SongChallenge = props => {
 
     const updateHits = judgement =>{
         hits[judgement]++;
+        console.log(hits)
+
     }
 
     const updateCombo = judgement =>{
-        if(judgement === 'bad' || judgement === 'miss'){
+           if(judgement === 'bad' || judgement === 'miss'){
             combo = 0;
-            comboText.innerHtml = '';
+            comboText.innerHTML = 0;
         } else{
-            comboText.innerHtml = ++combo;
+            comboText.innerHTML = ++combo;
         }
     }
 
     const updateMaxCombo = () =>{
         maxCombo = maxCombo > combo ? maxCombo : combo;
+
+        let maxComboText = document.createElement('div');
+        document.querySelector('.hit__combo').remove();
+        maxComboText.classList.add('hit__combo');
+        maxComboText.innerHTML = maxCombo;
+        document.querySelector('.hit').appendChild(maxComboText);
     }
 
     const calculateScore = judgement =>{
@@ -267,13 +275,7 @@ const SongChallenge = props => {
     }
 
     const removeNoteFromTrack = (parent, child) =>{
-        // console.log(parent, child)
         parent.removeChild(child);
-    }
-
-    const updateNext = index =>{
-        const idx = index + 1
-        loadedSong.sheet[idx]++
     }
 
     const startGame = () =>{
@@ -282,21 +284,26 @@ const SongChallenge = props => {
         document.querySelectorAll('.note').forEach( note => note.style.animationPlayState = 'running' );
     }
 
+    const showScore = () =>{
+        document.querySelector('.score').innerHTML = score;
+    }
+
 
     useEffect(()=>{
         trackContainer = document.querySelector('.track-container');
         keypress = document.querySelectorAll('.keypress');
-        comboText = document.querySelector('.hit__combo')
+        comboText = document.querySelector('.hit__streak')
         initializeSongComponents();
         startGame();
         setUpKeys();
         noteMiss();
     })
 
+
     return (<div className='SongChallenge'>
         <div className='track-container' />
-            <div>{ accuracyText }</div>
-            <div className='hit__combo'></div>
+            <div>test</div>
+
             <div className="key-container">
                 <div className="key key--s key--blue">
                     <div className="keypress keypress--blue"></div>
@@ -312,7 +319,7 @@ const SongChallenge = props => {
                 </div>
                 <div className="key key--space key--orange">
                     <div className="keypress keypress--orange"></div>
-                    <span>Space</span>
+                    <span><small>Q</small></span>
                 </div>
                 <div className="key key--j key--blue">
                     <div className="keypress keypress--blue"></div>
@@ -327,6 +334,12 @@ const SongChallenge = props => {
                     <span>L</span>
                 </div>
             </div>
+            <div className='hit'>
+                <div className='hit__combo'>High Combo</div>
+                <div className='hit__streak'>Streak</div>
+                <div className='hit__accuracy'>Hit Accuracy</div>
+            </div>
+            <div className='score' />
     </div>)
 }
 

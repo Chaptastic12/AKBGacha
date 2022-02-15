@@ -8,10 +8,10 @@
     flex: 1 0 auto;
   }
   
-  .track {
-    position: relative;
-    flex: 0 0 calc(100% / 7);
-  }
+.track {
+  position: relative;
+  flex: 0 0 calc(100% / 7);
+}
 
 .note {
     position: absolute;
@@ -23,14 +23,14 @@
 
 @keyframes moveDown {
     0% { top: 0px; opacity: 1}
-    95% { top: 500px; opacity: 1 }
+    95% { top: 505px; opacity: 1 }
     100% {top: 550px; opacity: 0}
  }
   
  .key-container {
   display: flex;
   flex: 0 0 15%;
-  margin-top:500px;
+  margin-top:510px;
 }
 
 .key {
@@ -44,22 +44,69 @@
   width: 150px;
   border-top: 1px solid red;
 }
-
+/* 
 .key--red {
-  background: var(--key-red);
+  background: red;
 }
 
 .key--blue {
-  background: var(--key-blue);
+  background: blue;
 }
 
 .key--orange {
-  background: var(--key-orange);
-}
+  background: orange;
+} */
 
 .key span {
   font-weight: bold;
   writing-mode: vertical-lr;
   text-orientation: upright;
   padding-top: .5rem;
+}
+
+.key__hit {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: 0 0;
+  background: purple;
+  opacity: 0;
+  border-radius: 50%;
+  animation: scaleFade 1s;
+}
+
+.key__hit:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid purple;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: scaleBorder 1s;
+}
+
+@keyframes scaleFade {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@keyframes scaleBorder {
+  100% {
+    width: 10rem;
+    height: 10rem;
+    border: 2px solid transparent;
+  }
 }
