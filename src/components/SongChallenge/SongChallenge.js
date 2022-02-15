@@ -98,7 +98,7 @@ const SongChallenge = props => {
 
     const loadedSong = {
         // sheet: [ a, s, d, space, j, k, l ],
-        sheet: [ a, s ],
+        sheet: [ a, s, d, space, j, k, l ],
         duration: 6
     }
 
@@ -250,7 +250,12 @@ const SongChallenge = props => {
             combo = 0;
             comboText.innerHTML = 'Current Streak: ' + 0;
             health = health - 10;
-            healthText.innerHTML = 'Current Health: ' + health;
+            if(health <= 0){
+                healthText.innerHTML = 'GAME OVER';
+                gameOver();
+            }else {
+                healthText.innerHTML = 'Current Health: ' + health;
+            }
         } else{
             comboText.innerHTML = 'Current Streak: ' + ++combo;
             if(health === 100){
@@ -260,6 +265,12 @@ const SongChallenge = props => {
                 healthText.innerHTML = 'Current Health: ' + health;
             }
         }
+    }
+
+    const gameOver = () =>{
+        isPlaying = false;
+        document.querySelectorAll('.note').forEach( note => note.style.animationPlayState = 'paused' );
+
     }
 
     const updateMaxCombo = () =>{
@@ -303,9 +314,13 @@ const SongChallenge = props => {
 
 
     useEffect(()=>{
+        // eslint-disable-next-line
         trackContainer = document.querySelector('.track-container');
+        // eslint-disable-next-line
         keypress = document.querySelectorAll('.keypress');
+        // eslint-disable-next-line
         comboText = document.querySelector('.hit__streak')
+        // eslint-disable-next-line
         healthText = document.querySelector('.health');
         initializeSongComponents();
         startGame();
