@@ -24,6 +24,8 @@ const SongChallenge = props => {
     let comboText;
     let maxCombo = 0;
     let score = 0;
+    let health = 100;
+    let healthText;
 
     let a = {
         color: 'red',
@@ -131,9 +133,13 @@ const SongChallenge = props => {
 
     const noteMiss = () =>{
         trackContainer.addEventListener('animationend', event =>{
+            let index = event.target.classList.item(1)[6];
+
             displayAccuracy('miss');
             updateHits('miss');
             updateCombo('miss');
+            timesHit[index]++;
+            removeNoteFromTrack(event.target.parentNode, event.target);
             updateMaxCombo();
         })
     }
@@ -146,8 +152,8 @@ const SongChallenge = props => {
                 keyDown[event.key] = true;
                 keypress[keyIndex].style.display = 'block';
                 
+                //If we have exceeded the length of the song, the song is now over and we should no longer be judging key presses
                 let currentTime = Date.now();
-                console.log(( currentTime - endTime ))
                 if( ( ( currentTime - endTime ) / 1000 ) >= loadedSong.duration ){
                     isPlaying = false;
                 }
@@ -191,6 +197,7 @@ const SongChallenge = props => {
 
         //Ensure they are within a half second of the key
         if(accuracy > (perfectHit - (perfectHit - 0.5) )){
+            console.log('too early')
             return;
         }
 
@@ -204,7 +211,6 @@ const SongChallenge = props => {
         showScore();
         removeNoteFromTrack(tracks[index], tracks[index].firstChild);
         timesHit[index]++;
-
     }
 
     const getHitJudgement = accuracy =>{
@@ -218,7 +224,7 @@ const SongChallenge = props => {
             return  'miss';
         }
     }
-    
+
     const displayAccuracy = accuracy =>{
         let accuracyText = document.createElement('div');
         document.querySelector('.hit__accuracy').remove();
@@ -242,9 +248,17 @@ const SongChallenge = props => {
     const updateCombo = judgement =>{
            if(judgement === 'bad' || judgement === 'miss'){
             combo = 0;
-            comboText.innerHTML = 0;
+            comboText.innerHTML = 'Current Streak: ' + 0;
+            health = health - 10;
+            healthText.innerHTML = 'Current Health: ' + health;
         } else{
-            comboText.innerHTML = ++combo;
+            comboText.innerHTML = 'Current Streak: ' + ++combo;
+            if(health === 100){
+                return;
+            }else{
+                health = health + 5;
+                healthText.innerHTML = 'Current Health: ' + health;
+            }
         }
     }
 
@@ -254,7 +268,7 @@ const SongChallenge = props => {
         let maxComboText = document.createElement('div');
         document.querySelector('.hit__combo').remove();
         maxComboText.classList.add('hit__combo');
-        maxComboText.innerHTML = maxCombo;
+        maxComboText.innerHTML = 'Max Combo: ' + maxCombo;
         document.querySelector('.hit').appendChild(maxComboText);
     }
 
@@ -292,6 +306,7 @@ const SongChallenge = props => {
         trackContainer = document.querySelector('.track-container');
         keypress = document.querySelectorAll('.keypress');
         comboText = document.querySelector('.hit__streak')
+        healthText = document.querySelector('.health');
         initializeSongComponents();
         startGame();
         setUpKeys();
@@ -337,6 +352,7 @@ const SongChallenge = props => {
                 <div className='hit__accuracy'>Hit Accuracy</div>
             </div>
             <div className='score' />
+            <div className='health' />
     </div>)
 }
 

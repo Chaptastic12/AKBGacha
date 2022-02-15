@@ -2,6 +2,8 @@ import { createContext, useState } from 'react';
 
 const CharacterInventoryContext = createContext();
 
+const CHARACTERS_PER_TEAM = 7;
+
 const CharacterInventoryProvider = props =>{
 
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
@@ -44,7 +46,7 @@ const CharacterInventoryProvider = props =>{
         let characterToAdd;
 
         //Assuming there is room on the team, allow them to add it. Otherwise, return an error message
-        if(copyOfCurrentTeams[teamIndex].length < 3){
+        if(copyOfCurrentTeams[teamIndex].length < CHARACTERS_PER_TEAM){
             //If there is room, find the character they want to add from their inventory
             for(let i=0; i < charactersInPlayerInventory.length; i++){
                 //We have the right character when the IDs match
