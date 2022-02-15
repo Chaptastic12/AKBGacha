@@ -17,6 +17,7 @@ const SongChallenge = props => {
     let trackContainer;
     let isPlaying = false;
     let startTime;
+    let endTime;
     let keypress;
     let tracks;
     let combo = 0;
@@ -96,7 +97,7 @@ const SongChallenge = props => {
     const loadedSong = {
         // sheet: [ a, s, d, space, j, k, l ],
         sheet: [ a, s ],
-        duration: 60
+        duration: 6
     }
 
     const initializeSongComponents = () =>{
@@ -130,14 +131,10 @@ const SongChallenge = props => {
 
     const noteMiss = () =>{
         trackContainer.addEventListener('animationend', event =>{
-            let index = event.target.classList.item(1)[6];
-
-            console.log('miss')
             displayAccuracy('miss');
             updateHits('miss');
             updateCombo('miss');
             updateMaxCombo();
-            //removeNoteFromTrack(event.target.parentNode, event.target);
         })
     }
 
@@ -148,6 +145,12 @@ const SongChallenge = props => {
             if(Object.keys(keyDown).indexOf(event.key) !== -1 && !keyDown[event.key]){
                 keyDown[event.key] = true;
                 keypress[keyIndex].style.display = 'block';
+                
+                let currentTime = Date.now();
+                console.log(( currentTime - endTime ))
+                if( ( ( currentTime - endTime ) / 1000 ) >= loadedSong.duration ){
+                    isPlaying = false;
+                }
 
                 if( isPlaying && tracks[keyIndex].firstChild){
                     judgePress(keyIndex);
@@ -158,9 +161,7 @@ const SongChallenge = props => {
 
     document.addEventListener('keyup', event =>{
         if(Object.keys(keyDown).indexOf(event.key) !== -1){
-            let keyIndex = getKeyIndex(event.key);
             keyDown[event.key] = false;
-            //keypress[keyIndex].style.display = 'none';
         }
     })
 
@@ -188,8 +189,7 @@ const SongChallenge = props => {
         let accuracy = Math.abs(timeInSeconds - perfectHit);
         let hitJudgement;
 
-        //Ensure they are even remotely close to the detection area
-        console.log(accuracy, (perfectHit - 0.3))
+        //Ensure they are within a half second of the key
         if(accuracy > (perfectHit - (perfectHit - 0.5) )){
             return;
         }
@@ -237,8 +237,6 @@ const SongChallenge = props => {
 
     const updateHits = judgement =>{
         hits[judgement]++;
-        console.log(hits)
-
     }
 
     const updateCombo = judgement =>{
@@ -281,6 +279,7 @@ const SongChallenge = props => {
     const startGame = () =>{
         isPlaying = true;
         startTime = Date.now();
+        endTime = startTime + loadedSong.duration + 0.2;
         document.querySelectorAll('.note').forEach( note => note.style.animationPlayState = 'running' );
     }
 
@@ -302,8 +301,6 @@ const SongChallenge = props => {
 
     return (<div className='SongChallenge'>
         <div className='track-container' />
-            <div>test</div>
-
             <div className="key-container">
                 <div className="key key--s key--blue">
                     <div className="keypress keypress--blue"></div>
