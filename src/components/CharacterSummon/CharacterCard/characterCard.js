@@ -13,6 +13,7 @@ const CharacterCard = (props) => {
      //Show our full card details if 
      // 1) the use has clicked on the card from the summoning screen, setting showCard to true or
      // 2) the user is on the inventory page and clicking on a card to see more details by checking if fullSizedCard is undefined
+     // 3) the user is on the inventory page and overring over a card to see the full details
      let fullCard = <div className={props.data.rarity === 'SSR' ? 'CharacterCard SSR' : 'CharacterCard'}>
                          {showCard || props.fullSizedCard === undefined || props.showFullCard ? 
                               <div className='CharacterCardDetails'>
@@ -33,6 +34,7 @@ const CharacterCard = (props) => {
                     </div>
                     
      //Dependent on if we are getting a small card from the inventory, or teams component, determine our action onClick
+     //Remove it if the click is from the UserTeams component, and add a card if it is not
      let onClickHandler;
      if(props.teamView){
           onClickHandler = ()=>props.removeCharacterFromTeam(props.data.id);
@@ -42,6 +44,7 @@ const CharacterCard = (props) => {
           }
      }
 
+     //Handle the right click to switch a cards index in an array
      const handleRightClick = (e) =>{
           e.preventDefault()
           if(props.teamView){
@@ -56,14 +59,14 @@ const CharacterCard = (props) => {
           }
      }
 
-     //fullSizedCard is currently only passed from CharacterSummon.js
+     //fullSizedCard is currently only passed from CharacterSummon.js and now CharacterInventory.js
      if(props.fullSizedCard === true){
           return(fullCard)
      }else{
           return(<>
                     {/* If we don't pass fullSizedCard, then show a smaller version with limited details. On click of the small card, show a modal of the full card */}
                     {showModal && <div onClick={()=>setShowModal(prevState=>!prevState)}><ModalBackground><Modal>{fullCard}</Modal></ModalBackground></div>}
-                    <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' && 'SSR'} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''}`}
+                    <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' ? 'SSR' : ''} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''}`}
                          onClick={onClickHandler}
                          onMouseOver={() => props.activeCardHandler(props.data)}
                          onContextMenu={(e) => handleRightClick(e)}

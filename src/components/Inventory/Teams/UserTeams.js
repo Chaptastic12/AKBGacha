@@ -14,9 +14,18 @@ const UserTeams = props =>{
     //If we are, we right click on the card to move, and right click the card it replaces
     //So we get those indexs, and just swap the card there. Then, update the team and clear the state
     useEffect(()=>{
+        //Copy our existing team, as well as all of the teams
         let teamCopy = [...props.teamData];
         let userTeamsCopy = [...userTeams];
 
+        //If we select the same card to move, reset everything
+        if(cardToMoveIndex === moveCardToIndex){
+            setCardToMoveIndex();
+            setMoveCardToIndex();
+            return;
+        }
+
+        //Get the actual index of the cards selected
         let cardIndex, replaceIndex;
         for(let i = 0; i < props.teamData.length; i++){
             if(props.teamData[i].id === cardToMoveIndex){
@@ -26,12 +35,14 @@ const UserTeams = props =>{
             }
         }
 
+        //Get the card currently sitting in that index in the array
         let cardToMove = props.teamData[cardIndex];
         let replaceCard = props.teamData[replaceIndex];
-
+        //Swap the indexes of the two cards
         teamCopy[replaceIndex] = cardToMove;
         teamCopy[cardIndex] = replaceCard;
 
+        //Ensure that both cards are valid; then, update our state and reset everything
         if(cardToMoveIndex !== undefined && moveCardToIndex !== undefined){
             userTeamsCopy[userTeamIndex] = teamCopy;
             setUserTeams(userTeamsCopy);
@@ -43,8 +54,9 @@ const UserTeams = props =>{
 
 
     const displayTeam = props.teamData.map(character=>{
+        //Check if the card is one we are trying to move; We will apply styling based off this being true or not
         const cardSelectedForMove = (character.id === cardToMoveIndex);
-        
+
         return <CharacterCard 
                 data={character}
                 key={character.id}
@@ -57,10 +69,14 @@ const UserTeams = props =>{
                 teamView={true}/>
     });
 
-    let teamLeaderSkill = 'Create a team with an SSR+ Leader to see skill'
+    //Determine the leader text; If the card doesn't have one, set a warning message
+    let teamLeaderSkill = 'Create a team with an SR+ Leader to see skill'
     if(props.teamData[0]){
-        teamLeaderSkill = props.teamData[0].leaderSkillText;
+        if(props.teamData[0].leaderSkillText !== undefined){
+            teamLeaderSkill = props.teamData[0].leaderSkillText;
+        }
     }
+
     return <div>
         <button onClick={()=>props.adjustIndex('decrease')}>Left</button>
             {displayTeam}
