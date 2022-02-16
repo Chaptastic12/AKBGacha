@@ -57,6 +57,9 @@ const CharacterInventory = props =>{
                 setSortedInventory(sortedInv);
                 break;
             case 'rarity':
+                //Also filter by name
+                sortCharactersInInventory('name');
+
                 //Run it thrice to ensure correct results
                 for(let i=0; i<3; i++){
                     sortedInv.sort((a,b) =>{
