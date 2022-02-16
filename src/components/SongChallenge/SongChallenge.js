@@ -1,9 +1,14 @@
-import React from 'react';
-import { useEffect } from 'react/cjs/react.development';
+import React, { useEffect } from 'react';
+
+import { useHistory } from 'react-router-dom';
 
 import './SongChallenge.css'
 
 const SongChallenge = props => {
+
+    //If we win, we will need to push to save details to a state and push to a new page
+    //If they lose, give them an option to pay some gems to continue ( remove the next 3s of notes of they do ), and if they don't push them to a new page with their stats anyways
+    const history = useHistory();
 
     let keyDown = { a: false, s: false, d: false, j: false, k: false, l: false, ' ': false }
     let hits = { perfect: 0, good: 0, bad: 0, miss: 0 }
@@ -98,7 +103,7 @@ const SongChallenge = props => {
 
     const loadedSong = {
         // sheet: [ a, s, d, space, j, k, l ],
-        sheet: [ a, s, d, space, j, k, l ],
+        sheet: [ a, s, d ],
         duration: 6
     }
 
@@ -152,17 +157,24 @@ const SongChallenge = props => {
                 keyDown[event.key] = true;
                 keypress[keyIndex].style.display = 'block';
                 
-                //If we have exceeded the length of the song, the song is now over and we should no longer be judging key presses
-                let currentTime = Date.now();
-                if( ( ( currentTime - endTime ) / 1000 ) >= loadedSong.duration ){
-                    isPlaying = false;
-                }
-
+                checkGameClear();
+            
                 if( isPlaying && tracks[keyIndex].firstChild){
                     judgePress(keyIndex);
                 }
             }
         });
+    }
+
+    const checkGameClear = () => {
+        //If we have exceeded the length of the song, the song is now over and we should no longer be judging key presses
+        let currentTime = Date.now();
+        if( ( ( currentTime - endTime ) / 1000 ) >= loadedSong.duration ){
+            isPlaying = false;
+            if(health > 0){
+                gameOverWin();
+            }
+        }
     }
 
     document.addEventListener('keyup', event =>{
@@ -252,7 +264,7 @@ const SongChallenge = props => {
             health = health - 10;
             if(health <= 0){
                 healthText.innerHTML = 'GAME OVER';
-                gameOver();
+                gameOverLose();
             }else {
                 healthText.innerHTML = 'Current Health: ' + health;
             }
@@ -267,9 +279,14 @@ const SongChallenge = props => {
         }
     }
 
-    const gameOver = () =>{
+    const gameOverLose = () =>{
         isPlaying = false;
         document.querySelectorAll('.note').forEach( note => note.style.animationPlayState = 'paused' );
+    }
+
+    const gameOverWin = () =>{
+        console.log('won!');
+        history.push('/banners');
 
     }
 
@@ -326,41 +343,53 @@ const SongChallenge = props => {
         startGame();
         setUpKeys();
         noteMiss();
-    })
+        let x=0;
+        let endOfSongInterval = setInterval(()=>{
+            checkGameClear();
+            console.log('checking clear')
+            if(x++ === loadedSong.duration){
+                window.clearInterval(endOfSongInterval);
+            }
+        }, 1000);
+    });
 
 
-    return (<div className='SongChallenge'>
-        <div className='track-container' />
+    return (
+        <div className='SongChallenge'>
+            
+            <div className='track-container' />
+
             <div className="key-container">
-                <div className="key key--s key--blue">
-                    <div className="keypress keypress--blue"></div>
+                <div className="key key--s">
+                    <div className="keypress"></div>
                     <span>A</span>
                 </div>
-                <div className="key key--d key--red">
-                    <div className="keypress keypress--red"></div>
+                <div className="key key--d">
+                    <div className="keypress"></div>
                     <span>S</span>
                 </div>
-                <div className="key key--f key--blue">
-                    <div className="keypress keypress--blue"></div>
+                <div className="key key--f">
+                    <div className="keypress"></div>
                     <span>D</span>
                 </div>
-                <div className="key key--space key--orange">
-                    <div className="keypress keypress--orange"></div>
+                <div className="key key--space">
+                    <div className="keypress"></div>
                     <span><small>Q</small></span>
                 </div>
-                <div className="key key--j key--blue">
-                    <div className="keypress keypress--blue"></div>
+                <div className="key key--j">
+                    <div className="keypress"></div>
                     <span>J</span>
                 </div>
-                <div className="key key--k key--red">
-                    <div className="keypress keypress--red"></div>
+                <div className="key key--k">
+                    <div className="keypress"></div>
                     <span>K</span>
                 </div>
-                <div className="key key--l key--blue">
-                    <div className="keypress keypress--blue"></div>
+                <div className="key key--l">
+                    <div className="keypress"></div>
                     <span>L</span>
                 </div>
             </div>
+
             <div className='hit'>
                 <div className='hit__combo'>High Combo</div>
                 <div className='hit__streak'>Streak</div>
@@ -368,7 +397,8 @@ const SongChallenge = props => {
             </div>
             <div className='score' />
             <div className='health' />
-    </div>)
+        </div>)
+
 }
 
 export default SongChallenge;

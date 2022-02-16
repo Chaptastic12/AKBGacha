@@ -44,18 +44,6 @@
   width: 150px;
   border-top: 1px solid red;
 }
-/* 
-.key--red {
-  background: red;
-}
-
-.key--blue {
-  background: blue;
-}
-
-.key--orange {
-  background: orange;
-} */
 
 .key span {
   font-weight: bold;
