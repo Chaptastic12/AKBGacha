@@ -12,7 +12,7 @@ const SongChallenge = props => {
 
     let keyDown = { a: false, s: false, d: false, j: false, k: false, l: false, ' ': false }
     let hits = { perfect: 0, good: 0, bad: 0, miss: 0 }
-    const multipliers = { perfect: 1, good: 0.75, bad: 0.5, miss: 0, combo50: 1.05, combo100: 1.1, combo175: 1.2, combo300: 1.3 }
+    let multipliers = { perfect: 1, good: 0.75, bad: 0.5, miss: 0, combo50: 1.05, combo100: 1.1, combo175: 1.2, combo300: 1.3 }
     //               a  s  d spa j  k  l
     let timesHit = [ 0, 0, 0, 0, 0, 0, 0 ];
 
@@ -31,6 +31,7 @@ const SongChallenge = props => {
     let score = 0;
     let health = 100;
     let healthText;
+    let gameTimerCounter=0;
 
     let a = {
         color: 'red',
@@ -103,8 +104,25 @@ const SongChallenge = props => {
 
     const loadedSong = {
         // sheet: [ a, s, d, space, j, k, l ],
-        sheet: [ a, s, d ],
+        sheet: [ a, s, d, space ],
         duration: 6
+    }
+
+    const resetAll = () =>{
+        keyDown = { a: false, s: false, d: false, j: false, k: false, l: false, ' ': false }
+        hits = { perfect: 0, good: 0, bad: 0, miss: 0 }
+        multipliers = { perfect: 1, good: 0.75, bad: 0.5, miss: 0, combo50: 1.05, combo100: 1.1, combo175: 1.2, combo300: 1.3 }
+        timesHit = [ 0, 0, 0, 0, 0, 0, 0 ];
+        speed = 0;
+        animation = 'moveDown';
+        isPlaying = false;
+        combo = 0;
+        maxCombo = 0;
+        score = 0;
+        health = 100;
+        gameTimerCounter=0;
+        endTime = 0;
+        startTime = 0;
     }
 
     const initializeSongComponents = () =>{
@@ -157,8 +175,6 @@ const SongChallenge = props => {
                 keyDown[event.key] = true;
                 keypress[keyIndex].style.display = 'block';
                 
-                checkGameClear();
-            
                 if( isPlaying && tracks[keyIndex].firstChild){
                     judgePress(keyIndex);
                 }
@@ -169,11 +185,12 @@ const SongChallenge = props => {
     const checkGameClear = () => {
         //If we have exceeded the length of the song, the song is now over and we should no longer be judging key presses
         let currentTime = Date.now();
+
         if( ( ( currentTime - endTime ) / 1000 ) >= loadedSong.duration ){
             isPlaying = false;
-            if(health > 0){
+            if( health > 0 ){
                 gameOverWin();
-            }
+            } 
         }
     }
 
@@ -282,12 +299,15 @@ const SongChallenge = props => {
     const gameOverLose = () =>{
         isPlaying = false;
         document.querySelectorAll('.note').forEach( note => note.style.animationPlayState = 'paused' );
+        console.log('lose...')
+        //Delay for cleanup to happen
+        setTimeout(() => { history.push('/banners') }, 1000);
     }
 
     const gameOverWin = () =>{
         console.log('won!');
-        history.push('/banners');
-
+        //Delay for cleanup to happen
+        setTimeout(() => { history.push('/banners') }, 1000);
     }
 
     const updateMaxCombo = () =>{
@@ -331,6 +351,7 @@ const SongChallenge = props => {
 
 
     useEffect(()=>{
+        resetAll();
         // eslint-disable-next-line
         trackContainer = document.querySelector('.track-container');
         // eslint-disable-next-line
@@ -343,13 +364,15 @@ const SongChallenge = props => {
         startGame();
         setUpKeys();
         noteMiss();
-        let x=0;
+
+        //Check if they've won or not; stop checking when they have; ie, game time is over
         let endOfSongInterval = setInterval(()=>{
-            checkGameClear();
-            console.log('checking clear')
-            if(x++ === loadedSong.duration){
+            checkGameClear();         
+
+            if(gameTimerCounter++ === loadedSong.duration){
                 window.clearInterval(endOfSongInterval);
             }
+
         }, 1000);
     });
 
