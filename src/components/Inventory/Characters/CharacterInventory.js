@@ -13,6 +13,7 @@ const CharacterInventory = props =>{
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
     const [ indexForTeam, setIndexForTeam ] = useState(userTeamIndex);
+    const [ showCard, setShowCard ] = useState();
 
     useEffect(()=>{
         saveUserTeamIndex(indexForTeam);
@@ -121,27 +122,19 @@ const CharacterInventory = props =>{
     let charactersInInventory = sortedInventory.map(character =>{
 
         //Check if the card already exists in the current team; If it is, gray out and don't allow click;
-        const checkInTeam = chosenTeam.filter(teamChara => teamChara.id === character.id);
+        const checkInTeam = chosenTeam.some(teamChara => teamChara.id === character.id);
 
         return <CharacterCard 
                 key={character.id}
-                id={character.id}
-                rarity={character.rarity} 
-                name={character.name} 
-                specialty={character.specialty} 
-                atk={character.atk} 
-                def={character.def} 
-                hp={character.hp} 
-                leaderSkillText={character.leaderSkillText}
                 addCharacterToTeam={addCharacterToTeam}
-                teamView={false} 
-                inTeam={checkInTeam.length > 0} />
+                teamView={false}
+                activeCardHandler={setShowCard}
+                inTeam={checkInTeam} 
+                data={character}/>
         });
     
-
-    
     return(<>
-        <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam}/>
+        <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button><br />
@@ -156,7 +149,12 @@ const CharacterInventory = props =>{
             <button onClick={()=>sortCharactersInInventory('search')}>Search</button>
             <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
         </div>}
-        {charactersInInventory}
+        <div style={{float: 'left', marginLeft: '50px', height: '100vh'}}>
+            { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} /> }
+        </div>
+        <div style={{marginRight: '175px'}}>
+            {charactersInInventory}
+        </div>
     </>)
 }
 

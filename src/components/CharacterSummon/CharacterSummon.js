@@ -125,6 +125,7 @@ function CharacterSummon() {
                     {summonedCharacters ? 
                          summonedCharacters.map(sumChara => {
                               return <CharacterCard 
+                                        data={sumChara}
                                         fullSizedCard={true}
                                         key={sumChara.id}
                                         rarity={sumChara.rarity} 

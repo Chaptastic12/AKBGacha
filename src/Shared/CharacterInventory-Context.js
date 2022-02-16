@@ -66,7 +66,6 @@ const CharacterInventoryProvider = props =>{
     const removeCharaFromTeam = (teamIndex, characterID) =>{
         let copyOfCurrentTeams = [...userTeams];
 
-        console.log(copyOfCurrentTeams);
         //Find the character in the team we want to remove
         for(let i=0; i < copyOfCurrentTeams[teamIndex].length; i++){
             //We have the right character when the IDs match. Splice it from the array
@@ -81,7 +80,6 @@ const CharacterInventoryProvider = props =>{
     //Get and save the last index of the userTeams array that the user was on so that we can default to that index
     const saveUserTeamIndex = index =>{
         setUserTeamIndex(index);
-        console.log(index);
     }
 
     return <CharacterInventoryContext.Provider value={{
@@ -92,7 +90,8 @@ const CharacterInventoryProvider = props =>{
             addCharaToTeam: addCharaToTeam,
             removeCharaFromTeam: removeCharaFromTeam,
             addCardsRolledToPlayerInventory: addCardsRolledToPlayerInventory,
-            deleteCardFromInventory: deleteCardFromInventory
+            deleteCardFromInventory: deleteCardFromInventory,
+            setUserTeams: setUserTeams
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>
