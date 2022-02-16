@@ -169,6 +169,8 @@ const SongChallenge = props => {
 
     const setUpKeys = () =>{
         document.addEventListener('keydown', event =>{
+            //Necessary for our space key
+            event.preventDefault();
             let keyIndex = getKeyIndex(event.key);
 
             if(Object.keys(keyDown).indexOf(event.key) !== -1 && !keyDown[event.key]){
