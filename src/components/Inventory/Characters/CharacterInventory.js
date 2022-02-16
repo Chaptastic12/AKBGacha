@@ -78,34 +78,21 @@ const CharacterInventory = props =>{
             case 'search':
                 //Search based on our parameters
                 let searchedCharacters = [];
+                let foundChara;
                 //Reset the sortedInv variable to include ALL cards in inventory
                 //User would just need to reapply any previous sorting
                 sortedInv = [...charactersInPlayerInventory];
-                for(let i=0; i < sortedInv.length; i++){
-                    let sub = searchText.toUpperCase();
-                    let match = sortedInv[i][searchFilter];
-                    
-                    //If we're searching by name, there is only one name so immediately check
-                    if(searchFilter === 'name'){
-                        if(match.toUpperCase().startsWith(sub.slice(0, Math.max(match.length - 1, 1)))){
-                            searchedCharacters.push(sortedInv[i]);
-                        }
-                    }
-                    //If we're searching by specialty, there can be more than one so we need to interate over that array
-                    if(searchFilter === 'specialty'){
-                        for(let j=0; j < match.length; j++){
-                            if(match[j].toUpperCase().startsWith(sub.slice(0, Math.max(match[j].length - 1, 1)))){
-                                searchedCharacters.push(sortedInv[i]);
-                            }
-                        }
-                    }
-                    //If we're searching by Rarity only, then show only those cards
-                    if(searchFilter === 'rarity'){
-                        if(match.toUpperCase() === sub){
-                            searchedCharacters.push(sortedInv[i]);
-                        }
-                    }
+                if(searchFilter === 'name'){
+                    foundChara = sortedInv.filter(x => x.name.toLowerCase().includes(searchText.toLowerCase()));
                 }
+                if(searchFilter === 'specialty'){
+                    foundChara = sortedInv.filter(x => x.specialty.some(y => y.toLowerCase().includes(searchText.toLowerCase() )));
+                }
+                if(searchFilter === 'rarity'){
+                    foundChara = sortedInv.filter(x => x.rarity.toLowerCase() === searchText.toLowerCase());
+                }
+
+                foundChara.forEach(chara => searchedCharacters.push(chara));
                 setSortedInventory(searchedCharacters);
                 break;
             case 'reset':

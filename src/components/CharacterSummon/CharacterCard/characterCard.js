@@ -45,7 +45,7 @@ const CharacterCard = (props) => {
      const handleRightClick = (e) =>{
           e.preventDefault()
           if(props.teamView){
-               //If we have already set our card to move, the next click will be the spot its going to
+               //If we have already selected our card to move, the next click will be the card it is switching with
                if(props.cardToMoveIndex){
                     props.moveCardToIndexChange(props.data.id);
                }else{
