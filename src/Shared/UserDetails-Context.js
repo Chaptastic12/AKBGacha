@@ -28,8 +28,7 @@ const UserDetailsProvider = props =>{
     }
 
     return <UserDetailsContext.Provider value={{
-        usersCoins: usersCoins,
-        updateUsersCoins: updateUsersCoins
+        usersCoins, updateUsersCoins
     }}>
         {props.children}
     </UserDetailsContext.Provider>

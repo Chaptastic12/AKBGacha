@@ -83,15 +83,12 @@ const CharacterInventoryProvider = props =>{
     }
 
     return <CharacterInventoryContext.Provider value={{
-            charactersInPlayerInventory: charactersInPlayerInventory,
-            userTeams: userTeams,
-            userTeamIndex: userTeamIndex,
-            saveUserTeamIndex: saveUserTeamIndex,
-            addCharaToTeam: addCharaToTeam,
-            removeCharaFromTeam: removeCharaFromTeam,
-            addCardsRolledToPlayerInventory: addCardsRolledToPlayerInventory,
-            deleteCardFromInventory: deleteCardFromInventory,
-            setUserTeams: setUserTeams
+            charactersInPlayerInventory,
+            userTeams, setUserTeams,
+            userTeamIndex, saveUserTeamIndex,
+            addCharaToTeam, removeCharaFromTeam,
+            addCardsRolledToPlayerInventory,
+            deleteCardFromInventory,
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>
