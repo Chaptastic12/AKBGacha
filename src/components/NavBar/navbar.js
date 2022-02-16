@@ -10,10 +10,10 @@ const navBar = () =>{
           <div className='NavBar'>
                 <img src={AKBLogo} alt="AKB Logo" height="300px"/>
           </div>
-          <div>
-               <NavLink to='/nplayerID/inventory/characters'>View Inventory</NavLink>
-               <NavLink to='/banners'>Summon</NavLink>
-               <NavLink to='/play/songBattle/test'>Play</NavLink>
+          <div className='NavBar__Links'>
+               <div  className='NavBar__Link'><NavLink to='/nplayerID/inventory/characters'>View Inventory</NavLink></div>
+               <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/banners'>Summon</NavLink></div>
+               <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/play/songBattle/test'>Play</NavLink></div>
           </div>
      </>);
 }

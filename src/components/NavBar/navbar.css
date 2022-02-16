@@ -1,3 +1,13 @@
 .NavBar {
     background-image: linear-gradient(#f390b0, white);
 }
+
+.NavBar__Links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.NavBar__Link{
+    margin: 5px;
+}

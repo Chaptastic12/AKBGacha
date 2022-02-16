@@ -122,6 +122,12 @@ function CharacterSummon() {
 
      return (
                <div>
+                    <div>
+                         <Button numSummons='1' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
+                         <Button numSummons='10' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
+                         {usersCoins}
+                    </div>
+
                     {summonedCharacters ? 
                          summonedCharacters.map(sumChara => {
                               return <CharacterCard 
@@ -138,12 +144,6 @@ function CharacterSummon() {
                          }) : 
                          <h1 style={{height: '350px'}}>Summon Below!</h1>
                     } 
-
-                    <div>
-                         <Button numSummons='1' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
-                         <Button numSummons='10' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
-                    </div>
-                    {usersCoins}
                </div>
      );
 }

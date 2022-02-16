@@ -13,7 +13,7 @@ const CharacterInventory = props =>{
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
     const [ indexForTeam, setIndexForTeam ] = useState(userTeamIndex);
-    const [ showCard, setShowCard ] = useState();
+    const [ showCard, setShowCard ] = useState(charactersInPlayerInventory[0]);
 
     useEffect(()=>{
         saveUserTeamIndex(indexForTeam);
