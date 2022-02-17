@@ -25,6 +25,7 @@ const CharacterCard = (props) => {
      let fullCard = <div className={props.data.rarity === 'SSR' ? 'CharacterCard SSR' : 'CharacterCard'}>
                          {showCard || props.fullSizedCard === undefined || props.showFullCard ? 
                               <div className='CharacterCardDetails'>
+                                   <span className={`Star fa fa-star ${ props.data.saved === true ? 'Star-Like' : ' '}`} onClick={() => props.likeCharacter(props.data.id)}/>
                                    <h1>{props.data.rarity}</h1>
                                    <h3>{props.data.name}</h3>
                                    <h5>{props.data.specialty}</h5>
@@ -70,10 +71,6 @@ const CharacterCard = (props) => {
                setLoadedCharacter(props.data);
                history.push('/nplayerId/inventory/character/' + props.data.name.replace(/\s/g, ''));
           }
-
-          if(props.mergeChara){
-
-          }
      }
 
      //Check what event we want to happen on mouse over
@@ -82,8 +79,6 @@ const CharacterCard = (props) => {
                props.activeCardHandler(data)
           }
      }
-
-     
 
      //fullSizedCard is currently only passed from CharacterSummon.js and now CharacterInventory.js
      if(props.fullSizedCard === true){
@@ -95,13 +90,13 @@ const CharacterCard = (props) => {
                     <Modal>
                          <div>
                               <p>test</p>
-                              <button onClick={() => { setShowModal(false); props.mergeCharaHandler(props.data.id) } }>Confirm</button>
+                              <button onClick={() => { setShowModal(false); props.mergeCharaHandler(props.data) } }>Confirm</button>
                               <button onClick={() => setShowModal(false)}>Cancel</button>
                          </div>
                     </Modal>
                </ModalBackground>
           </div>}
-               <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' ? 'SSR' : ''} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''}`}
+               <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' ? 'SSR' : ''} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''} ${props.data.saved === true ? 'CardSaved' : ''}`}
                     onClick={() => handleLeftClick(props.data.id)}
                     onMouseOver={() => handleMouseOver(props.data)}
                     onContextMenu={(e) => handleRightClick(e)}

@@ -86,8 +86,27 @@ const CharacterInventoryProvider = props =>{
     }
 
     const getLikeCharacters = (characterId, uniqueCardId) =>{
-        return charactersInPlayerInventory.filter(chara => ( (chara.characterID === characterId) && chara.id !== uniqueCardId) );
+        return charactersInPlayerInventory.filter(chara => ( (chara.characterID === characterId) && (chara.id !== uniqueCardId) && chara.saved !== true) );
     }
+
+    const likeCharacter = (id) =>{
+
+        let copyInventory = [ ...charactersInPlayerInventory ];
+
+        const cardIndex = copyInventory.findIndex(chara => chara.id === id );
+
+        const card = copyInventory[cardIndex]
+
+        if(card.saved === true){
+             card.saved = false;
+        } else {
+             card.saved = true;
+        }
+
+        copyInventory[cardIndex] = card;
+
+        setCharactersInPlayerInventory(copyInventory);
+   }
 
     return <CharacterInventoryContext.Provider value={{
             charactersInPlayerInventory, setCharactersInPlayerInventory,
@@ -96,7 +115,7 @@ const CharacterInventoryProvider = props =>{
             addCharaToTeam, removeCharaFromTeam,
             addCardsRolledToPlayerInventory,
             deleteCardFromInventory, error,
-            getLikeCharacters
+            getLikeCharacters, likeCharacter
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>

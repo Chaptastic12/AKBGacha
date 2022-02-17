@@ -6,7 +6,6 @@ const CharacterDetailsProvider = props =>{
 
     const [ loadedCharacter, setLoadedCharacter ] = useState();
 
-    
 
     return <CharacterDetailsContext.Provider value={{
         setLoadedCharacter, loadedCharacter

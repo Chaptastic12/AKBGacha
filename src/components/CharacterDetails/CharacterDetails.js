@@ -7,10 +7,14 @@ import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Conte
 
 const CharacterDetails = props =>{
 
-    const { getLikeCharacters, charactersInPlayerInventory, setCharactersInPlayerInventory } = useContext(CharacterInventoryContext);
+    const { getLikeCharacters, charactersInPlayerInventory, setCharactersInPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
     const { loadedCharacter, setLoadedCharacter } = useContext(CharacterDetailsContext);
 
-    const mergeCharaHandler = (sacraficeCardID) =>{
+    const mergeCharaHandler = (sacraficeCard) =>{
+
+        if(sacraficeCard.saved === true){
+            return alert('Cannot sacrafice liked card')
+        }
 
         if(loadedCharacter.numberMerges < loadedCharacter.maxMerges){
             let loadedCharacterCopy = { ...loadedCharacter };
@@ -25,7 +29,7 @@ const CharacterDetails = props =>{
             //Update them in the inventory state
             //Get the index of our updated card and removed card
             const cardIndex = charactersInPlayerInventory.findIndex(chara => chara.id === loadedCharacterCopy.id);
-            const removeIndex = charactersInPlayerInventory.findIndex(chara => chara.id === sacraficeCardID);
+            const removeIndex = charactersInPlayerInventory.findIndex(chara => chara.id === sacraficeCard.id);
 
             //Replace the old card with the new one
             inventoryCopy[cardIndex] = loadedCharacterCopy;
@@ -47,7 +51,7 @@ const CharacterDetails = props =>{
         return (
             <div>
                 <div>
-                    <CharacterCard data={loadedCharacter} fullSizedCard={true} showFullCard={true} />
+                    <CharacterCard data={loadedCharacter} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} />
                 </div>
                 <h2>Mergable Idols</h2>
                 { likeCharacters.length > 0 ? <>

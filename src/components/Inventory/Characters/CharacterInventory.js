@@ -6,7 +6,7 @@ import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Co
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, likeCharacter } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
     const [ sortType, setSortType ] = useState('');
@@ -18,7 +18,7 @@ const CharacterInventory = props =>{
 
     useEffect(()=>{
         saveUserTeamIndex(indexForTeam);
-    },[indexForTeam, saveUserTeamIndex])
+    },[indexForTeam, saveUserTeamIndex, charactersInPlayerInventory])
     
     //Ensure that we are looking at the right time to update by changing the index that we use to pick the right team in the array
     const changeIndex = (change) =>{
@@ -152,7 +152,7 @@ const CharacterInventory = props =>{
             <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
         </div>}
         <div style={{float: 'left', marginLeft: '50px', height: '100vh'}}>
-            { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} /> }
+            { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} /> }
         </div>
         <div style={{marginRight: '175px'}}>
             {charactersInInventory}
