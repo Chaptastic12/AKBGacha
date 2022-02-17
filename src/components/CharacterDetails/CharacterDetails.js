@@ -57,7 +57,7 @@ const CharacterDetails = props =>{
                 { likeCharacters.length > 0 ? <>
                     <span>Click and confirm to fuse!</span>
                     <div>
-                        { likeCharacters.map(chara =>  <CharacterCard data={chara} mergeChara={true} mergeCharaHandler={ (sacraficeCard) => mergeCharaHandler(sacraficeCard)} /> )}
+                        { likeCharacters.map(chara =>  <CharacterCard key={chara.id} data={chara} mergeChara={true} mergeCharaHandler={ (sacraficeCard) => mergeCharaHandler(sacraficeCard)} /> )}
                     </div>
                 </> : <p> 'No mergable Idols found.' </p> }
             </div>

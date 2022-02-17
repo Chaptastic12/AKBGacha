@@ -134,12 +134,6 @@ function CharacterSummon() {
                                         data={sumChara}
                                         fullSizedCard={true}
                                         key={sumChara.id}
-                                        rarity={sumChara.rarity} 
-                                        name={sumChara.name} 
-                                        specialty={sumChara.specialty} 
-                                        atk={sumChara.atk} 
-                                        def={sumChara.def} 
-                                        hp={sumChara.hp} 
                                         leaderSkillText={sumChara.leaderSkillText}
                                         likeCharacter={(id) => likeCharacter(id)} />
                          }) : 
