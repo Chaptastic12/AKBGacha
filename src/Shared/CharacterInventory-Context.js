@@ -85,13 +85,18 @@ const CharacterInventoryProvider = props =>{
         setUserTeamIndex(index);
     }
 
+    const getLikeCharacters = (characterId, uniqueCardId) =>{
+        return charactersInPlayerInventory.filter(chara => ( (chara.characterID === characterId) && chara.id !== uniqueCardId) );
+    }
+
     return <CharacterInventoryContext.Provider value={{
-            charactersInPlayerInventory,
+            charactersInPlayerInventory, setCharactersInPlayerInventory,
             userTeams, setUserTeams,
             userTeamIndex, saveUserTeamIndex,
             addCharaToTeam, removeCharaFromTeam,
             addCardsRolledToPlayerInventory,
-            deleteCardFromInventory, error
+            deleteCardFromInventory, error,
+            getLikeCharacters
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>

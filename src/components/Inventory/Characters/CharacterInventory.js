@@ -129,7 +129,8 @@ const CharacterInventory = props =>{
                 teamView={false}
                 activeCardHandler={setShowCard}
                 inTeam={checkInTeam} 
-                data={character}/>
+                data={character}
+                inv={true} />
         });
     
     return(<>

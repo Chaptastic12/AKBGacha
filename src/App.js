@@ -8,6 +8,7 @@ import SongChallenge from './components/SongChallenge/SongChallenge';
 
 import CharacterInventoryProvider from '../src/Shared/CharacterInventory-Context';
 import UserDetailsProvider from '../src/Shared/UserDetails-Context';
+import CharacterDetailsProvider from './Shared/CharacterDetails-Context';
 
 import './App.css';
 
@@ -15,7 +16,7 @@ function App() {
   //As this is the highest component in our app, we could load ourstate here and pass it through all props..
   //...or use redux instead
   return (
-      <div>
+      <CharacterDetailsProvider>
         <UserDetailsProvider>
           <CharacterInventoryProvider>
             <Router>
@@ -30,7 +31,7 @@ function App() {
             </Router>
           </CharacterInventoryProvider>
         </UserDetailsProvider>
-      </div>
+      </CharacterDetailsProvider>
     )
 }
 

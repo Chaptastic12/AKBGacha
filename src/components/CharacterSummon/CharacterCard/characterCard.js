@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { useHistory } from 'react-router-dom';
+
+import Modal from '../../UI/Modal/Modal';
+import ModalBackground from '../../UI/Modal/ModalBackground';
+
+import { CharacterDetailsContext } from '../../../Shared/CharacterDetails-Context';
 
 import './characterCard.css';
 
 const CharacterCard = (props) => {
 
+     const { setLoadedCharacter } = useContext(CharacterDetailsContext)
+
      const [ showCard, setShowCard ] = useState(false);
+     const [ showModal, setShowModal ] = useState(false)
+
      const history = useHistory();
 
      //Show our full card details if 
@@ -34,12 +43,16 @@ const CharacterCard = (props) => {
                     
      //Dependent on if we are getting a small card from the inventory, or teams component, determine our action onClick
      //Remove it if the click is from the UserTeams component, and add a card if it is not
-     let onClickHandler;
-     if(props.teamView){
-          onClickHandler = ()=>props.removeCharacterFromTeam(props.data.id);
-     }else{
-          if(!props.inTeam){
-               onClickHandler = ()=>props.addCharacterToTeam(props.data.id)
+     //Handle the left click logic; props.inv is from cards in the inventory page
+     const handleLeftClick = (id) =>{
+          if(props.teamView){
+               props.removeCharacterFromTeam(id);
+          }
+          if(!props.inTeam && props.inv){
+               props.addCharacterToTeam(id)
+          }
+          if(props.mergeChara){
+               setShowModal(true); 
           }
      }
 
@@ -54,18 +67,43 @@ const CharacterCard = (props) => {
                     props.cardToMoveIndexChange(props.data.id)
                }
           } else {
+               setLoadedCharacter(props.data);
                history.push('/nplayerId/inventory/character/' + props.data.name.replace(/\s/g, ''));
           }
+
+          if(props.mergeChara){
+
+          }
      }
+
+     //Check what event we want to happen on mouse over
+     const handleMouseOver = (data) =>{
+          if(props.activeCardHandler){
+               props.activeCardHandler(data)
+          }
+     }
+
+     
 
      //fullSizedCard is currently only passed from CharacterSummon.js and now CharacterInventory.js
      if(props.fullSizedCard === true){
           return(fullCard)
      }else{
-          return(
+          return(<>
+          { showModal && <div onClick={() => setShowModal(false)}>
+               <ModalBackground>
+                    <Modal>
+                         <div>
+                              <p>test</p>
+                              <button onClick={() => { setShowModal(false); props.mergeCharaHandler(props.data.id) } }>Confirm</button>
+                              <button onClick={() => setShowModal(false)}>Cancel</button>
+                         </div>
+                    </Modal>
+               </ModalBackground>
+          </div>}
                <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' ? 'SSR' : ''} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''}`}
-                    onClick={onClickHandler}
-                    onMouseOver={() => props.activeCardHandler(props.data)}
+                    onClick={() => handleLeftClick(props.data.id)}
+                    onMouseOver={() => handleMouseOver(props.data)}
                     onContextMenu={(e) => handleRightClick(e)}
                >
                     <div className='CharacterCardDetails'>
@@ -74,7 +112,7 @@ const CharacterCard = (props) => {
                          {props.data.specialty}</h5>
                     </div>
                </div>
-          )
+          </>)
      }
 }
 
