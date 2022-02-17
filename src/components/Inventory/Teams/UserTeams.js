@@ -77,12 +77,23 @@ const UserTeams = props =>{
         }
     }
 
-    return <div>
-        <button onClick={()=>props.adjustIndex('decrease')}>Left</button>
-            {displayTeam}
-        <button onClick={()=>props.adjustIndex('add')}>Right</button>
-        <div><b>Leader Skill: </b>{teamLeaderSkill}</div>
-    </div>
+    return (
+        <div>
+            <div>
+                <h3>AKB Unit #{ userTeamIndex + 1 }</h3>
+            </div>
+            <div>
+                <button onClick={()=>props.adjustIndex('decrease')}>Left</button>
+                    { displayTeam.length > 0 ? displayTeam : <span> Select Idols below to form a team! </span> }
+                <button onClick={()=>props.adjustIndex('add')}>Right</button>
+                <div style={{marginTop: '10px'}}>
+                    <b>Leader Skill: </b> {teamLeaderSkill}
+                </div>
+                <small>Click to remove an idol from the unit; right click to move idols around</small>
+            </div>
+            <br />
+        </div>
+    )
 }
 
 export default UserTeams;

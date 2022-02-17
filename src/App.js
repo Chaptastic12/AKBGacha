@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import CharacterSummon from './components/CharacterSummon/CharacterSummon';
 import CharacterInventory from './components/Inventory/Characters/CharacterInventory';
 import NavBar from './components/NavBar/navbar';
-
+import CharacterDetails from './components/CharacterDetails/CharacterDetails';
 import SongChallenge from './components/SongChallenge/SongChallenge';
 
 import CharacterInventoryProvider from '../src/Shared/CharacterInventory-Context';
@@ -22,6 +22,7 @@ function App() {
               <NavBar />
               <Switch>
                 <Route path='/:playerID/inventory/characters' exact component={CharacterInventory} />
+                <Route path='/:playerID/inventory/character/:characterName' exact component={CharacterDetails} />
                 <Route path='/banners' exact component={CharacterSummon} />
                 <Route path='/play/songBattle/:songID' exact component={SongChallenge} />
                 <Redirect to='/banners' exact />

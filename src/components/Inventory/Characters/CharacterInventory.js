@@ -6,9 +6,10 @@ import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Co
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
+    const [ sortType, setSortType ] = useState('');
     const [ showSearchBar, setShowSearchBar ] = useState(false);
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
@@ -39,29 +40,38 @@ const CharacterInventory = props =>{
         removeCharaFromTeam(indexForTeam, charaId);
     }
 
+    const nameSorter = ( sortedInv ) => {
+
+        sortedInv.sort((a, b) => {
+            let nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            let nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) { return -1; }
+            if (nameA > nameB) { return 1; }
+            // names must be equal
+            return 0;
+        }); 
+
+        return sortedInv;
+    }
+
     //Sort our characters dependent on how the user wants to sort it
     let sortedInv;
     const sortCharactersInInventory = sortBy =>{
+
+        setSortType(sortBy);
         //Needs to be this way for Rarity sort to work
         sortedInv = [...sortedInventory];
         switch(sortBy){
             case 'name': 
-                sortedInv.sort((a, b) => {
-                        let nameA = a.name.toUpperCase(); // ignore upper and lowercase
-                        let nameB = b.name.toUpperCase(); // ignore upper and lowercase
-                        if (nameA < nameB) { return -1; }
-                        if (nameA > nameB) { return 1; }
-                        // names must be equal
-                        return 0;
-                }); 
+                nameSorter(sortedInv);
                 setSortedInventory(sortedInv);
                 break;
             case 'rarity':
-                //Also filter by name
-                sortCharactersInInventory('name');
+                //Sort by Name so like rarity cards are next to each other
+                nameSorter(sortedInv);
 
                 //Run it thrice to ensure correct results
-                for(let i=0; i<3; i++){
+                for(let i=0; i<10; i++){
                     sortedInv.sort((a,b) =>{
                         let rarityA = a.rarity;
                         let rarityB = b.rarity;
@@ -75,7 +85,6 @@ const CharacterInventory = props =>{
                         return 1;
                     });
                 }
-                
                 setSortedInventory(sortedInv);
                 break;
             case 'search':
@@ -124,10 +133,12 @@ const CharacterInventory = props =>{
         });
     
     return(<>
+        {error && <p>{ error }</p>}
         <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
-        <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button><br />
+        <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
+        <p>Currently sorted by: { sortType } </p><br />
         
         {showSearchBar && <div>
             <select onClick={(e)=>setSearchFilter(e.target.value)}>

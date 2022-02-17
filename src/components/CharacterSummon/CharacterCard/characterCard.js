@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 
-import Modal from '../../UI/Modal/Modal';
-import ModalBackground from '../../UI/Modal/ModalBackground';
+import { useHistory } from 'react-router-dom';
 
 import './characterCard.css';
 
 const CharacterCard = (props) => {
 
-     const [ showModal, setShowModal ] = useState(false);
      const [ showCard, setShowCard ] = useState(false);
+     const history = useHistory();
 
      //Show our full card details if 
      // 1) the use has clicked on the card from the summoning screen, setting showCard to true or
@@ -55,7 +54,7 @@ const CharacterCard = (props) => {
                     props.cardToMoveIndexChange(props.data.id)
                }
           } else {
-               return;
+               history.push('/nplayerId/inventory/character/' + props.data.name.replace(/\s/g, ''));
           }
      }
 
@@ -63,20 +62,19 @@ const CharacterCard = (props) => {
      if(props.fullSizedCard === true){
           return(fullCard)
      }else{
-          return(<>
-                    {/* If we don't pass fullSizedCard, then show a smaller version with limited details. On click of the small card, show a modal of the full card */}
-                    {showModal && <div onClick={()=>setShowModal(prevState=>!prevState)}><ModalBackground><Modal>{fullCard}</Modal></ModalBackground></div>}
-                    <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' ? 'SSR' : ''} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''}`}
-                         onClick={onClickHandler}
-                         onMouseOver={() => props.activeCardHandler(props.data)}
-                         onContextMenu={(e) => handleRightClick(e)}
-                    >
-                         <div className='CharacterCardDetails'>
-                              <h4>{props.data.rarity}</h4>
-                              <h5>{props.data.name}<br/>
-                              {props.data.specialty}</h5>
+          return(
+               <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' ? 'SSR' : ''} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''}`}
+                    onClick={onClickHandler}
+                    onMouseOver={() => props.activeCardHandler(props.data)}
+                    onContextMenu={(e) => handleRightClick(e)}
+               >
+                    <div className='CharacterCardDetails'>
+                         <h4>{props.data.rarity}</h4>
+                         <h5>{props.data.name}<br/>
+                         {props.data.specialty}</h5>
                     </div>
-               </div></>)
+               </div>
+          )
      }
 }
 

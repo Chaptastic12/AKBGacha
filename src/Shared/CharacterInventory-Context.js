@@ -9,6 +9,7 @@ const CharacterInventoryProvider = props =>{
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
     const [ userTeams, setUserTeams ] = useState([[],[],[],[],[],[],[],[]]);
     const [ userTeamIndex, setUserTeamIndex ] = useState(0);
+    const [ error, setError ] = useState('');
 
     //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
     //This will have to make a call to the player specific inventory and update that record
@@ -42,6 +43,7 @@ const CharacterInventoryProvider = props =>{
     }
 
     const addCharaToTeam = (teamIndex, characterID) =>{
+        setError('');
         let copyOfCurrentTeams = [...userTeams];
         let characterToAdd;
 
@@ -57,13 +59,14 @@ const CharacterInventoryProvider = props =>{
             //Add the character we found to the array
             copyOfCurrentTeams[teamIndex].push(characterToAdd); 
         }else{
-            return alert('ERROR - Team is already full. Please add this character to a new team');
+            return setError('ERROR - Unit is full; Please add Idol to a new team, or make room in this Unit.');
         }
         //Update our user team
         setUserTeams(copyOfCurrentTeams);
     }
 
     const removeCharaFromTeam = (teamIndex, characterID) =>{
+        setError('');
         let copyOfCurrentTeams = [...userTeams];
 
         //Find the character in the team we want to remove
@@ -88,12 +91,12 @@ const CharacterInventoryProvider = props =>{
             userTeamIndex, saveUserTeamIndex,
             addCharaToTeam, removeCharaFromTeam,
             addCardsRolledToPlayerInventory,
-            deleteCardFromInventory,
+            deleteCardFromInventory, error
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>
 }
 
-export {CharacterInventoryContext}
+export { CharacterInventoryContext }
 
 export default CharacterInventoryProvider;
