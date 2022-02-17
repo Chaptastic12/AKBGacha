@@ -28,7 +28,7 @@ function CharacterSummon() {
      //Will need to grab all banner names and store them here for our database if the banner is set to active. We just need the banner names for now
 
      //Grab our function to add cards to the players inventory
-     const { addCardsRolledToPlayerInventory } = useContext(CharacterInventoryContext);
+     const { addCardsRolledToPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
      //Grab our coins from the userContext
      const { usersCoins, updateUsersCoins } = useContext(UserDetailsContext);
 
@@ -140,7 +140,8 @@ function CharacterSummon() {
                                         atk={sumChara.atk} 
                                         def={sumChara.def} 
                                         hp={sumChara.hp} 
-                                        leaderSkillText={sumChara.leaderSkillText}/>
+                                        leaderSkillText={sumChara.leaderSkillText}
+                                        likeCharacter={(id) => likeCharacter(id)} />
                          }) : 
                          <h1 style={{height: '350px'}}>Summon Below!</h1>
                     } 

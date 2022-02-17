@@ -88,5 +88,6 @@ span{
 }
 
 .CardSaved{
-     border: 2px solid blue;
+     background-color: rgb(243, 144, 176, 0.3);
+     border: 2px solid rgb(243, 144, 176);
 }

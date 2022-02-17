@@ -1,5 +1,5 @@
 .NavBar {
-    background-image: linear-gradient(#f390b0, white);
+    background-image: linear-gradient(rgb(243, 144, 176), white);
 }
 
 .NavBar__Links{
