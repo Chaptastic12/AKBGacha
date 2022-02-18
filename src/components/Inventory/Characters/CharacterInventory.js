@@ -9,7 +9,7 @@ const CharacterInventory = props =>{
     const { charactersInPlayerInventory, setCharactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, likeCharacter } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
-    const [ sortType, setSortType ] = useState('');
+    //const [ sortType, setSortType ] = useState('');
     const [ showSearchBar, setShowSearchBar ] = useState(false);
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
@@ -58,7 +58,7 @@ const CharacterInventory = props =>{
     let sortedInv;
     const sortCharactersInInventory = sortBy =>{
 
-        setSortType(sortBy);
+        //setSortType(sortBy);
         //Needs to be this way for Rarity sort to work
         sortedInv = [...sortedInventory];
         switch(sortBy){

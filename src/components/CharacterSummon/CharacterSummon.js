@@ -5,6 +5,7 @@ import { gameBanners }  from '../../characterData';
 
 import Button from '../UI/Button/button';
 import CharacterCard from './CharacterCard/CharacterCard';
+import GearCard from './GearCard/GearCard';
 import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
 import { UserDetailsContext } from '../../Shared/UserDetails-Context';
 
@@ -16,10 +17,11 @@ import { UserDetailsContext } from '../../Shared/UserDetails-Context';
 //Create a page to view all characters owned
 //   Will need ReactRouter for to make it a SPA
 
-function CharacterSummon() {
+const CharacterSummon = () => {
      const USE_DATABASE_TO_GET_CARDS = false;
 
      const [ summonedCharacters, setSummonedCharacters ] = useState([]);
+     const [ summonedGear, setSummonedGear ] = useState([])
      //Will need to make this so it pulls from Context and not just a static 500
      //const [ summonCoins, setSummonCoins ] = useState(500);
 
@@ -29,6 +31,10 @@ function CharacterSummon() {
 
      //Grab our function to add cards to the players inventory
      const { addCardsRolledToPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
+
+     //Grab functionality to add gear to players gear inventory
+     //const { addGearRolledToPlayerInventory, likeGear } = useContext(GearInventoryContext);
+
      //Grab our coins from the userContext
      const { usersCoins, updateUsersCoins } = useContext(UserDetailsContext);
 
@@ -41,16 +47,19 @@ function CharacterSummon() {
      }
 
      //needs to be async so that we can make it wait for the server response and return a correct value
-     async function getPulledCard (cardRarity, bannerName) {
-          let id;
-          switch(bannerName){
-               case 'aitakattaBanner': id = '-MLimsght8vjnD_BG4hD'; break;
-               default: alert('ERROR - Unable to get banner ID.'); break;
-          }
+     const getPulledCard = async(cardRarity, bannerName) => {
+          
 
           //Check if we should be grabbing from our database or not
           //If we don't, grab from our local file.
           if(USE_DATABASE_TO_GET_CARDS === true){
+               let id;
+               switch(bannerName){
+                    case 'aitakattaBanner':   id = '-MLimsght8vjnD_BG4hD'; break;
+                    case 'generalItemBanner': id = '-MLimsght8vjnD_BG4hD'; break; //Will need the actual ID from the server when this is a thing
+                    default: alert('ERROR - Unable to get banner ID.'); break;
+               }
+               
                let responseChara = {};
                await fetch(`https://akbgacha.firebaseio.com/cardSummonBanners/${bannerName}/${id}/${cardRarity}.json`)
                .then(response => response.json())
@@ -82,7 +91,7 @@ function CharacterSummon() {
      }
 
      //needs to be async so that we can make it wait for the response from the getPulledCard function before continuing through the loop
-     async function getSummonCharacters (numRolls, bannerType){
+     const getSummonCharacters = async(numRolls, bannerName, bannerType) =>{
           setSummonedCharacters([]);
 
           //Check that the summon is valid based off their available coins and roll type
@@ -97,48 +106,72 @@ function CharacterSummon() {
 
                     //If they roll a 0 or 1, they get an SSR
                     if(summonType <= 1){
-                         summon.push(await getPulledCard('SSR', bannerType));
+                         summon.push(await getPulledCard('SSR', bannerName));
                     }
                     //If they roll a 2 -> 13, they get an SR
                     if(summonType > 1 && summonType <= 13){
-                         summon.push(await getPulledCard('SR', bannerType));
+                         summon.push(await getPulledCard('SR', bannerName));
                     }
                     //If they roll 14 -> 60, they get an R
                     if(summonType > 13 && summonType <= 60){
-                         summon.push(await getPulledCard('R', bannerType));
+                         summon.push(await getPulledCard('R', bannerName));
                     }
                     //If they roll above a 60 or 0, they get a C
                     if(summonType === 0 ||summonType > 60){
-                         summon.push(await getPulledCard('C', bannerType));
+                         summon.push(await getPulledCard('C', bannerName));
                     }
                }
                //Update the roll state with their characters and add them to the players overall inventory
-               setSummonedCharacters(summon)
-               addCardsRolledToPlayerInventory(summon);
+               if(bannerType === 'character'){
+                    setSummonedCharacters(summon)
+                    addCardsRolledToPlayerInventory(summon);
+               } else if (bannerType === 'gear'){
+                    setSummonedGear(summon);
+                    //addCardsRolledToGearInventory(summon)
+               }
+
           } else{
                alert('Insufficient coins');
           }
      }
 
-     return (
-               <div>
-                    <div>
-                         <Button numSummons='1' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
-                         <Button numSummons='10' clicked= {getSummonCharacters} bannerType='aitakattaBanner'/>
-                         {usersCoins}
-                    </div>
+     let results;
 
-                    {summonedCharacters ? 
-                         summonedCharacters.map(sumChara => {
+     let bannersToShow = gameBanners.filter(x => x.isActive === true).map(banner => {
+
+          if(banner.bannerType === 'character' && summonedCharacters){
+               results = summonedCharacters.map(sumChara => {
                               return <CharacterCard 
                                         data={sumChara}
                                         fullSizedCard={true}
                                         key={sumChara.id}
                                         leaderSkillText={sumChara.leaderSkillText}
                                         likeCharacter={(id) => likeCharacter(id)} />
-                         }) : 
-                         <h1 style={{height: '350px'}}>Summon Below!</h1>
-                    } 
+                         })
+          }
+          if (banner.bannerType === 'gear' && summonedGear){
+               results = summonedGear.map(sumGear => {
+                              return <GearCard 
+                                        data={sumGear}
+                                        key={sumGear.id} />
+                         })
+          }
+
+          return (<>
+                    <div key={banner.bannerName}>
+                         <h1>{banner.bannerName}</h1>
+                         <Button numSummons='1'  clicked={getSummonCharacters} bannerName={banner.bannerName} bannerType={banner.bannerType} />
+                         <Button numSummons='10' clicked={getSummonCharacters} bannerName={banner.bannerName} bannerType={banner.bannerType} />
+                    </div>
+                    { results }
+               </>)
+     })
+
+     return (
+               <div> 
+                    <p>Available Gems: { usersCoins }</p>
+
+                    { bannersToShow }
                </div>
      );
 }

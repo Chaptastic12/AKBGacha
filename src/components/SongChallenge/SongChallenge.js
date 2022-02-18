@@ -103,8 +103,7 @@ const SongChallenge = props => {
     }
 
     const loadedSong = {
-        // sheet: [ a, s, d, space, j, k, l ],
-        sheet: [ a, s, d, space ],
+        sheet: [ a, s, d, space, j, k, l ],
         duration: 6
     }
 

@@ -57,6 +57,7 @@ const UserTeams = props =>{
     //When we move the cards around, recalc stats
     useEffect(() =>{
         adjustSelectedTeamStats()
+    // eslint-disable-next-line
     }, [teamAdjust])
 
 
