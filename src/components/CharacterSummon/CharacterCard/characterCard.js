@@ -70,7 +70,7 @@ const CharacterCard = (props) => {
                }
           } else {
                setLoadedCharacter(props.data);
-               history.push('/nplayerId/inventory/character/' + props.data.name.replace(/\s/g, ''));
+               history.push('/nplayerId/inventory/character/selectedCard');
           }
      }
 

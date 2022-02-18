@@ -12,11 +12,10 @@ import './CharacterDetails.css';
 
 const CharacterDetails = props =>{
 
-    const { getLikeCharacters, likeCharacter, deleteCardFromInventory, loadedCharacter, mergeCharaHandler } = useContext(CharacterInventoryContext);
+    const { getLikeCharacters, likeCharacter, deleteCardFromInventory, loadedCharacter, mergeCharaHandler, adjustLoadedCharacter, error } = useContext(CharacterInventoryContext);
 
     const [ showModal, setShowModal ] = useState(false);
     const history = useHistory();
-
 
     if(loadedCharacter){
         const likeCharacters = getLikeCharacters(loadedCharacter.characterID, loadedCharacter.id);
@@ -35,7 +34,10 @@ const CharacterDetails = props =>{
                     </ModalBackground>
                 </div> }
                 <div>
+                    { error && <p>{ error }</p> }
+                    <div style={{display: 'inline-flex'}} onClick={() => adjustLoadedCharacter('left')}>Previous</div>
                     <CharacterCard data={loadedCharacter} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} />
+                    <div style={{display: 'inline-flex'}} onClick={() => adjustLoadedCharacter('right')}>Next</div>
                     <div className='Outfit'>
                         <h2>Outfit</h2>
                         <div className='Outfit-Equipped'>

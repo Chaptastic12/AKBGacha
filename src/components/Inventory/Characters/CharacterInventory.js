@@ -6,7 +6,7 @@ import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Co
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, likeCharacter } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, setCharactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, likeCharacter } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
     const [ sortType, setSortType ] = useState('');
@@ -64,6 +64,7 @@ const CharacterInventory = props =>{
         switch(sortBy){
             case 'name': 
                 nameSorter(sortedInv);
+                setCharactersInPlayerInventory(sortedInv)
                 setSortedInventory(sortedInv);
                 break;
             case 'rarity':
@@ -85,6 +86,7 @@ const CharacterInventory = props =>{
                         return 1;
                     });
                 }
+                setCharactersInPlayerInventory(sortedInv)
                 setSortedInventory(sortedInv);
                 break;
             case 'search':
@@ -139,7 +141,7 @@ const CharacterInventory = props =>{
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
-        <p>Currently sorted by: { sortType } </p>
+        {/* <p>Currently sorted by: { sortType } </p> */}
         <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
         
         {showSearchBar && <div>

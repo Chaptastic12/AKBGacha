@@ -129,41 +129,82 @@ const CharacterInventoryProvider = props =>{
 
    const mergeCharaHandler = (sacraficeCard) =>{
 
-    if(sacraficeCard.saved === true){
-        return alert('Cannot sacrafice liked card')
+        if(sacraficeCard.saved === true){
+            return alert('Cannot sacrafice liked card')
+        }
+
+        if(loadedCharacter.numberMerges < loadedCharacter.maxMerges){
+            let loadedCharacterCopy = { ...loadedCharacter };
+            let inventoryCopy = [ ...charactersInPlayerInventory ];
+
+            //Update the current cards stats
+            loadedCharacterCopy.numberMerges = loadedCharacter.numberMerges + 1;
+            loadedCharacterCopy.hp = Math.round(loadedCharacterCopy.hp * 1.2);
+            loadedCharacterCopy.atk = Math.round(loadedCharacterCopy.atk * 1.2);
+            loadedCharacterCopy.def = Math.round(loadedCharacterCopy.def * 1.2);
+
+            //Update them in the inventory state
+            //Get the index of our updated card and removed card
+            const cardIndex = charactersInPlayerInventory.findIndex(chara => chara.id === loadedCharacterCopy.id);
+            const removeIndex = charactersInPlayerInventory.findIndex(chara => chara.id === sacraficeCard.id);
+
+            //Replace the old card with the new one
+            inventoryCopy[cardIndex] = loadedCharacterCopy;
+            inventoryCopy.splice(removeIndex, 1);
+
+
+            //Update our inventory with the updated inventory
+            setCharactersInPlayerInventory(inventoryCopy);
+            setLoadedCharacter(loadedCharacterCopy);
+
+            //Run below to remove this card from all our teams as well
+            //Remove this card from all teams as well
+            const previousTeams = [ ...userTeams ];
+            for(let i=0; i < previousTeams.length; i++){
+                for(let j=0; j < previousTeams[i].length; j++){
+                    if(previousTeams[i][j].id === sacraficeCard.id){
+                        previousTeams[i].splice(j, 1);
+                    }
+                }
+            }
+            setUserTeams(previousTeams);
+
+        } else{
+            //If they have reached the max unlock, alert them
+            return alert('Character already max unlocked')
+        }
     }
 
-    if(loadedCharacter.numberMerges < loadedCharacter.maxMerges){
-        let loadedCharacterCopy = { ...loadedCharacter };
-        let inventoryCopy = [ ...charactersInPlayerInventory ];
+    const adjustLoadedCharacter = (direction) =>{
 
-        //Update the current cards stats
-        loadedCharacterCopy.numberMerges = loadedCharacter.numberMerges + 1;
-        loadedCharacterCopy.hp = Math.round(loadedCharacterCopy.hp * 1.2);
-        loadedCharacterCopy.atk = Math.round(loadedCharacterCopy.atk * 1.2);
-        loadedCharacterCopy.def = Math.round(loadedCharacterCopy.def * 1.2);
+        //Get the index of the currently loaded card
+        const cardIndex = charactersInPlayerInventory.findIndex(chara => chara.id === loadedCharacter.id );
+        //If this is the first, or last card, kick us out of the function
+        if(cardIndex === 0 && direction === 'left'){
+            setError('ERROR: This is the first Idol in your inventory!')
+            return;
+        }
+        if(cardIndex === ( charactersInPlayerInventory.length - 1 ) && direction === 'right'){
+            setError('ERROR: This is the last Idol in your inventory!')
+            return;
+        }
 
-        //Update them in the inventory state
-        //Get the index of our updated card and removed card
-        const cardIndex = charactersInPlayerInventory.findIndex(chara => chara.id === loadedCharacterCopy.id);
-        const removeIndex = charactersInPlayerInventory.findIndex(chara => chara.id === sacraficeCard.id);
+        setError('');
+        let adjustedIndex;
+        let newLoadedCharacter;
+        //Move our index up
+        if(direction === 'right'){
+            adjustedIndex = cardIndex + 1;
+        }
+        //Move our index down
+        if(direction === 'left'){
+            adjustedIndex = cardIndex - 1;
+        }
+        //get our new chara with the adjusted index
+        newLoadedCharacter = charactersInPlayerInventory[adjustedIndex];
 
-        //Replace the old card with the new one
-        inventoryCopy[cardIndex] = loadedCharacterCopy;
-        inventoryCopy.splice(removeIndex, 1)
-
-        //Update our inventory with the updated inventory
-        setCharactersInPlayerInventory(inventoryCopy);
-        setLoadedCharacter(loadedCharacterCopy);
-
-        //Run below to remove this card from all our teams as well
-        deleteCardFromInventory(sacraficeCard.id);
-
-    } else{
-        //If they have reached the max unlock, alert them
-        return alert('Character already max unlocked')
+        setLoadedCharacter(newLoadedCharacter);
     }
-}
 
     return <CharacterInventoryContext.Provider value={{
             charactersInPlayerInventory, setCharactersInPlayerInventory,
@@ -174,7 +215,7 @@ const CharacterInventoryProvider = props =>{
             deleteCardFromInventory, error,
             getLikeCharacters, likeCharacter,
             loadedCharacter, setLoadedCharacter,
-            mergeCharaHandler
+            mergeCharaHandler, adjustLoadedCharacter
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>
