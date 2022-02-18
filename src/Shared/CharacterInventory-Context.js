@@ -1,13 +1,15 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 const CharacterInventoryContext = createContext();
 
-const CHARACTERS_PER_TEAM = 7;
+const CHARACTERS_PER_TEAM = 8; //First slot is taken, so we want 7 total characters giving us 8
 
 const CharacterInventoryProvider = props =>{
+    
+    const baseTeamStats = { id: 'stats', totalHP: 0, totalAtk: 0, totalDef: 0 };
 
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
-    const [ userTeams, setUserTeams ] = useState([[],[],[],[],[],[],[],[]]);
+    const [ userTeams, setUserTeams ] = useState([ [baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats] ]);
     const [ userTeamIndex, setUserTeamIndex ] = useState(0);    
     const [ loadedCharacter, setLoadedCharacter ] = useState();
 
@@ -80,6 +82,8 @@ const CharacterInventoryProvider = props =>{
         }
         //Update our user team
         setUserTeams(copyOfCurrentTeams);
+         //Update team stats
+         adjustSelectedTeamStats()
     }
 
     const removeCharaFromTeam = (teamIndex, characterID) =>{
@@ -95,6 +99,36 @@ const CharacterInventoryProvider = props =>{
         }
         //Update our user team
         setUserTeams(copyOfCurrentTeams);
+        //Update team stats
+        adjustSelectedTeamStats()
+    }
+    
+    //First item in the array will hold all our data
+    const adjustSelectedTeamStats = () =>{
+        const copyOfCurrentTeam = [...userTeams ][userTeamIndex];
+        const copyOfTeams = [ ...userTeams ];
+        let stats = baseTeamStats;
+
+        //Add up our total atk, def and hp
+        for(let i=1; i < copyOfCurrentTeam.length; i++){
+            stats.totalAtk = stats.totalAtk + copyOfCurrentTeam[i].atk;
+            stats.totalDef = stats.totalDef + copyOfCurrentTeam[i].def;
+            stats.totalHP = stats.totalHP + copyOfCurrentTeam[i].hp;
+        }
+
+        //Add in leadership effects, if they exist
+        if(copyOfCurrentTeam[1] !== undefined && copyOfCurrentTeam[1].leaderSkill !== undefined){
+            for(let j=0; j < copyOfCurrentTeam[1].leaderSkill.skills.length; j++){
+                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'atk'){ stats.totalAtk = stats.totalAtk * copyOfCurrentTeam[1].leaderSkill.skills[j].value }
+                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'def'){ stats.totalDef = stats.totalDef * copyOfCurrentTeam[1].leaderSkill.skills[j].value }
+                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'hp'){ stats.totalHP = stats.totalHP * copyOfCurrentTeam[1].leaderSkill.skills[j].value }
+            }
+        }
+
+        //Update the teams stat object, and update the state
+        copyOfCurrentTeam[0] = stats;
+        copyOfTeams[userTeamIndex] = copyOfCurrentTeam;
+        setUserTeams(copyOfTeams);
     }
 
     //Get and save the last index of the userTeams array that the user was on so that we can default to that index
@@ -215,7 +249,7 @@ const CharacterInventoryProvider = props =>{
             deleteCardFromInventory, error,
             getLikeCharacters, likeCharacter,
             loadedCharacter, setLoadedCharacter,
-            mergeCharaHandler, adjustLoadedCharacter
+            mergeCharaHandler, adjustLoadedCharacter, adjustSelectedTeamStats
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>

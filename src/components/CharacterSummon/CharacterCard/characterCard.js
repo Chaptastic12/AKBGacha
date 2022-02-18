@@ -69,8 +69,13 @@ const CharacterCard = (props) => {
                     props.cardToMoveIndexChange(props.data.id)
                }
           } else {
-               setLoadedCharacter(props.data);
-               history.push('/nplayerId/inventory/character/selectedCard');
+               //If we are on the CharacterDetails page, don't allow potential cards to switch the loaded character
+               if(props.mergeChara){
+                    return
+               }else {
+                    setLoadedCharacter(props.data);
+                    history.push('/nplayerId/inventory/character/selectedCard');
+               }
           }
      }
 
