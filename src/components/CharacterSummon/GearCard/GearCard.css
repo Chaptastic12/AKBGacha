@@ -1,0 +1,29 @@
+.GearCard{
+    background: white;
+    border: 2px solid black;
+    border-radius:10px;
+    min-height:215px;
+    width:160px;
+    display: inline-flex;
+    margin: 5px;
+}
+
+.GearCardDetails{
+    display: block;
+    width: 100%;
+}
+
+.GearCardDetails .Star{
+    font-size: 24px;
+}
+
+.Rarity{
+    margin-left: 20px;
+}
+
+.Potential{
+    font-size: 24px;
+    float: right;
+    margin-right: 5px;
+    z-index: 100;
+}

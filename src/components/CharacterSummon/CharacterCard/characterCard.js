@@ -25,18 +25,25 @@ const CharacterCard = (props) => {
      let fullCard = <div className={props.data.rarity === 'SSR' ? 'CharacterCard SSR' : 'CharacterCard'}>
                          {showCard || props.fullSizedCard === undefined || props.showFullCard ? 
                               <div className='CharacterCardDetails'>
-                                   <span className={`Star fa fa-star ${ props.data.saved === true ? 'Star-Like' : ' '}`} onClick={() => props.likeCharacter(props.data.id)}/>
-                                   <h1>{props.data.rarity}</h1>
-                                   <h3>{props.data.name}</h3>
-                                   <h5>{props.data.specialty}</h5>
-                                   <div className='CharacterCardStats'>
-                                        <p>
-                                             <span className='hp'>HP {props.data.hp}</span> |  
-                                             <span className='atk'> ATK {props.data.atk}</span> | 
-                                             <span className='def'> DEF {props.data.def}</span>
-                                        </p>
+                                   <div>
+                                        <span className={`Star fa fa-star ${ props.data.saved === true ? 'Star-Like' : ' '}`} onClick={() => props.likeCharacter(props.data.id)}/>
+                                        <span className='Potential-Large'> { props.data.numberMerges } </span>
                                    </div>
-                                   <div>Potential Unlocked: { props.data.numberMerges }</div>
+
+                                   <div className='CardRarity'>
+                                        <h1>{props.data.rarity}</h1>
+                                   </div>
+                                   
+                                   <div className='CardTitle'>
+                                        <h5>{props.data.specialty}</h5>
+                                        <h3>{props.data.name}</h3>
+                                   </div>
+
+                                   <div className='CharacterCardStats'>
+                                        <div className='hp'>HP {props.data.hp}</div> |  
+                                        <div className='atk'> ATK {props.data.atk}</div> | 
+                                        <div className='def'> DEF {props.data.def}</div>
+                                   </div>
                                    <h4>{props.data.leaderSkillText}</h4>
                               </div> 
                               : 

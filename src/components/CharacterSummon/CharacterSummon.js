@@ -7,6 +7,7 @@ import Button from '../UI/Button/button';
 import CharacterCard from './CharacterCard/CharacterCard';
 import GearCard from './GearCard/GearCard';
 import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
+import { GearInventoryContext } from '../../Shared/GearInventory-Context';
 import { UserDetailsContext } from '../../Shared/UserDetails-Context';
 
 //Set up ability to register and login
@@ -22,18 +23,12 @@ const CharacterSummon = () => {
 
      const [ summonedCharacters, setSummonedCharacters ] = useState([]);
      const [ summonedGear, setSummonedGear ] = useState([])
-     //Will need to make this so it pulls from Context and not just a static 500
-     //const [ summonCoins, setSummonCoins ] = useState(500);
-
-     //Hold all of our active banners
-     //const [ activeBanners, setActiveBanners ] = useState(null);
-     //Will need to grab all banner names and store them here for our database if the banner is set to active. We just need the banner names for now
 
      //Grab our function to add cards to the players inventory
      const { addCardsRolledToPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
 
      //Grab functionality to add gear to players gear inventory
-     //const { addGearRolledToPlayerInventory, likeGear } = useContext(GearInventoryContext);
+     const { addGearRolledToPlayerInventory } = useContext(GearInventoryContext);
 
      //Grab our coins from the userContext
      const { usersCoins, updateUsersCoins } = useContext(UserDetailsContext);
@@ -127,7 +122,7 @@ const CharacterSummon = () => {
                     addCardsRolledToPlayerInventory(summon);
                } else if (bannerType === 'gear'){
                     setSummonedGear(summon);
-                    //addCardsRolledToGearInventory(summon)
+                    addGearRolledToPlayerInventory(summon)
                }
 
           } else{
@@ -157,14 +152,14 @@ const CharacterSummon = () => {
                          })
           }
 
-          return (<>
+          return (<div key={uuidv4()}>
                     <div key={banner.bannerName}>
                          <h1>{banner.bannerName}</h1>
                          <Button numSummons='1'  clicked={getSummonCharacters} bannerName={banner.bannerName} bannerType={banner.bannerType} />
                          <Button numSummons='10' clicked={getSummonCharacters} bannerName={banner.bannerName} bannerType={banner.bannerType} />
                     </div>
                     { results }
-               </>)
+               </div>)
      })
 
      return (

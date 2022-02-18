@@ -20,13 +20,6 @@
 .CharacterCardDetails {
      display: block;
      width: 100%;
-}
-
-.CharacterCardDetails h1 {
-     float: left;
-     padding-left: 5px;
-}
-.CharacterCardDetails h3, .CharacterCardDetails h5 {
      text-align: center;
 }
 
@@ -77,7 +70,7 @@ span{
 }
 
 .Star{
-     font-size: 24px;
+     font-size: 36px;
      float: left;
      margin-top: 5px;
      margin-left: 5px;
@@ -117,3 +110,31 @@ span{
      background-color: rgb(243, 144, 176, 0.9);
      color: white;
 }
+
+.Potential-Large{
+     font-size: 24px;
+     margin-right: 15px;
+     float: right;
+     z-index: 150;
+ }
+
+ .CardTitle{
+      margin-top:64px;
+      text-align: center;
+ }
+
+ .CardRarity{
+     font-size: 24px;
+     margin-right: 5px;
+     float: right;
+     z-index: 100;
+ }
+ 
+ .CardRarity h1{
+      margin: 0;
+ }
+
+ .CharacterCardStats{
+      display: inline-flex;
+      text-align: center;
+ }
