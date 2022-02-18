@@ -5,6 +5,8 @@ import CharacterCard from '../CharacterSummon/CharacterCard/CharacterCard';
 import { CharacterDetailsContext } from '../../Shared/CharacterDetails-Context';
 import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
 
+import './CharacterDetails.css';
+
 const CharacterDetails = props =>{
 
     const { getLikeCharacters, charactersInPlayerInventory, setCharactersInPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
@@ -16,8 +18,6 @@ const CharacterDetails = props =>{
             return alert('Cannot sacrafice liked card')
         }
 
-        console.log(loadedCharacter.numberMerges);
-        console.log(loadedCharacter.maxMerges)
         if(loadedCharacter.numberMerges < loadedCharacter.maxMerges){
             let loadedCharacterCopy = { ...loadedCharacter };
             let inventoryCopy = [ ...charactersInPlayerInventory ];
@@ -54,6 +54,27 @@ const CharacterDetails = props =>{
             <div>
                 <div>
                     <CharacterCard data={loadedCharacter} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} />
+                    <div className='Outfit'>
+                        <h2>Outfit</h2>
+                        <div className='Outfit-Equipped'>
+                            <div className='Outfit-Item'>
+                                <span>Hat</span>
+                                <span>Flying Get</span>
+                            </div>
+                            <div className='Outfit-Item'>
+                                <span>Top <br /> Flying Get</span>
+                            </div>
+                            <div className='Outfit-Item'>
+                                <span>Bottom <br /> Flying Get</span>
+                            </div>
+                            <div className='Outfit-Item'>
+                                <span>Shoes <br /> Flying Get</span>
+                            </div>
+                            <div className='Outfit-Item'>
+                                <span>Accessory <br /> Flying Get</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <h2>Potential unlocking Idols</h2>
                 { likeCharacters.length > 0 ? <>

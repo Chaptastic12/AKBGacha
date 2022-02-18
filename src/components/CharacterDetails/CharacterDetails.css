@@ -1,0 +1,8 @@
+.Outfit-Equipped{
+    display: inline-flex;
+}
+
+.Outfit-Item{
+    display: grid;
+    margin: 0px 15px;
+}

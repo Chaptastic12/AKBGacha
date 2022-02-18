@@ -86,25 +86,27 @@ const CharacterInventoryProvider = props =>{
     }
 
     const getLikeCharacters = (characterId, uniqueCardId) =>{
+        //Return a list of cards that:                         Have a matching CharaID          But is not card being looked at    And isn't saved
         return charactersInPlayerInventory.filter(chara => ( (chara.characterID === characterId) && (chara.id !== uniqueCardId) && chara.saved !== true) );
     }
 
     const likeCharacter = (id) =>{
-
+        //Copy our inventory
         let copyInventory = [ ...charactersInPlayerInventory ];
-
+        //Get the card we want to likes index
         const cardIndex = copyInventory.findIndex(chara => chara.id === id );
-
+        //Get the card itself
         const card = copyInventory[cardIndex]
 
+        //Determine if we are liking, or unliking it
         if(card.saved === true){
              card.saved = false;
         } else {
              card.saved = true;
         }
 
+        //Set the updated card to the correct spot and save
         copyInventory[cardIndex] = card;
-
         setCharactersInPlayerInventory(copyInventory);
    }
 
