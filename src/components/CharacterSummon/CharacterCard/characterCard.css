@@ -42,6 +42,7 @@
 
 .MovingCard{
      background-color: red;
+     color: white;
 }
 
 @keyframes pulse {

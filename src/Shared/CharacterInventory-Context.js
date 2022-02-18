@@ -26,18 +26,33 @@ const CharacterInventoryProvider = props =>{
         setCharactersInPlayerInventory(previousState);
     }
 
-    const deleteCardFromInventory = characterCardID =>{
+    const deleteCardFromInventory = characterId =>{
         //Copy our old state and find a character that matches the ID selected to be deleted.
         //When found, remove it from the Array and update our state
         const previousState = [...charactersInPlayerInventory];
 
         for(let i=0; i < previousState.length; i++){
-            if(previousState[i].id === characterCardID){
-                previousState.splice(i, 1);
+            if(previousState[i].id === characterId){
+                if(previousState[i].saved === true){
+                    return alert('Can not delete as character is saved');
+                } else {
+                    previousState.splice(i, 1);
+                }
                 break;
             }
         }
 
+        //Remove this card from all teams as well
+        const previousTeams = [ ...userTeams ];
+        for(let i=0; i < previousTeams.length; i++){
+            for(let j=0; j < previousTeams[i].length; j++){
+                if(previousTeams[i][j].id === characterId){
+                    previousTeams[i].splice(j, 1);
+                }
+            }
+        }
+
+        setUserTeams(previousTeams);
         setCharactersInPlayerInventory(previousState);
         //Some kind of reward can be added here later for removing the card; IE, returning coins, getting supplies, etc
     }

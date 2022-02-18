@@ -1,6 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { useHistory } from 'react-router-dom';
 
 import CharacterCard from '../CharacterSummon/CharacterCard/CharacterCard';
+import Modal from '../UI/Modal/Modal';
+import ModalBackground from '../UI/Modal/ModalBackground';
 
 import { CharacterDetailsContext } from '../../Shared/CharacterDetails-Context';
 import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
@@ -9,8 +13,11 @@ import './CharacterDetails.css';
 
 const CharacterDetails = props =>{
 
-    const { getLikeCharacters, charactersInPlayerInventory, setCharactersInPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
+    const { getLikeCharacters, charactersInPlayerInventory, setCharactersInPlayerInventory, likeCharacter, deleteCardFromInventory } = useContext(CharacterInventoryContext);
     const { loadedCharacter, setLoadedCharacter } = useContext(CharacterDetailsContext);
+
+    const [ showModal, setShowModal ] = useState(false);
+    const history = useHistory();
 
     const mergeCharaHandler = (sacraficeCard) =>{
 
@@ -52,6 +59,17 @@ const CharacterDetails = props =>{
 
         return (
             <div>
+                { showModal && <div onClick={() => setShowModal(false)}>
+                    <ModalBackground>
+                        <Modal>
+                            <div>
+                                <h1>Are you sure you'd like to Graduate this Idol?</h1>
+                                <button onClick={() => { setShowModal(false); deleteCardFromInventory(loadedCharacter.id); history.push('/nplayerID/inventory/characters') } }>Confirm</button>
+                                <button onClick={() => setShowModal(false)}>Cancel</button>
+                            </div>
+                        </Modal>
+                    </ModalBackground>
+                </div> }
                 <div>
                     <CharacterCard data={loadedCharacter} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} />
                     <div className='Outfit'>
@@ -83,6 +101,7 @@ const CharacterDetails = props =>{
                         { likeCharacters.map(chara =>  <CharacterCard key={chara.id} data={chara} mergeChara={true} mergeCharaHandler={ (sacraficeCard) => mergeCharaHandler(sacraficeCard)} /> )}
                     </div>
                 </> : <p> 'No Idols found to unlock potential.' </p> }
+                <div onClick={() => setShowModal(true)}>Graduate Idol</div>
             </div>
         )
     } else {
