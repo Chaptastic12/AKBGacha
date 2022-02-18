@@ -36,6 +36,7 @@ const CharacterCard = (props) => {
                                              <span className='def'> DEF {props.data.def}</span>
                                         </p>
                                    </div>
+                                   <div>Potential Unlocked: { props.data.numberMerges }</div>
                                    <h4>{props.data.leaderSkillText}</h4>
                               </div> 
                               : 
@@ -88,10 +89,13 @@ const CharacterCard = (props) => {
           { showModal && <div onClick={() => setShowModal(false)}>
                <ModalBackground>
                     <Modal>
-                         <div>
-                              <p>test</p>
-                              <button onClick={() => { setShowModal(false); props.mergeCharaHandler(props.data) } }>Confirm</button>
-                              <button onClick={() => setShowModal(false)}>Cancel</button>
+                         <div className='CharacterCard-Modal'>
+                              <div>
+                                   <h1>Merge Confirmation</h1>
+                                   <p>Are you sure you'd like to merge these Idols?</p>
+                                   <button onClick={() => { setShowModal(false); props.mergeCharaHandler(props.data) } }>Confirm</button>
+                                   <button onClick={() => setShowModal(false)}>Cancel</button>
+                              </div>
                          </div>
                     </Modal>
                </ModalBackground>

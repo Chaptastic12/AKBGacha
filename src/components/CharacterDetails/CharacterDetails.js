@@ -16,15 +16,17 @@ const CharacterDetails = props =>{
             return alert('Cannot sacrafice liked card')
         }
 
+        console.log(loadedCharacter.numberMerges);
+        console.log(loadedCharacter.maxMerges)
         if(loadedCharacter.numberMerges < loadedCharacter.maxMerges){
             let loadedCharacterCopy = { ...loadedCharacter };
             let inventoryCopy = [ ...charactersInPlayerInventory ];
 
             //Update the current cards stats
-            loadedCharacterCopy.numberMerges = loadedCharacter.numberMerges++;
-            loadedCharacterCopy.hp = loadedCharacterCopy.hp * 1.2;
-            loadedCharacterCopy.atk = loadedCharacterCopy.atk * 1.2;
-            loadedCharacterCopy.def = loadedCharacterCopy.def * 1.2;
+            loadedCharacterCopy.numberMerges = loadedCharacter.numberMerges + 1;
+            loadedCharacterCopy.hp = Math.round(loadedCharacterCopy.hp * 1.2);
+            loadedCharacterCopy.atk = Math.round(loadedCharacterCopy.atk * 1.2);
+            loadedCharacterCopy.def = Math.round(loadedCharacterCopy.def * 1.2);
 
             //Update them in the inventory state
             //Get the index of our updated card and removed card
@@ -40,7 +42,7 @@ const CharacterDetails = props =>{
             setLoadedCharacter(loadedCharacterCopy);
 
         } else{
-            //If the cant merge it, throw an error
+            //If they have reached the max unlock, alert them
             return alert('Character already max unlocked')
         }
    }
@@ -53,13 +55,13 @@ const CharacterDetails = props =>{
                 <div>
                     <CharacterCard data={loadedCharacter} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} />
                 </div>
-                <h2>Mergable Idols</h2>
+                <h2>Potential unlocking Idols</h2>
                 { likeCharacters.length > 0 ? <>
-                    <span>Click and confirm to fuse!</span>
+                    <span>Click and confirm to unlock potential!</span>
                     <div>
                         { likeCharacters.map(chara =>  <CharacterCard key={chara.id} data={chara} mergeChara={true} mergeCharaHandler={ (sacraficeCard) => mergeCharaHandler(sacraficeCard)} /> )}
                     </div>
-                </> : <p> 'No mergable Idols found.' </p> }
+                </> : <p> 'No Idols found to unlock potential.' </p> }
             </div>
         )
     } else {

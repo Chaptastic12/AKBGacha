@@ -139,7 +139,8 @@ const CharacterInventory = props =>{
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
-        <p>Currently sorted by: { sortType } </p><br />
+        <p>Currently sorted by: { sortType } </p>
+        <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
         
         {showSearchBar && <div>
             <select onClick={(e)=>setSearchFilter(e.target.value)}>

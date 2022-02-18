@@ -91,3 +91,28 @@ span{
      background-color: rgb(243, 144, 176, 0.3);
      border: 2px solid rgb(243, 144, 176);
 }
+
+
+.CharacterCard-Modal{
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background-color: white;
+     height: 250px;
+     width: 400px;
+     border-radius: 15px;
+}
+
+.CharacterCard-Modal h1{
+     text-decoration: underline;
+}
+
+.CharacterCard-Modal button{
+     height: 50px;
+     width: 100px;
+     margin: 5px;
+     border-style: none;
+     font-size: 18px;
+     background-color: rgb(243, 144, 176, 0.9);
+     color: white;
+}
