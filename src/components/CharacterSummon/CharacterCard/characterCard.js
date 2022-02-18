@@ -5,13 +5,13 @@ import { useHistory } from 'react-router-dom';
 import Modal from '../../UI/Modal/Modal';
 import ModalBackground from '../../UI/Modal/ModalBackground';
 
-import { CharacterDetailsContext } from '../../../Shared/CharacterDetails-Context';
+import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Context';
 
 import './characterCard.css';
 
 const CharacterCard = (props) => {
 
-     const { setLoadedCharacter } = useContext(CharacterDetailsContext)
+     const { setLoadedCharacter } = useContext(CharacterInventoryContext)
 
      const [ showCard, setShowCard ] = useState(false);
      const [ showModal, setShowModal ] = useState(false)

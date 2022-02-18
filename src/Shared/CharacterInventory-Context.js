@@ -8,7 +8,9 @@ const CharacterInventoryProvider = props =>{
 
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
     const [ userTeams, setUserTeams ] = useState([[],[],[],[],[],[],[],[]]);
-    const [ userTeamIndex, setUserTeamIndex ] = useState(0);
+    const [ userTeamIndex, setUserTeamIndex ] = useState(0);    
+    const [ loadedCharacter, setLoadedCharacter ] = useState();
+
     const [ error, setError ] = useState('');
 
     //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
@@ -125,6 +127,44 @@ const CharacterInventoryProvider = props =>{
         setCharactersInPlayerInventory(copyInventory);
    }
 
+   const mergeCharaHandler = (sacraficeCard) =>{
+
+    if(sacraficeCard.saved === true){
+        return alert('Cannot sacrafice liked card')
+    }
+
+    if(loadedCharacter.numberMerges < loadedCharacter.maxMerges){
+        let loadedCharacterCopy = { ...loadedCharacter };
+        let inventoryCopy = [ ...charactersInPlayerInventory ];
+
+        //Update the current cards stats
+        loadedCharacterCopy.numberMerges = loadedCharacter.numberMerges + 1;
+        loadedCharacterCopy.hp = Math.round(loadedCharacterCopy.hp * 1.2);
+        loadedCharacterCopy.atk = Math.round(loadedCharacterCopy.atk * 1.2);
+        loadedCharacterCopy.def = Math.round(loadedCharacterCopy.def * 1.2);
+
+        //Update them in the inventory state
+        //Get the index of our updated card and removed card
+        const cardIndex = charactersInPlayerInventory.findIndex(chara => chara.id === loadedCharacterCopy.id);
+        const removeIndex = charactersInPlayerInventory.findIndex(chara => chara.id === sacraficeCard.id);
+
+        //Replace the old card with the new one
+        inventoryCopy[cardIndex] = loadedCharacterCopy;
+        inventoryCopy.splice(removeIndex, 1)
+
+        //Update our inventory with the updated inventory
+        setCharactersInPlayerInventory(inventoryCopy);
+        setLoadedCharacter(loadedCharacterCopy);
+
+        //Run below to remove this card from all our teams as well
+        deleteCardFromInventory(sacraficeCard.id);
+
+    } else{
+        //If they have reached the max unlock, alert them
+        return alert('Character already max unlocked')
+    }
+}
+
     return <CharacterInventoryContext.Provider value={{
             charactersInPlayerInventory, setCharactersInPlayerInventory,
             userTeams, setUserTeams,
@@ -132,7 +172,9 @@ const CharacterInventoryProvider = props =>{
             addCharaToTeam, removeCharaFromTeam,
             addCardsRolledToPlayerInventory,
             deleteCardFromInventory, error,
-            getLikeCharacters, likeCharacter
+            getLikeCharacters, likeCharacter,
+            loadedCharacter, setLoadedCharacter,
+            mergeCharaHandler
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>
