@@ -22,42 +22,22 @@ const CharacterDetails = props =>{
     const [ showMoreGear, setShowMoreGear ] = useState(1);
 
     const history = useHistory();
-    const ITEMS_PER_PAGE = 5;
-
-
-
-    // const showMoreCharaOrGear = (type, direction) =>{
-    //     const lengthOfChara = likeCharacters.length;
-    //     const maxClicks = lengthOfChara / 5;
-
-    //     const lengthOfGear = availGear.length;
-
-    //     if(type === 'chara'){
-    //         if(direction === 'forward'){
-    //             if(showMoreChara <  maxClicks){
-    //                 setShowMoreChara(prevState => prevState + 1)
-    //             } else{
-    //                 return alert('End of array')
-    //             }
-    //         } else if (direction === 'backward'){
-
-    //         }
-    //     }
-    // }
+    const charaItemsPerPage = 5;
+    const gearItemsPerPage = 10;
 
     if(loadedCharacter){
         const likeCharacters = getLikeCharacters(loadedCharacter.characterID, loadedCharacter.id);
         const availGear = availableGear();
         
         //Next three lines are needed for pagination
-        const charaIndexStart = (~ITEMS_PER_PAGE + 1) + (ITEMS_PER_PAGE * showMoreChara);
-        const charaIndexEnd = charaIndexStart + ITEMS_PER_PAGE;
-        let charaNumberOfPages = Math.ceil((likeCharacters.length)/ITEMS_PER_PAGE)
+        const charaIndexStart = (~charaItemsPerPage + 1) + (charaItemsPerPage * showMoreChara);
+        const charaIndexEnd = charaIndexStart + charaItemsPerPage;
+        let charaNumberOfPages = Math.ceil((likeCharacters.length)/charaItemsPerPage)
 
         //Next three lines are needed for pagination
-        const gearIndexStart = (~ITEMS_PER_PAGE + 1) + (ITEMS_PER_PAGE * showMoreGear);
-        const gearIndexEnd = gearIndexStart + ITEMS_PER_PAGE;
-        let gearNumberOfPages = Math.ceil((availGear.length)/ITEMS_PER_PAGE)
+        const gearIndexStart = (~gearItemsPerPage + 1) + (gearItemsPerPage * showMoreGear);
+        const gearIndexEnd = gearIndexStart + gearItemsPerPage;
+        let gearNumberOfPages = Math.ceil((availGear.length)/gearItemsPerPage)
 
         return (
             <div>
@@ -108,15 +88,18 @@ const CharacterDetails = props =>{
                         <button onClick={() => setShowMoreChara(prevState => prevState !== charaNumberOfPages ? prevState + 1 : charaNumberOfPages )}>Next</button>
                     </div>
                 </> : <p> 'No Idols found to unlock potential.' </p> }
+                <h2>Idol Fashion Accessories</h2>
                 { availGear.length > 0 ? <>
                     <span>Click to add gear! Page {showMoreGear} of {gearNumberOfPages}</span>
                     <div>
                         <button onClick={() => setShowMoreGear(prevState => prevState !== 1 ? prevState -1 : prevState )}>Back</button>
-                        { availGear.slice(gearIndexStart, gearIndexEnd).map( gear =>  <GearCard key={gear.id} data={gear} revealed={true} /> )}
+                        { availGear.slice(gearIndexStart, gearIndexEnd).map( gear =>  <GearCard key={gear.id} data={gear} revealed={true} smallView={true}/> )}
                         <button onClick={() => setShowMoreGear(prevState => prevState !== gearNumberOfPages ? prevState + 1 : gearNumberOfPages )}>Next</button>
                     </div>
                 </> : <p>No available gear found</p> }
-                <div onClick={() => setShowModal(true)}>Graduate Idol</div>
+                <div className='Graduate' onClick={() => setShowModal(true)}>
+                    <div className='Graduate-Details'>Graduate Idol</div>
+                </div>
             </div>
         )
     } else {

@@ -13,10 +13,6 @@
     width: 100%;
 }
 
-.GearCardDetails .Star{
-    font-size: 24px;
-}
-
 .Rarity{
     margin-left: 20px;
 }
@@ -26,4 +22,30 @@
     float: right;
     margin-right: 5px;
     z-index: 100;
+}
+
+.GearCardSmall{
+    background: white;
+    border: 2px solid black;
+    border-radius:10px;
+    height:100px;
+    width:100px;
+    display: inline-flex;
+    margin: 5px;
+}
+
+.GearCardSmall .Rarity{
+    font-size: 24px;
+    float: left;
+    margin: 0;
+}
+
+.GearCardSmall h3{
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.GearCardSmall .GearEffect{
+    font-size: 12px;
+    margin-top: -15px;
 }

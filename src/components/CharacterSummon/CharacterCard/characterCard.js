@@ -33,7 +33,7 @@ const CharacterCard = (props) => {
                                    <div className='CardRarity'>
                                         <h1>{props.data.rarity}</h1>
                                    </div>
-                                   
+                                   <div style={{height: '80%', marginTop: '225px'}}>
                                    <div className='CardTitle'>
                                         <h5>{props.data.specialty}</h5>
                                         <h3>{props.data.name}</h3>
@@ -45,6 +45,7 @@ const CharacterCard = (props) => {
                                         <div className='def'> DEF {props.data.def}</div>
                                    </div>
                                    <h4>{props.data.leaderSkillText}</h4>
+                                   </div>
                               </div> 
                               : 
                               <div className='CharacterCardDetails' onClick={()=>setShowCard(prevState=>!prevState)}>Click to show your card!</div>}
