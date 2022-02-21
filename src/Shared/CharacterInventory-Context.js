@@ -177,6 +177,8 @@ const CharacterInventoryProvider = props =>{
             loadedCharacterCopy.atk = Math.round(loadedCharacterCopy.atk * 1.2);
             loadedCharacterCopy.def = Math.round(loadedCharacterCopy.def * 1.2);
 
+            loadedCharacterCopy = adjustCardStats(loadedCharacterCopy);
+
             //Update them in the inventory state
             //Get the index of our updated card and removed card
             const cardIndex = charactersInPlayerInventory.findIndex(chara => chara.id === loadedCharacterCopy.id);
@@ -240,6 +242,55 @@ const CharacterInventoryProvider = props =>{
         setLoadedCharacter(newLoadedCharacter);
     }
 
+    const handleCharacterGear = (gear, action) => {
+        let loadedCharacterCopy = { ...loadedCharacter };
+        const copyInventory = [ ...charactersInPlayerInventory ]
+        const cardIndex = copyInventory.findIndex(chara => chara.id === loadedCharacterCopy.id);
+
+        if(action === 'equip'){
+            loadedCharacterCopy[gear.type] = gear;
+        } else if(action === 'unequip'){
+            loadedCharacterCopy[gear.type] = null
+        }
+        
+        //Calculate our adjusted stats based off total HP and the new gear
+        loadedCharacterCopy = adjustCardStats(loadedCharacterCopy);
+        copyInventory[cardIndex] = loadedCharacterCopy;
+
+        setCharactersInPlayerInventory(copyInventory);
+        setLoadedCharacter(loadedCharacterCopy);
+    }
+
+    const adjustCardStats = card =>{
+        let cardCopy = { ...card };
+        //const copyInventory = [ ...charactersInPlayerInventory ]
+        //const cardIndex = copyInventory.findIndex(chara => chara.id === cardCopy.id);
+        let hpAdjustment = cardCopy.hp;
+        let atkAdjustment = cardCopy.atk;
+        let defAdjustment = cardCopy.def;
+        let types = [ 'hat', 'top', 'bottom', 'shoes', 'accessory'];
+
+        //Go through all our types and check if an item is equipped
+        //If it is, adjust our total adjustment
+        for(let i=0; i < types.length; i++){
+            //If we have an item equipped...
+            if(cardCopy[types[i]] !== null){
+                //Check which value we are updating
+                for(let j=0; j < cardCopy[types[i]].gearEffect.effects.length; j++){
+                    if(cardCopy[types[i]].gearEffect.effects[j].type === 'hp') { hpAdjustment  = hpAdjustment  * cardCopy[types[i]].gearEffect.effects[j].value }
+                    if(cardCopy[types[i]].gearEffect.effects[j].type === 'def'){ defAdjustment = defAdjustment * cardCopy[types[i]].gearEffect.effects[j].value }
+                    if(cardCopy[types[i]].gearEffect.effects[j].type === 'atk'){ atkAdjustment = atkAdjustment * cardCopy[types[i]].gearEffect.effects[j].value }
+                }
+            }
+        }
+
+        cardCopy.adjustedStats.adjHP = hpAdjustment;
+        cardCopy.adjustedStats.adjAtk = atkAdjustment;
+        cardCopy.adjustedStats.adjDef = defAdjustment;
+
+        return cardCopy;
+    }
+
     return <CharacterInventoryContext.Provider value={{
             charactersInPlayerInventory, setCharactersInPlayerInventory,
             userTeams, setUserTeams,
@@ -249,7 +300,8 @@ const CharacterInventoryProvider = props =>{
             deleteCardFromInventory, error,
             getLikeCharacters, likeCharacter,
             loadedCharacter, setLoadedCharacter,
-            mergeCharaHandler, adjustLoadedCharacter, adjustSelectedTeamStats
+            mergeCharaHandler, adjustLoadedCharacter, adjustSelectedTeamStats,
+            handleCharacterGear
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>

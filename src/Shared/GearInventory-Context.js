@@ -44,7 +44,7 @@ const GearInventoryProvider = props =>{
     const toggelGearEquip = (gearToEquip, charaId, whatDo) =>{
         const copyOfAllGear = [ ...gearInPlayerInventory];
         const gearIndex = copyOfAllGear.findIndex(gear => gear.id === gearToEquip.id);
-        const copyOfGear = copyOfAllGear.filter(gear => gear.gearID === gearToEquip.gearID);
+        const copyOfGear = { ...gearToEquip }
 
         if(whatDo === 'equip'){
             copyOfGear.equipped = true;

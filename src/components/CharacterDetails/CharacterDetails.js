@@ -14,8 +14,8 @@ import './CharacterDetails.css';
 
 const CharacterDetails = props =>{
 
-    const { getLikeCharacters, likeCharacter, deleteCardFromInventory, loadedCharacter, mergeCharaHandler, adjustLoadedCharacter, error } = useContext(CharacterInventoryContext);
-    const { availableGear } = useContext(GearInventoryContext)
+    const { getLikeCharacters, likeCharacter, deleteCardFromInventory, loadedCharacter, mergeCharaHandler, adjustLoadedCharacter, error, handleCharacterGear } = useContext(CharacterInventoryContext);
+    const { availableGear, toggelGearEquip } = useContext(GearInventoryContext)
 
     const [ showModal, setShowModal ] = useState(false);
     const [ showMoreChara, setShowMoreChara ] = useState(1);
@@ -24,8 +24,38 @@ const CharacterDetails = props =>{
     const history = useHistory();
     const charaItemsPerPage = 5;
     const gearItemsPerPage = 10;
+    const types = [ 'hat', 'top', 'bottom', 'shoes', 'accessory' ];
 
-    if(loadedCharacter){
+    if(loadedCharacter){ 
+        //Check that this is a valid option
+        const handleGearEquip = (gear, action) =>{
+            //If we are equipping it, check to make sure there is nothing equipped
+            //If we are unequipping, make sure that something even exists to unequip
+            if(action === 'equip'){
+                if(loadedCharacter[gear.type] === null){
+                    toggelGearEquip(gear, loadedCharacter.id, action);
+                    handleCharacterGear(gear, action)
+                } else {
+                    return alert ('ERROR: Gear already equipped in that slot')
+                }
+            } else if (action === 'unequip'){
+                if(loadedCharacter[gear.type] !== null){
+                    toggelGearEquip(gear, loadedCharacter.id, action);
+                    handleCharacterGear(gear, action)
+                } else {
+                    return alert ('ERROR: No gear in that slot...how did you get here?')
+                }
+            }
+
+        }
+
+        const showEquippedItems = types.map(type => {
+            return <div className='Outfit-Item'>
+                        <span>{ type }</span>
+                        { loadedCharacter[type] ? <GearCard key={loadedCharacter[type].id} data={loadedCharacter[type]} revealed={true} smallView={true} handleGearEquip={() => handleGearEquip(loadedCharacter[type], 'unequip')} /> : 'Equip an item'}
+                    </div>
+        });
+
         const likeCharacters = getLikeCharacters(loadedCharacter.characterID, loadedCharacter.id);
         const availGear = availableGear();
         
@@ -60,22 +90,7 @@ const CharacterDetails = props =>{
                     <div className='Outfit'>
                         <h2>Outfit</h2>
                         <div className='Outfit-Equipped'>
-                            <div className='Outfit-Item'>
-                                <span>Hat</span>
-                                <span>Flying Get</span>
-                            </div>
-                            <div className='Outfit-Item'>
-                                <span>Top <br /> Flying Get</span>
-                            </div>
-                            <div className='Outfit-Item'>
-                                <span>Bottom <br /> Flying Get</span>
-                            </div>
-                            <div className='Outfit-Item'>
-                                <span>Shoes <br /> Flying Get</span>
-                            </div>
-                            <div className='Outfit-Item'>
-                                <span>Accessory <br /> Flying Get</span>
-                            </div>
+                            {showEquippedItems}
                         </div>
                     </div>
                 </div>
@@ -93,7 +108,7 @@ const CharacterDetails = props =>{
                     <span>Click to add gear! Page {showMoreGear} of {gearNumberOfPages}</span>
                     <div>
                         <button onClick={() => setShowMoreGear(prevState => prevState !== 1 ? prevState -1 : prevState )}>Back</button>
-                        { availGear.slice(gearIndexStart, gearIndexEnd).map( gear =>  <GearCard key={gear.id} data={gear} revealed={true} smallView={true}/> )}
+                        { availGear.slice(gearIndexStart, gearIndexEnd).map( gear =>  <GearCard key={gear.id} data={gear} revealed={true} smallView={true} handleGearEquip={() => handleGearEquip(gear, 'equip')}/> )}
                         <button onClick={() => setShowMoreGear(prevState => prevState !== gearNumberOfPages ? prevState + 1 : gearNumberOfPages )}>Next</button>
                     </div>
                 </> : <p>No available gear found</p> }

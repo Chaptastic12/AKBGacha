@@ -13,7 +13,7 @@ const GearCard = props =>{
 
     if(props.smallView){
         return (
-            <div className={props.data.rarity === 'SSR' ? 'GearCardSmall SSR' : 'GearCardSmall'}>
+            <div className={props.data.rarity === 'SSR' ? 'GearCardSmall SSR' : 'GearCardSmall'} onClick={() => props.handleGearEquip()}>
                 { showCard || props.revealed ?
                     <div className='GearCardDetails'>
                         <span className='Potential'> { props.data.numberMerges } </span>
