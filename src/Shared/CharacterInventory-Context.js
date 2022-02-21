@@ -284,9 +284,9 @@ const CharacterInventoryProvider = props =>{
             }
         }
 
-        cardCopy.adjustedStats.adjHP = hpAdjustment;
-        cardCopy.adjustedStats.adjAtk = atkAdjustment;
-        cardCopy.adjustedStats.adjDef = defAdjustment;
+        cardCopy.adjustedStats.adjHP =  Math.round(hpAdjustment);
+        cardCopy.adjustedStats.adjAtk = Math.round(atkAdjustment);
+        cardCopy.adjustedStats.adjDef = Math.round(defAdjustment);
 
         return cardCopy;
     }
