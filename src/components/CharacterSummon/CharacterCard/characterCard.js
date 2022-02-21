@@ -18,6 +18,8 @@ const CharacterCard = (props) => {
 
      const history = useHistory();
 
+     console.log(props.data.adjustedStats.adjHP)
+
      //Show our full card details if 
      // 1) the use has clicked on the card from the summoning screen, setting showCard to true or
      // 2) the user is on the inventory page and clicking on a card to see more details by checking if fullSizedCard is undefined
@@ -33,22 +35,22 @@ const CharacterCard = (props) => {
                                    <div className='CardRarity'>
                                         <h1>{props.data.rarity}</h1>
                                    </div>
-                                   <div style={{height: '80%', marginTop: '225px'}}>
-                                   <div className='CardTitle'>
-                                        <h5>{props.data.specialty}</h5>
-                                        <h3>{props.data.name}</h3>
-                                   </div>
+                                   <div className='CardSpecs'>
+                                        <div className='CardTitle'>
+                                             <h5>{props.data.specialty}</h5>
+                                             <h3>{props.data.name}</h3>
+                                        </div>
 
-                                   <div className='CharacterCardStats'>
-                                        <div className='hp'>HP {props.data.hp}</div> |  
-                                        <div className='atk'> ATK {props.data.atk}</div> | 
-                                        <div className='def'> DEF {props.data.def}</div>
-                                   </div>
-                                   <h4>{props.data.leaderSkillText}</h4>
+                                        <div className='CharacterCardStats'>
+                                             <div className='hp'>HP { props.data.hp > props.data.adjustedStats.adjHP ? props.data.hp : props.data.adjustedStats.adjHP }</div> |  
+                                             <div className='atk'> ATK { props.data.atk > props.data.adjustedStats.adjAtk ? props.data.atk : props.data.adjustedStats.adjAtk }</div> | 
+                                             <div className='def'> DEF { props.data.def > props.data.adjustedStats.adjDef ? props.data.def : props.data.adjustedStats.adjDef}</div>
+                                        </div>
+                                        <h4>{props.data.leaderSkillText}</h4>
                                    </div>
                               </div> 
                               : 
-                              <div className='CharacterCardDetails' onClick={()=>setShowCard(prevState=>!prevState)}>Click to show your card!</div>}
+                              <div className='CharacterCardDetails' onClick={()=>setShowCard(prevState=>!prevState)}><div className='CardSpecs'>Click to show your card!</div></div>}
                     </div>
                     
      //Dependent on if we are getting a small card from the inventory, or teams component, determine our action onClick

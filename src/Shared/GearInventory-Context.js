@@ -42,7 +42,7 @@ const GearInventoryProvider = props =>{
 
     //Indicate if our gear is equipped or not. needs the full gear object, our character id and if it is an unequip or equip action
     const toggelGearEquip = (gearToEquip, charaId, whatDo) =>{
-        const copyOfAllGear = [ ...gearInPlayerInventory];
+        const copyOfAllGear = [ ...gearInPlayerInventory ];
         const gearIndex = copyOfAllGear.findIndex(gear => gear.id === gearToEquip.id);
         const copyOfGear = { ...gearToEquip }
 

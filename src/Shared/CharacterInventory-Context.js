@@ -188,7 +188,6 @@ const CharacterInventoryProvider = props =>{
             inventoryCopy[cardIndex] = loadedCharacterCopy;
             inventoryCopy.splice(removeIndex, 1);
 
-
             //Update our inventory with the updated inventory
             setCharactersInPlayerInventory(inventoryCopy);
             setLoadedCharacter(loadedCharacterCopy);
@@ -261,10 +260,9 @@ const CharacterInventoryProvider = props =>{
         setLoadedCharacter(loadedCharacterCopy);
     }
 
+    //Used to adjust the stats of a card to get the grand total amount
     const adjustCardStats = card =>{
         let cardCopy = { ...card };
-        //const copyInventory = [ ...charactersInPlayerInventory ]
-        //const cardIndex = copyInventory.findIndex(chara => chara.id === cardCopy.id);
         let hpAdjustment = cardCopy.hp;
         let atkAdjustment = cardCopy.atk;
         let defAdjustment = cardCopy.def;
