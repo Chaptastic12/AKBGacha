@@ -119,9 +119,9 @@ const CharacterInventoryProvider = props =>{
         //Add in leadership effects, if they exist
         if(copyOfCurrentTeam[1] !== undefined && copyOfCurrentTeam[1].leaderSkill !== undefined){
             for(let j=0; j < copyOfCurrentTeam[1].leaderSkill.skills.length; j++){
-                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'atk'){ stats.totalAtk = stats.totalAtk * copyOfCurrentTeam[1].leaderSkill.skills[j].value }
-                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'def'){ stats.totalDef = stats.totalDef * copyOfCurrentTeam[1].leaderSkill.skills[j].value }
-                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'hp'){ stats.totalHP = stats.totalHP * copyOfCurrentTeam[1].leaderSkill.skills[j].value }
+                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'atk'){ stats.totalAtk = Math.round(stats.totalAtk * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
+                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'def'){ stats.totalDef = Math.round(stats.totalDef * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
+                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'hp'){ stats.totalHP = Math.round(stats.totalHP * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
             }
         }
 
@@ -282,9 +282,9 @@ const CharacterInventoryProvider = props =>{
             }
         }
 
-        cardCopy.adjustedStats.adjHP =  Math.round(hpAdjustment);
-        cardCopy.adjustedStats.adjAtk = Math.round(atkAdjustment);
-        cardCopy.adjustedStats.adjDef = Math.round(defAdjustment);
+        cardCopy.adjustedStats.adjHP =  Math.round(hpAdjustment).toLocaleString();
+        cardCopy.adjustedStats.adjAtk = Math.round(atkAdjustment).toLocaleString();
+        cardCopy.adjustedStats.adjDef = Math.round(defAdjustment).toLocaleString();
 
         return cardCopy;
     }

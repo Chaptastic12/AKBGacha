@@ -62,12 +62,15 @@ span{
 }
 .hp{
      color: green;
+     margin: 2px;
 }
 .atk{
      color: red;
+     margin: 2px;
 }
 .def{
      color: blue;
+     margin: 2px;
 }
 
 .Star{
@@ -148,9 +151,25 @@ span{
 
  .CardSpecs{
      position: absolute;
-     top: 145px;
+     top: 210px;
      width: 100%;
  }
+
+ .CardTitle h5,
+ .CardTitle h3,
+ .CardSpecs h4{
+      margin: 0;
+ }
+
+ .CardTitle h3{
+      margin-bottom: 5px;
+ }
+
+ .CardSpecs h4{
+     margin-top: 10px;
+ }
+
+ .CardTitle .hp
 
  .Graduate-Details{
      display: flex;

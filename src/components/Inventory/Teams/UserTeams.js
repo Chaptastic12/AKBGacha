@@ -88,9 +88,9 @@ const UserTeams = props =>{
 
     let totalTeamStats;
     if(props.teamData.length > 1){
-        let totalAtk = props.teamData[0].totalAtk;
-        let totalDef = props.teamData[0].totalDef;
-        let totalHp  = props.teamData[0].totalHP;
+        let totalAtk = props.teamData[0].totalAtk.toLocaleString();
+        let totalDef = props.teamData[0].totalDef.toLocaleString();
+        let totalHp  = props.teamData[0].totalHP.toLocaleString();
 
         totalTeamStats = <><b>Total Hp: </b> {totalHp} <b>Total Atk: </b> { totalAtk } <b>Total Def: </b> { totalDef } </>
     }
