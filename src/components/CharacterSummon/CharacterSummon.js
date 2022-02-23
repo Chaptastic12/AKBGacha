@@ -86,9 +86,14 @@ const CharacterSummon = () => {
      }
 
      //needs to be async so that we can make it wait for the response from the getPulledCard function before continuing through the loop
-     const getSummonCharacters = async(numRolls, bannerName, bannerType) =>{
+     const getSummonCharacters = async(numRolls, banner) =>{
           setSummonedCharacters([]);
-
+          const bannerName = banner.bannerName;
+          const bannerType = banner.bannerType;
+          const ssrRate = banner.rates.ssr;
+          const srRate = banner.rates.sr;
+          const rRate = banner.rates.r
+          
           //Check that the summon is valid based off their available coins and roll type
           let validSummon = await updateUsersCoins(numRolls);
 
@@ -100,19 +105,19 @@ const CharacterSummon = () => {
                     let summonType =  getSummonRates();
 
                     //If they roll a 0 or 1, they get an SSR
-                    if(summonType <= 1){
+                    if(summonType <= ssrRate){
                          summon.push(await getPulledCard('SSR', bannerName));
                     }
                     //If they roll a 2 -> 13, they get an SR
-                    if(summonType > 1 && summonType <= 13){
+                    if(summonType > ssrRate && summonType <= srRate){
                          summon.push(await getPulledCard('SR', bannerName));
                     }
                     //If they roll 14 -> 60, they get an R
-                    if(summonType > 13 && summonType <= 60){
+                    if(summonType > srRate && summonType <= rRate ){
                          summon.push(await getPulledCard('R', bannerName));
                     }
                     //If they roll above a 60 or 0, they get a C
-                    if(summonType === 0 ||summonType > 60){
+                    if(summonType === 0 ||summonType > rRate){
                          summon.push(await getPulledCard('C', bannerName));
                     }
                }
@@ -154,9 +159,9 @@ const CharacterSummon = () => {
 
           return (<div key={uuidv4()}>
                     <div key={banner.bannerName}>
-                         <h1>{banner.bannerName}</h1>
-                         <Button numSummons='1'  clicked={getSummonCharacters} bannerName={banner.bannerName} bannerType={banner.bannerType} />
-                         <Button numSummons='10' clicked={getSummonCharacters} bannerName={banner.bannerName} bannerType={banner.bannerType} />
+                         <h1>{banner.bannerDisplayName}</h1>
+                         <Button numSummons='1'  clicked={getSummonCharacters} banner={banner} />
+                         <Button numSummons='10' clicked={getSummonCharacters} banner={banner} />
                     </div>
                     { results }
                </div>)

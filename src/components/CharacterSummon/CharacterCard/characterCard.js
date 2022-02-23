@@ -18,8 +18,6 @@ const CharacterCard = (props) => {
 
      const history = useHistory();
 
-     console.log(props.data.adjustedStats.adjHP)
-
      //Show our full card details if 
      // 1) the use has clicked on the card from the summoning screen, setting showCard to true or
      // 2) the user is on the inventory page and clicking on a card to see more details by checking if fullSizedCard is undefined
