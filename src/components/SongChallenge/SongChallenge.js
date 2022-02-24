@@ -366,16 +366,6 @@ const SongChallenge = props => {
         startGame();
         setUpKeys();
         noteMiss();
-
-        //Check if they've won or not; stop checking when they have; ie, game time is over
-        let endOfSongInterval = setInterval(()=>{
-            checkGameClear();         
-
-            if(gameTimerCounter++ === loadedSong.duration){
-                window.clearInterval(endOfSongInterval);
-            }
-
-        }, 1000);
     });
 
     let isRunning;
