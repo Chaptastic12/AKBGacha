@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import './SongChallenge.css'
 
@@ -9,6 +9,7 @@ const SongChallenge = props => {
     //If we win, we will need to push to save details to a state and push to a new page
     //If they lose, give them an option to pay some gems to continue ( remove the next 3s of notes of they do ), and if they don't push them to a new page with their stats anyways
     const history = useHistory();
+    const { songID } = useParams();
 
     let keyDown = { a: false, s: false, d: false, j: false, k: false, l: false, ' ': false }
     let hits = { perfect: 0, good: 0, bad: 0, miss: 0 }
@@ -376,6 +377,24 @@ const SongChallenge = props => {
 
         }, 1000);
     });
+
+    let isRunning;
+    useEffect(()=>{
+         //Check if they've won or not; stop checking when they have; ie, game time is over
+         let endOfSongInterval = setInterval(()=>{
+            checkGameClear();         
+            if(gameTimerCounter++ === loadedSong.duration){
+                window.clearInterval(endOfSongInterval);
+            }
+            history.listen((location)=>{
+                if(location !== '/play/songBattle/' + songID){
+                    // eslint-disable-next-line
+                    isRunning = false;
+                }
+            });
+        }, 1000);
+        return () => window.clearInterval(endOfSongInterval); 
+    }, [isRunning])
 
 
     return (
