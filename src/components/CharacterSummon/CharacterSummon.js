@@ -10,6 +10,8 @@ import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Conte
 import { GearInventoryContext } from '../../Shared/GearInventory-Context';
 import { UserDetailsContext } from '../../Shared/UserDetails-Context';
 
+import './CharacterSummon.css'
+
 //Set up ability to register and login
 //   By enabling this function, will be able to store each summoned character 
 //    to the appropriate userID
@@ -153,10 +155,15 @@ const CharacterSummon = () => {
           }
 
           return (<div key={uuidv4()}>
-                    <div key={banner.bannerName}>
-                         <h1>{banner.bannerDisplayName}</h1>
-                         <Button numSummons='1'  clicked={getSummonCharacters} banner={banner} />
-                         <Button numSummons='10' clicked={getSummonCharacters} banner={banner} />
+                    <div className='BannerContainer'>
+                         <div className='Banner' key={banner.bannerName} style={{background: 'URL(' + banner.bannerImg + ')', backgroundPosition: 'center', backgroundSize: 'cover'}}>
+                              <h1>{banner.bannerDisplayName}</h1>
+                              <div className='BannerContents'>
+                                   <h1>{banner.bannerSubTitle}</h1>
+                                   <Button numSummons='1'  clicked={getSummonCharacters} banner={banner} />
+                                   <Button numSummons='10' clicked={getSummonCharacters} banner={banner} />
+                              </div>
+                         </div>
                     </div>
                     { results }
                </div>)

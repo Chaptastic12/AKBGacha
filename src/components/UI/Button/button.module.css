@@ -1,18 +1,21 @@
 .Button {
      display: inline-block;
      text-align: center;
+     margin: 15px;
+     margin-bottom: -25px;
 }
 
 .Button button {
      color:white;
      font-size: 2rem;
      font-style: bold;
-     width: 250px;
-     height: 50px;
+     width: 350px;
+     height: 75px;
      border-radius: 15px;
-     background-color: #f390b0;
+     background: rgb(253, 220, 73);
+     border: 2px solid rgb(255, 255, 255);
 }
 
 .Button button:hover {
-     background: red;
+     background: rgb(212, 174, 1);
 }
