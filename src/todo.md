@@ -12,3 +12,6 @@
 ## On this same page, allow them to select the team to use for that song
 
 # When a song is selected, apply the team stats to the song
+
+# Update summong animation
+## Show one card at a time - at the end, show them all and then close

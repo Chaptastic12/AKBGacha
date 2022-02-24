@@ -6,15 +6,16 @@ const UserDetailsProvider = props =>{
 
     const [ usersCoins, setUsersCoins ] = useState(500);
 
-    const updateUsersCoins = (numberRolls) =>{
+    const updateUsersCoins = (numberRolls, costOptions) =>{
         //charge them for their rolls; they either do a roll 1 or 10.
-        //Each roll would cost 5
-        let rollCost = 5;
+        //Each roll would cost a predetermined amount as passed in
+        let rollCost = costOptions.single;
 
+        //If were doing a multi, then update the cost
         if(numberRolls === '10'){
-            rollCost = 50;
+            rollCost = costOptions.ten;
         }
-        //Update the cost
+        //Update the remaining coins
         let updatedCoins = usersCoins - rollCost;
         //If the choice they picked would set them below 0, 
         //Kick them out of this function to prevent this

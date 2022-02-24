@@ -44,7 +44,6 @@ const CharacterSummon = () => {
      //needs to be async so that we can make it wait for the server response and return a correct value
      const getPulledCard = async(cardRarity, bannerName) => {
           
-
           //Check if we should be grabbing from our database or not
           //If we don't, grab from our local file.
           if(USE_DATABASE_TO_GET_CARDS === true){
@@ -78,7 +77,6 @@ const CharacterSummon = () => {
                          summonedCard.id = uuidv4();
 
                          return summonedCard;
-
                     }
                }
           }
@@ -93,9 +91,9 @@ const CharacterSummon = () => {
           const ssrRate = banner.rates.ssr;
           const srRate = banner.rates.sr;
           const rRate = banner.rates.r
-          
+        
           //Check that the summon is valid based off their available coins and roll type
-          let validSummon = await updateUsersCoins(numRolls);
+          let validSummon = await updateUsersCoins(numRolls, banner.cost);
 
           if(validSummon){
                //Fill our array with the cards they summoned
@@ -129,16 +127,13 @@ const CharacterSummon = () => {
                     setSummonedGear(summon);
                     addGearRolledToPlayerInventory(summon)
                }
-
           } else{
                alert('Insufficient coins');
           }
      }
 
      let results;
-
      let bannersToShow = gameBanners.filter(x => x.isActive === true).map(banner => {
-
           if(banner.bannerType === 'character' && summonedCharacters){
                results = summonedCharacters.map(sumChara => {
                               return <CharacterCard 
@@ -168,11 +163,10 @@ const CharacterSummon = () => {
      })
 
      return (
-               <div> 
-                    <p>Available Gems: { usersCoins }</p>
-
-                    { bannersToShow }
-               </div>
+          <div> 
+               <p>Available Gems: { usersCoins }</p>
+               { bannersToShow }
+          </div>
      );
 }
 

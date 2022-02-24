@@ -8,6 +8,7 @@ export const gameBanners = [
         bannerDisplayName: 'あなたに凄く会いたかったです!',
         bannerType: 'character',
         rates: { ssr: 1, sr: 13, r: 60 },
+        cost: { single: 5, ten: 50 },
         SSR: [
                 {characterID: uuid(), name: 'Maeda Atsuko',     rarity: 'SSR',  specialty: ['Aitakatta', 'Gen 1'], hp: 2500, def: 1200, atk: 1200, adjustedStats: { adjHP: 0, adjDef:0, adjAtk: 0 }, leaderSkill: {skills: [{type: 'def', value: 2.0}] },     leaderSkillText: "All 'Aitakatta' idols gain double defense",     numberMerges: 0, maxMerges: 5, saved: false, hat: null, top: null, bottom: null, shoes: null, accessory: null },
                 {characterID: uuid(), name: 'Oshima Mai',       rarity: 'SSR',  specialty: ['Aitakatta', 'Gen 1'], hp: 2200, def: 1200, atk: 1300, adjustedStats: { adjHP: 0, adjDef:0, adjAtk: 0 }, leaderSkill: {skills: [{type: 'atk', value: 1.5}] },     leaderSkillText: "All 'Aitakatta' idols gain 50% more attack",    numberMerges: 0, maxMerges: 5, saved: false, hat: null, top: null, bottom: null, shoes: null, accessory: null },
@@ -43,6 +44,7 @@ export const gameBanners = [
         bannerDisplayName: 'よっしゃー!準備しなくちゃいけない!',
         bannerType: 'gear', 
         rates: { ssr: 1, sr: 13, r: 60 },
+        cost: { single: 2, ten: 20 },
         SSR: [
                 {gearID: uuid(), name: 'Idols TOKYO headband',      type: 'hat',        rarity: 'SSR',  gearEffect: { effects: [{ type: 'def', value: 1.2 }] }, numberMerges: 0, maxMerges: 5, saved: false, equipped: false, equippedCharaId: null },
                 {gearID: uuid(), name: 'Idols Normal Attire',       type: 'top',        rarity: 'SSR',  gearEffect: { effects: [{ type: 'atk', value: 1.2 }] }, numberMerges: 0, maxMerges: 5, saved: false, equipped: false, equippedCharaId: null },
