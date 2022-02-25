@@ -104,7 +104,8 @@ const SongChallenge = props => {
     }
 
     const loadedSong = {
-        sheet: [ a, s, d, space, j, k, l ],
+        // sheet: [ a, s, d, space, j, k, l ],
+        sheet: [ a, s ],
         duration: 6
     }
 
@@ -228,7 +229,6 @@ const SongChallenge = props => {
 
         //Ensure they are within a half second of the key
         if(accuracy > (perfectHit - (perfectHit - 0.5) )){
-            console.log('too early')
             return;
         }
 
@@ -387,7 +387,7 @@ const SongChallenge = props => {
     }, [isRunning])
 
 
-    return (
+    return (<div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         <div className='SongChallenge'>
             
             <div className='track-container' />
@@ -423,14 +423,16 @@ const SongChallenge = props => {
                 </div>
             </div>
 
-            <div className='hit'>
+            <div className='hit' style={{width: '51vw'}}>
                 <div className='hit__combo'>High Combo</div>
                 <div className='hit__streak'>Streak</div>
                 <div className='hit__accuracy'>Hit Accuracy</div>
+                <div className='score' />
+                <div className='health' />
             </div>
-            <div className='score' />
-            <div className='health' />
-        </div>)
+
+        </div>
+    </div>)
 
 }
 

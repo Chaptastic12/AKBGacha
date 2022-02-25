@@ -23,7 +23,8 @@ function App() {
             <Router>
               <NavBar />
               <Switch>
-                <Route path='/:playerID/inventory/characters' exact component={CharacterInventory} />
+                <Route path='/:playerID/inventory/idols' exact component={CharacterInventory} />
+                <Route path='/:playerID/inventory/gear' exact component={CharacterInventory} />
                 <Route path='/:playerID/inventory/character/:characterName' exact component={CharacterDetails} />
                 <Route path='/banners' exact component={CharacterSummon} />
                 <Route path='/play/songBattle/:songID' exact component={SongChallenge} />

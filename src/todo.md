@@ -15,3 +15,5 @@
 
 # Update summong animation
 ## Show one card at a time - at the end, show them all and then close
+
+# Allow users to sort by saved idols

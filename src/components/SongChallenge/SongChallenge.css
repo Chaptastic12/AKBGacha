@@ -1,6 +1,6 @@
 .SongChallenge{
   height: 100vh;
-  width: 100vw;
+  width: 50vw; /*Halved*/
 }
 
 .track-container {
@@ -9,6 +9,9 @@
   }
   
 .track {
+  display:flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   flex: 0 0 calc(100% / 7);
 }
@@ -16,7 +19,7 @@
 .note {
     position: absolute;
     opacity: 0;
-    width: calc(100vw / 7);
+    width: calc(50vw / 8); /*Halved*/
     height: 10px;
     animation: moveDown 3s linear 3s;
 }
@@ -34,14 +37,14 @@
 }
 
 .key {
-  flex: 0 0 calc(100% / 7);
+  flex: 0 0 calc(100% / 7); 
   border-left: 1px solid grey;
   border-right: 1px solid grey;
   text-align: center;
   position: relative;
   font-size: 1.6rem;
   height: 100px;
-  width: 150px;
+  width: 75px; /*Halved*/
   border-top: 1px solid red;
 }
 
