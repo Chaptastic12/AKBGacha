@@ -10,8 +10,6 @@
 
 # When a song is selected, apply the team stats to the song
 
-# Allow users to sort by saved idols
-
 
 # Completed
 
@@ -21,3 +19,4 @@
 * once the max inventory is about to be reached, prevent any more summons
     ex: Inventory max is 100; User is doing a 10x summon.
             Check if inventory is <= 90; If it is, allow summon. If not, prevent summon
+## Allow users to sort by saved idols

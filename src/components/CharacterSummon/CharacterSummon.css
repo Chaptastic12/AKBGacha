@@ -42,6 +42,8 @@
 .SummonModal{
     background-color: white;
     height: 40vw;
+    min-height: 800px;
     width: 50vw;
+    min-width: 600px;
     border-radius: 25px;
 }

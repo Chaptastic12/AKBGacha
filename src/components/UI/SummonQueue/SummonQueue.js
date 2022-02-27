@@ -20,14 +20,16 @@ const SummonQueue = props =>{
             key={cards[cardIndex].id} />
     }
 
+    //Set our default actions
     let text = 'Next';
     let action = () => adjustIndex(cards.length);
+    //If we are on the last card, adjust the defaults
     if(cardIndex === (cards.length - 1) ){ text = 'Close'; action=() => setShowModal(prevState => !prevState) }
 
     return (
         <div>
             {displayCard} <br/>
-            <button onClick={action}>{text}</button> <br/>
+            <button onClick={action}>{text}</button><br/>
             { cards.slice(0, cardIndex).map(item =>  type === 'idol' ? <CharacterCard key={item.id} data={item} /> :  <GearCard data={item} key={item.id} revealed={true} smallView={true} />)}
         </div>
     )

@@ -99,7 +99,7 @@ const CharacterSummon = () => {
           const ssrRate = banner.rates.ssr;
           const srRate = banner.rates.sr;
           const rRate = banner.rates.r
-          
+
           //Ensure that their inventory isn't full
           if(idolInventoryFull){ return alert('ERROR: Inventory is full')}
           //Check that the summon is valid based off their available coins and roll type

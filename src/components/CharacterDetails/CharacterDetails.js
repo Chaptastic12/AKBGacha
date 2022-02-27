@@ -11,6 +11,7 @@ import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Conte
 import { GearInventoryContext } from '../../Shared/GearInventory-Context';
 
 import './CharacterDetails.css';
+import { uuid } from 'uuidv4';
 
 const CharacterDetails = props =>{
 
@@ -52,7 +53,7 @@ const CharacterDetails = props =>{
         const showEquippedItems = types.map(type => {
             return <div className='Outfit-Item'>
                         <span>{ type }</span>
-                        { loadedCharacter[type] ? <GearCard key={loadedCharacter[type].id} data={loadedCharacter[type]} revealed={true} smallView={true} handleGearEquip={() => handleGearEquip(loadedCharacter[type], 'unequip')} /> : 'Equip an item'}
+                        { loadedCharacter[type] ? <GearCard key={uuid()} data={loadedCharacter[type]} revealed={true} smallView={true} handleGearEquip={() => handleGearEquip(loadedCharacter[type], 'unequip')} /> : 'Equip an item'}
                     </div>
         });
 

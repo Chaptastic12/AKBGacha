@@ -67,6 +67,17 @@ const CharacterInventory = props =>{
                 setCharactersInPlayerInventory(sortedInv)
                 setSortedInventory(sortedInv);
                 break;
+            case 'saved':
+                //Sort by Name so like rarity cards are next to each other
+                nameSorter(sortedInv);
+                sortedInv.sort((a,b) =>{
+                    let savedA = a.saved;
+                    let savedB = b.saved;
+                    return (savedA === savedB) ? 0 : savedA ? -1 : 1
+                });
+                setCharactersInPlayerInventory(sortedInv)
+                setSortedInventory(sortedInv);
+                break;
             case 'rarity':
                 //Sort by Name so like rarity cards are next to each other
                 nameSorter(sortedInv);
@@ -138,6 +149,7 @@ const CharacterInventory = props =>{
     return(<>
         {error && <p>{ error }</p>}
         <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
+        <button onClick={()=>sortCharactersInInventory('saved')}>Sort by Liked</button>
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>

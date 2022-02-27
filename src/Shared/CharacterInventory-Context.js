@@ -22,6 +22,7 @@ const CharacterInventoryProvider = props =>{
         } else{
             setIdolInventoryFull(true);
         }
+    // eslint-disable-next-line
     }, [charactersInPlayerInventory]);
 
     //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
@@ -130,7 +131,7 @@ const CharacterInventoryProvider = props =>{
             for(let j=0; j < copyOfCurrentTeam[1].leaderSkill.skills.length; j++){
                 if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'atk'){ stats.totalAtk = Math.round(stats.totalAtk * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
                 if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'def'){ stats.totalDef = Math.round(stats.totalDef * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
-                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'hp'){ stats.totalHP = Math.round(stats.totalHP * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
+                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'hp'){  stats.totalHP =  Math.round(stats.totalHP  * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
             }
         }
 
@@ -159,11 +160,7 @@ const CharacterInventoryProvider = props =>{
         const card = copyInventory[cardIndex]
 
         //Determine if we are liking, or unliking it
-        if(card.saved === true){
-             card.saved = false;
-        } else {
-             card.saved = true;
-        }
+        card.saved = !card.saved;
 
         //Set the updated card to the correct spot and save
         copyInventory[cardIndex] = card;
