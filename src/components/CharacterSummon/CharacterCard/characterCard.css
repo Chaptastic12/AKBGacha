@@ -27,7 +27,13 @@
 .SSR {
      border: 2px solid gold;
      box-shadow: 0 0 4px orangered;
-     animation: pulse 2s infinite;
+     animation: pulse 2s 3;
+}
+
+.SR {
+     border: 2px solid royalblue;
+     box-shadow: 0 0 4px purple;
+     animation: pulse 2s 3;
 }
 
 .CardInTeam{

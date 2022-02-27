@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
@@ -14,15 +14,24 @@ const CharacterCard = (props) => {
      const { setLoadedCharacter } = useContext(CharacterInventoryContext)
 
      const [ showCard, setShowCard ] = useState(false);
-     const [ showModal, setShowModal ] = useState(false)
+     const [ showModal, setShowModal ] = useState(false);
 
      const history = useHistory();
+
+     useEffect(()=>{
+          const showCardTimer = setTimeout(()=>{ setShowCard(true)}, 1000);
+          return () => clearInterval(showCardTimer);
+     })
+
+     let specialCard = '';
+     if(props.data.rarity === 'SSR'){ specialCard = 'SSR' }
+     else if(props.data.rarity === 'SR'){ specialCard = 'SR' }
 
      //Show our full card details if 
      // 1) the use has clicked on the card from the summoning screen, setting showCard to true or
      // 2) the user is on the inventory page and clicking on a card to see more details by checking if fullSizedCard is undefined
      // 3) the user is on the inventory page and overring over a card to see the full details
-     let fullCard = <div className={props.data.rarity === 'SSR' ? 'CharacterCard SSR' : 'CharacterCard'}>
+     let fullCard = <div className={`CharacterCard ${specialCard}`}>
                          {showCard || props.fullSizedCard === undefined || props.showFullCard ? 
                               <div className='CharacterCardDetails'>
                                    <div>
@@ -48,7 +57,7 @@ const CharacterCard = (props) => {
                                    </div>
                               </div> 
                               : 
-                              <div className='CharacterCardDetails' onClick={()=>setShowCard(prevState=>!prevState)}><div className='CardSpecs'>Click to show your card!</div></div>}
+                              <div className='CharacterCardDetails' onClick={() => setShowCard(prevState=>!prevState)}><div className='CardSpecs'>Click to show your card!</div></div>}
                     </div>
                     
      //Dependent on if we are getting a small card from the inventory, or teams component, determine our action onClick
@@ -113,7 +122,7 @@ const CharacterCard = (props) => {
                     </Modal>
                </ModalBackground>
           </div>}
-               <div className={`CharacterCardSmall ${props.data.rarity === 'SSR' ? 'SSR' : ''} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''} ${props.data.saved === true ? 'CardSaved' : ''}`}
+               <div className={`CharacterCardSmall ${specialCard} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''} ${props.data.saved === true ? 'CardSaved' : ''}`}
                     onClick={() => handleLeftClick(props.data.id)}
                     onMouseOver={() => handleMouseOver(props.data)}
                     onContextMenu={(e) => handleRightClick(e)}

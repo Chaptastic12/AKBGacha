@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './GearCard.css';
 
 const GearCard = props =>{
 
     const [ showCard, setShowCard ] = useState(false);
+
+    useEffect(()=>{
+        const showCardTimer = setTimeout(()=>{ setShowCard(true)}, 1000);
+        return () => clearInterval(showCardTimer);
+   })
 
     //Show our effects
     let gearEffects = props.data.gearEffect.effects.map(effect => {

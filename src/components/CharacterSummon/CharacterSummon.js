@@ -6,6 +6,10 @@ import { gameBanners }  from '../../characterData';
 import Button from '../UI/Button/button';
 import CharacterCard from './CharacterCard/CharacterCard';
 import GearCard from './GearCard/GearCard';
+import Modal from '../UI/Modal/Modal';
+import ModalBackground from '../UI/Modal/ModalBackground';
+import SummonQueue from '../UI/SummonQueue/SummonQueue';
+
 import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Context';
 import { GearInventoryContext } from '../../Shared/GearInventory-Context';
 import { UserDetailsContext } from '../../Shared/UserDetails-Context';
@@ -25,6 +29,8 @@ const CharacterSummon = () => {
 
      const [ summonedCharacters, setSummonedCharacters ] = useState([]);
      const [ summonedGear, setSummonedGear ] = useState([])
+     const [ cardIndex, setCardIndex ] = useState(0);
+     const [ showModal, setShowModal ] = useState(false);
 
      //Grab our function to add cards to the players inventory
      const { addCardsRolledToPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
@@ -87,7 +93,9 @@ const CharacterSummon = () => {
 
      //needs to be async so that we can make it wait for the response from the getPulledCard function before continuing through the loop
      const getSummonCharacters = async(numRolls, banner) =>{
+          setCardIndex(0);
           setSummonedCharacters([]);
+          setSummonedGear([]);
           const bannerName = banner.bannerName;
           const bannerType = banner.bannerType;
           const ssrRate = banner.rates.ssr;
@@ -125,35 +133,27 @@ const CharacterSummon = () => {
                if(bannerType === 'character'){
                     setSummonedCharacters(summon)
                     addCardsRolledToPlayerInventory(summon);
+
                } else if (bannerType === 'gear'){
                     setSummonedGear(summon);
-                    addGearRolledToPlayerInventory(summon)
+                    addGearRolledToPlayerInventory(summon);
                }
+               setShowModal(true);
           } else{
                alert('Insufficient coins');
           }
      }
 
-     let results;
-     let bannersToShow = gameBanners.filter(x => x.isActive === true).map(banner => {
-          if(banner.bannerType === 'character' && summonedCharacters){
-               results = summonedCharacters.map(sumChara => {
-                              return <CharacterCard 
-                                        data={sumChara}
-                                        fullSizedCard={true}
-                                        key={sumChara.id}
-                                        leaderSkillText={sumChara.leaderSkillText}
-                                        likeCharacter={(id) => likeCharacter(id)} />
-                         })
+     const adjustIndex = (maxIndex) =>{
+          if(maxIndex === cardIndex){
+               //shouldn't get here
+          } else {
+               //Increase our index
+               setCardIndex(prevState => prevState + 1);
           }
-          if (banner.bannerType === 'gear' && summonedGear){
-               results = summonedGear.map(sumGear => {
-                              return <GearCard 
-                                        data={sumGear}
-                                        key={sumGear.id} />
-                         })
-          }
+     }
 
+     let bannersToShow = gameBanners.filter(x => x.isActive === true).map(banner => {
           return (<div key={uuidv4()}>
                     <div className='BannerContainer'>
                          <div className='Banner' key={banner.bannerName} style={{background: 'URL(' + banner.bannerImg + ')', backgroundPosition: 'center', backgroundSize: 'cover'}}>
@@ -165,13 +165,22 @@ const CharacterSummon = () => {
                               </div>
                          </div>
                     </div>
-                    { results }
                </div>)
      })
 
      return (
           <div> 
                <p>Available Gems: { usersCoins }</p>
+               { showModal && <div>
+                    <ModalBackground>
+                         <Modal>
+                              <div className='SummonModal'>
+                                   { summonedCharacters.length > 0 && <SummonQueue cards={summonedCharacters} type='idol' likeCharacter={(id) => likeCharacter(id)} adjustIndex={adjustIndex} cardIndex={cardIndex} setShowModal={(val) => setShowModal(val)}/> }
+                                   { summonedGear.length > 0 && <SummonQueue cards={summonedGear} type='gear' adjustIndex={adjustIndex} cardIndex={cardIndex} setShowModal={(val) => setShowModal(val)} /> }
+                              </div>
+                         </Modal>
+                    </ModalBackground>
+               </div>}
                { bannersToShow }
           </div>
      );
