@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 const CharacterInventoryContext = createContext();
 
@@ -7,13 +7,25 @@ const CHARACTERS_PER_TEAM = 8; //First slot is taken, so we want 7 total charact
 const CharacterInventoryProvider = props =>{
     
     const baseTeamStats = { id: 'stats', totalHP: 0, totalAtk: 0, totalDef: 0 };
-
+    let USER_IDOL_INVENTORY_MAX_SIZE = 50
+    
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
     const [ userTeams, setUserTeams ] = useState([ [baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats] ]);
     const [ userTeamIndex, setUserTeamIndex ] = useState(0);    
     const [ loadedCharacter, setLoadedCharacter ] = useState();
-
+    const [ idolInventoryFull, setIdolInventoryFull ] = useState(false);
     const [ error, setError ] = useState('');
+
+    useEffect(()=>{
+        if(charactersInPlayerInventory < USER_IDOL_INVENTORY_MAX_SIZE){
+            setIdolInventoryFull(false);
+        } else{
+            setIdolInventoryFull(true);
+        }
+    }, [charactersInPlayerInventory]);
+
+    console.log(idolInventoryFull)
+
 
     //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
     //This will have to make a call to the player specific inventory and update that record
@@ -299,7 +311,7 @@ const CharacterInventoryProvider = props =>{
             getLikeCharacters, likeCharacter,
             loadedCharacter, setLoadedCharacter,
             mergeCharaHandler, adjustLoadedCharacter, adjustSelectedTeamStats,
-            handleCharacterGear
+            handleCharacterGear, idolInventoryFull
         }}>
             {props.children}
         </CharacterInventoryContext.Provider>

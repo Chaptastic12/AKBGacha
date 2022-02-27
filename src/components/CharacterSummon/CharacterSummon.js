@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { gameBanners }  from '../../characterData';
 
 import Button from '../UI/Button/button';
-import CharacterCard from './CharacterCard/CharacterCard';
-import GearCard from './GearCard/GearCard';
 import Modal from '../UI/Modal/Modal';
 import ModalBackground from '../UI/Modal/ModalBackground';
 import SummonQueue from '../UI/SummonQueue/SummonQueue';
@@ -33,7 +31,7 @@ const CharacterSummon = () => {
      const [ showModal, setShowModal ] = useState(false);
 
      //Grab our function to add cards to the players inventory
-     const { addCardsRolledToPlayerInventory, likeCharacter } = useContext(CharacterInventoryContext);
+     const { addCardsRolledToPlayerInventory, likeCharacter, idolInventoryFull } = useContext(CharacterInventoryContext);
 
      //Grab functionality to add gear to players gear inventory
      const { addGearRolledToPlayerInventory } = useContext(GearInventoryContext);
@@ -101,9 +99,12 @@ const CharacterSummon = () => {
           const ssrRate = banner.rates.ssr;
           const srRate = banner.rates.sr;
           const rRate = banner.rates.r
-        
+          
+          //Ensure that their inventory isn't full
+          if(idolInventoryFull){ return alert('ERROR: Inventory is full')}
           //Check that the summon is valid based off their available coins and roll type
           let validSummon = await updateUsersCoins(numRolls, banner.cost);
+
 
           if(validSummon){
                //Fill our array with the cards they summoned
