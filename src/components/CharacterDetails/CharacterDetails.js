@@ -11,7 +11,7 @@ import { CharacterInventoryContext } from '../../Shared/CharacterInventory-Conte
 import { GearInventoryContext } from '../../Shared/GearInventory-Context';
 
 import './CharacterDetails.css';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 const CharacterDetails = props =>{
 
@@ -100,7 +100,7 @@ const CharacterDetails = props =>{
                     <span>Click and confirm to unlock potential! Page {showMoreChara} of {charaNumberOfPages} </span>
                     <div>
                         <button onClick={() => setShowMoreChara(prevState => prevState !== 1 ? prevState -1 : prevState )}>Previous</button>
-                        { likeCharacters.slice(charaIndexStart, charaIndexEnd).map(chara =>  <CharacterCard key={chara.id} data={chara} mergeChara={true} mergeCharaHandler={ (sacraficeCard) => mergeCharaHandler(sacraficeCard)} /> )}
+                        { likeCharacters.slice(charaIndexStart, charaIndexEnd).map(chara =>  <CharacterCard key={uuid()} data={chara} mergeChara={true} mergeCharaHandler={ (sacraficeCard) => mergeCharaHandler(sacraficeCard)} /> )}
                         <button onClick={() => setShowMoreChara(prevState => prevState !== charaNumberOfPages ? prevState + 1 : charaNumberOfPages )}>Next</button>
                     </div>
                 </> : <p> 'No Idols found to unlock potential.' </p> }
@@ -109,7 +109,7 @@ const CharacterDetails = props =>{
                     <span>Click to add gear! Page {showMoreGear} of {gearNumberOfPages}</span>
                     <div>
                         <button onClick={() => setShowMoreGear(prevState => prevState !== 1 ? prevState -1 : prevState )}>Back</button>
-                        { availGear.slice(gearIndexStart, gearIndexEnd).map( gear =>  <GearCard key={gear.id} data={gear} revealed={true} smallView={true} handleGearEquip={() => handleGearEquip(gear, 'equip')}/> )}
+                        { availGear.slice(gearIndexStart, gearIndexEnd).map( gear =>  <GearCard key={uuid()} data={gear} revealed={true} smallView={true} handleGearEquip={() => handleGearEquip(gear, 'equip')}/> )}
                         <button onClick={() => setShowMoreGear(prevState => prevState !== gearNumberOfPages ? prevState + 1 : gearNumberOfPages )}>Next</button>
                     </div>
                 </> : <p>No available gear found</p> }

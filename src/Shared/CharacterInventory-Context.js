@@ -92,8 +92,8 @@ const CharacterInventoryProvider = props =>{
         }
         //Update our user team
         setUserTeams(copyOfCurrentTeams);
-         //Update team stats
-         adjustSelectedTeamStats()
+        //Update team stats
+        adjustSelectedTeamStats()
     }
 
     const removeCharaFromTeam = (teamIndex, characterID) =>{
@@ -206,10 +206,15 @@ const CharacterInventoryProvider = props =>{
                     if(previousTeams[i][j].id === sacraficeCard.id){
                         previousTeams[i].splice(j, 1);
                     }
+                    //Replace the old card with the new one
+                    if(previousTeams[i][j].id === loadedCharacterCopy.id){
+                        previousTeams[i][j] = loadedCharacterCopy;
+                    }
                 }
             }
+            //Update teams with if the stronger card is in the team
             setUserTeams(previousTeams);
-
+            adjustSelectedTeamStats();
         } else{
             //If they have reached the max unlock, alert them
             return alert('Character already max unlocked')
