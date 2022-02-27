@@ -19,13 +19,14 @@ const CharacterCard = (props) => {
      const history = useHistory();
 
      useEffect(()=>{
-          const showCardTimer = setTimeout(()=>{ setShowCard(true)}, 1000);
+          const showCardTimer = setTimeout(()=>{ setShowCard(true)}, 2000);
           return () => clearInterval(showCardTimer);
      })
 
      let specialCard = '';
-     if(props.data.rarity === 'SSR'){ specialCard = 'SSR' }
-     else if(props.data.rarity === 'SR'){ specialCard = 'SR' }
+     let specialAnimation = ''
+     if(props.data.rarity === 'SSR'){ specialCard = 'SSR'; specialAnimation = 'SpecialAnimation' }
+     else if(props.data.rarity === 'SR'){ specialCard = 'SR'; specialAnimation = 'SpecialAnimation' }
 
      //Show our full card details if 
      // 1) the use has clicked on the card from the summoning screen, setting showCard to true or
@@ -57,7 +58,7 @@ const CharacterCard = (props) => {
                                    </div>
                               </div> 
                               : 
-                              <div className='CharacterCardDetails' onClick={() => setShowCard(prevState=>!prevState)}><div className='CardSpecs'>Click to show your card!</div></div>}
+                              <div className={`CharacterCardDetails ${specialAnimation}`} onClick={() => setShowCard(prevState=>!prevState)}><div className='CardSpecs'>Click to show your card!</div></div>}
                     </div>
                     
      //Dependent on if we are getting a small card from the inventory, or teams component, determine our action onClick
