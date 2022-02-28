@@ -31,7 +31,8 @@ const UserDetailsProvider = props =>{
             }
         }, 1000);
 
-        return () => clearInterval(replenishStamina)
+        return () => clearInterval(replenishStamina);
+    // eslint-disable-next-line
     }, [userStamina]);
 
     const updateUsersCoins = (numberRolls, costOptions) =>{
@@ -84,10 +85,14 @@ const UserDetailsProvider = props =>{
         setUserBeatenSongs(beatenSongs);
     }
 
+    const purchaseAdditionalStamina = (amount) =>{
+        setMaxStamina(prevState => prevState + amount);
+    }
+
     return <UserDetailsContext.Provider value={{
         usersCoins, updateUsersCoins, 
-        userStamina, updateUserStamina,
-        userBeatSongHandler, timeRemainingTillReplenish, maxStamina
+        userStamina, updateUserStamina, timeRemainingTillReplenish, maxStamina,
+        userBeatSongHandler, purchaseAdditionalStamina
     }}>
         {props.children}
     </UserDetailsContext.Provider>

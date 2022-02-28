@@ -36,84 +36,8 @@ const SongChallenge = props => {
     let healthText;
     let gameTimerCounter=0;
 
-    let a = {
-        color: 'red',
-        notes: [
-            { duration: 3, delay: 1, hitTime: 4 },
-            { duration: 3, delay: 2, hitTime: 5 },
-            { duration: 3, delay: 3, hitTime: 6 },
-        ]
-    }
-
-    let s = {
-        color: 'blue',
-        notes: [
-            { duration: 3, delay: 0.5, hitTime: 3.5 },
-            { duration: 3, delay: 1, hitTime: 4 },
-            { duration: 3, delay: 1.25, hitTime: 4.25 },
-            { duration: 3, delay: 2.1, hitTime: 5.1 }
-        ]
-    }
-
-    let d = {
-        color: 'green',
-        notes: [
-            { duration: 3, delay: 0, hitTime: 3 },
-            { duration: 3, delay: 1, hitTime: 4 },
-            { duration: 3, delay: 2.25, hitTime: 5.25 },
-            { duration: 3, delay: 3, hitTime: 6 }
-        ]
-    }
-
-    let j = {
-        color: 'yellow',
-        notes: [
-            { duration: 3, delay: 0.75, hitTime: 3.75 },
-            { duration: 3, delay: 1.25, hitTime: 4.25 },
-            { duration: 3, delay: 2, hitTime: 5 },
-            { duration: 3, delay: 2.5, hitTime: 5.5 }
-        ]
-    }
-
-    let k = {
-        color: 'purple',
-        notes: [
-            { duration: 3, delay: 0, hitTime: 3 },
-            { duration: 3, delay: 0.75, hitTime: 3.75 },
-            { duration: 3, delay: 2.25, hitTime: 5.25 },
-            { duration: 3, delay: 3.5, hitTime: 6.5 }
-        ]
-    }
-
-    let l = {
-        color: 'gray',
-        notes: [
-            { duration: 3, delay: 0.5, hitTime: 3.5 },
-            { duration: 3, delay: 1, hitTime: 4 },
-            { duration: 3, delay: 2, hitTime: 5 },
-            { duration: 3, delay: 3, hitTime: 6 }
-        ]
-    }
-
-    let space = {
-        color: 'violet',
-        notes: [
-            { duration: 3, delay: 1, hitTime: 4 },
-            { duration: 3, delay: 2, hitTime: 5 },
-            { duration: 3, delay: 3, hitTime: 6 },
-            { duration: 3, delay: 4, hitTime: 7 }
-        ]
-    }
-
-    const loadedSong = {
-        // sheet: [ a, s, d, space, j, k, l ],
-        id: 1,
-        sheet: [ a, s ],
-        duration: 6,
-        staminaCost: 8,
-        winningReward: {},
-        firstTimeWinReward: {}
-    }
+    //Get our song based off what is passed in
+    const loadedSong = props.loadedSong;
 
     const resetAll = () =>{
         keyDown = { a: false, s: false, d: false, j: false, k: false, l: false, ' ': false }
@@ -362,20 +286,22 @@ const SongChallenge = props => {
 
 
     useEffect(()=>{
-        resetAll();
-        // eslint-disable-next-line
-        trackContainer = document.querySelector('.track-container');
-        // eslint-disable-next-line
-        keypress = document.querySelectorAll('.keypress');
-        // eslint-disable-next-line
-        comboText = document.querySelector('.hit__streak')
-        // eslint-disable-next-line
-        healthText = document.querySelector('.health');
-        initializeSongComponents();
-        startGame();
-        setUpKeys();
-        noteMiss();
-    });
+        if(loadedSong.id){
+            resetAll();
+            // eslint-disable-next-line
+            trackContainer = document.querySelector('.track-container');
+            // eslint-disable-next-line
+            keypress = document.querySelectorAll('.keypress');
+            // eslint-disable-next-line
+            comboText = document.querySelector('.hit__streak')
+            // eslint-disable-next-line
+            healthText = document.querySelector('.health');
+            initializeSongComponents();
+            startGame();
+            setUpKeys();
+            noteMiss();
+        }
+    }, [loadedSong]);
 
     let isRunning;
     useEffect(()=>{

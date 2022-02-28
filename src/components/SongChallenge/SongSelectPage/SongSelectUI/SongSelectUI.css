@@ -1,0 +1,24 @@
+.SongSelectUI-Container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
+}
+
+.SongSelectUI{
+    position: relative;
+    height: 500px;
+    width: 500px;
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+
+.SongSelectUI h1{
+    /* font-size: 54px; */
+    position: absolute;
+    top: 0;
+    font-size: calc(28px + 1vw);
+    text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+    margin: 0;
+}

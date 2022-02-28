@@ -18,8 +18,8 @@ const NavBar = props =>{
                <div  className='NavBar__Link'><NavLink to='/nplayerID/inventory/idols'>View all Idols</NavLink></div>
                <div  className='NavBar__Link'><NavLink to='/nplayerID/inventory/gear'>View all Gear</NavLink></div>
                <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/banners'>Summon Idols & Gear</NavLink></div>
-               <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/play/songBattle/test'>Play a Show</NavLink></div>
-               <div>Stamina: {userStamina}  {userStamina !== maxStamina && 'Stamina Refresh: ' + timeRemainingTillReplenish + 's'}</div>
+               <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/play/songBattle/'>Select a Show</NavLink></div>
+               <div>Stamina: {userStamina}  {userStamina !== maxStamina && ' | Stamina Refresh: ' + timeRemainingTillReplenish + 's'}</div>
           </div>
      </>);
 }
