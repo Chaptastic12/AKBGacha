@@ -1,12 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
+
 import CharacterCard from '../../CharacterSummon/CharacterCard/CharacterCard';
 import UserTeams from '../Teams/UserTeams';
+import Error from '../../UI/Error/Error';
 
 import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Context';
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory, setCharactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, likeCharacter } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, setCharactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, setError, likeCharacter } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
     //const [ sortType, setSortType ] = useState('');
@@ -147,14 +149,14 @@ const CharacterInventory = props =>{
         });
     
     return(<>
-        {error && <p>{ error }</p>}
+        {error && <Error close={() => setError('') }>{ error }</Error>}
+        
         <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
+
         <button onClick={()=>sortCharactersInInventory('saved')}>Sort by Liked</button>
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
-        {/* <p>Currently sorted by: { sortType } </p> */}
-        <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
         
         {showSearchBar && <div>
             <select onClick={(e)=>setSearchFilter(e.target.value)}>
@@ -166,6 +168,9 @@ const CharacterInventory = props =>{
             <button onClick={()=>sortCharactersInInventory('search')}>Search</button>
             <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
         </div>}
+
+        <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
+
         <div style={{float: 'left', marginLeft: '50px', height: '100vh'}}>
             { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} /> }
         </div>

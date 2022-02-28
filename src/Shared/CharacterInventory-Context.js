@@ -306,7 +306,7 @@ const CharacterInventoryProvider = props =>{
             userTeamIndex, saveUserTeamIndex,
             addCharaToTeam, removeCharaFromTeam,
             addCardsRolledToPlayerInventory,
-            deleteCardFromInventory, error,
+            deleteCardFromInventory, error, setError,
             getLikeCharacters, likeCharacter,
             loadedCharacter, setLoadedCharacter,
             mergeCharaHandler, adjustLoadedCharacter, adjustSelectedTeamStats,

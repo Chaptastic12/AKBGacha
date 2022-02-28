@@ -98,7 +98,6 @@ span{
      border: 2px solid rgb(243, 144, 176);
 }
 
-
 .CharacterCard-Modal{
      display: flex;
      align-items: center;
@@ -177,20 +176,5 @@ span{
      margin-top: 10px;
  }
 
- .CardTitle .hp
+ .CardTitle .hp {}
 
- .Graduate-Details{
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     width: 350px;
-     height: 50px;
-     background-color: rgba(243, 144, 176, 0.9);
-     color: white;
-     font-weight: bold;
-     font-size: 24px;
-     border-radius: 15px;
- }
- .Graduate-Details:active{
-     background-color: rgba(243, 144, 176, 0.5);
- }
