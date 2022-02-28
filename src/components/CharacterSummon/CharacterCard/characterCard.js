@@ -23,10 +23,28 @@ const CharacterCard = (props) => {
           return () => clearInterval(showCardTimer);
      })
 
+     //Set up special borders, animations and the background color dependent on the card rarity
      let specialCard = '';
      let specialAnimation = ''
-     if(props.data.rarity === 'SSR'){ specialCard = 'SSR'; specialAnimation = 'SpecialAnimation' }
-     else if(props.data.rarity === 'SR'){ specialCard = 'SR'; specialAnimation = 'SpecialAnimation' }
+     let cardBackColor;
+     switch(props.data.rarity){
+          case('SSR'):
+               specialCard = 'SSR'; 
+               specialAnimation = 'SpecialAnimation'; 
+               cardBackColor = 'SSRBack';
+               break;
+          case('SR'):
+               specialCard = 'SR'; 
+               specialAnimation = 'SpecialAnimation'; 
+               cardBackColor = 'SRBack';
+               break;
+          case('R'):
+               cardBackColor = 'RBack';
+               break;
+          default:
+               cardBackColor = 'CBack';
+               break;
+     }
 
      //Show our full card details if 
      // 1) the use has clicked on the card from the summoning screen, setting showCard to true or
@@ -58,7 +76,7 @@ const CharacterCard = (props) => {
                                    </div>
                               </div> 
                               : 
-                              <div className={`CharacterCardDetails ${specialAnimation}`} onClick={() => setShowCard(prevState=>!prevState)}><div className='CardSpecs'>Click to show your card!</div></div>}
+                              <div className={`CharacterCardDetails ${specialAnimation} ${cardBackColor}`} onClick={() => setShowCard(prevState=>!prevState)}><div className='CardSpecs'>Click to show your card!</div></div>}
                     </div>
                     
      //Dependent on if we are getting a small card from the inventory, or teams component, determine our action onClick

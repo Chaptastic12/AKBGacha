@@ -176,5 +176,18 @@ span{
      margin-top: 10px;
  }
 
- .CardTitle .hp {}
+.SSRBack{
+     background-color: gold;
+}
 
+.SRBack{
+     background-color: lightblue;
+}
+
+.RBack{
+     background-color: lightgreen;
+}
+
+.CBack{
+     background-color: lightgray;
+}
