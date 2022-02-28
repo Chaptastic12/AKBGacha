@@ -119,20 +119,39 @@ const CharacterInventoryProvider = props =>{
         const copyOfTeams = [ ...userTeams ];
         let stats = baseTeamStats;
 
+        //Determine if our leader skill applies to the card
+        //If it does, apply it; if it doesn't just add the current stat
         //Add up our total atk, def and hp
         for(let i=1; i < copyOfCurrentTeam.length; i++){
-            stats.totalAtk = stats.totalAtk + copyOfCurrentTeam[i].atk;
-            stats.totalDef = stats.totalDef + copyOfCurrentTeam[i].def;
-            stats.totalHP = stats.totalHP + copyOfCurrentTeam[i].hp;
-        }
-
-        //Add in leadership effects, if they exist
-        if(copyOfCurrentTeam[1] !== undefined && copyOfCurrentTeam[1].leaderSkill !== undefined){
-            for(let j=0; j < copyOfCurrentTeam[1].leaderSkill.skills.length; j++){
-                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'atk'){ stats.totalAtk = Math.round(stats.totalAtk * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
-                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'def'){ stats.totalDef = Math.round(stats.totalDef * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
-                if(copyOfCurrentTeam[1].leaderSkill.skills[j].type === 'hp'){  stats.totalHP =  Math.round(stats.totalHP  * copyOfCurrentTeam[1].leaderSkill.skills[j].value) }
-            }
+            copyOfCurrentTeam[i] = adjustCardStats(copyOfCurrentTeam[i]);
+            //Ensure that a leadership skill would even exist
+            if(copyOfCurrentTeam[1] !== undefined && copyOfCurrentTeam[1].leaderSkill !== undefined){
+                //Check the current idol if one of their specialities matches what the leader skill applies to, or if the leader skill applies to everyone
+                for(let j=0; j < copyOfCurrentTeam[i].specialty.length; j++){
+                    //Since an Idol can have leader skills that apply to multiple types, check each type
+                    for(let l=0; l < copyOfCurrentTeam[1].appliesTo.length; l++){
+                        //Check if the current idol falls in an acceptable skill
+                        if( (copyOfCurrentTeam[i].specialty[j] === copyOfCurrentTeam[1].appliesTo[l]) || (copyOfCurrentTeam[1].appliesTo === undefined)){
+                            for(let k=0; k < copyOfCurrentTeam[1].leaderSkill.skills.length; k++){
+                                //Check if the leader skill will impact an the atk stat or not
+                                if(copyOfCurrentTeam[1].leaderSkill.skills[k].type === 'atk'){ stats.totalAtk = stats.totalAtk + Math.round(copyOfCurrentTeam[i].adjustedStats.adjAtk * copyOfCurrentTeam[1].leaderSkill.skills[k].value) } 
+                                    else {  stats.totalAtk = stats.totalAtk + Math.round(copyOfCurrentTeam[i].adjustedStats.adjAtk) }
+                                //Check if the leader skill will impact an the def stat or not                                    
+                                if(copyOfCurrentTeam[1].leaderSkill.skills[k].type === 'def'){ stats.totalDef = stats.totalDef + Math.round(copyOfCurrentTeam[i].adjustedStats.adjDef * copyOfCurrentTeam[1].leaderSkill.skills[k].value) }
+                                    else {  stats.totalDef = stats.totalDef + Math.round(copyOfCurrentTeam[i].adjustedStats.adjDef) }
+                                //Check if the leader skill will impact an the hp stat or not
+                                if(copyOfCurrentTeam[1].leaderSkill.skills[k].type === 'hp'){  stats.totalHP =  stats.totalHP + Math.round(copyOfCurrentTeam[i].adjustedStats.adjHP  * copyOfCurrentTeam[1].leaderSkill.skills[k].value) }
+                                    else {  stats.totalHP = stats.totalHP + Math.round(copyOfCurrentTeam[i].adjustedStats.adjHP) }
+                            }
+                        } else {
+                            //If there are no leader skills, or the current idols skill does not match the leader, we can just add up the atk and defense of the idols
+                            stats.totalAtk = stats.totalAtk + copyOfCurrentTeam[i].adjustedStats.adjAtk;
+                            stats.totalDef = stats.totalDef + copyOfCurrentTeam[i].adjustedStats.adjDef;
+                            stats.totalHP = stats.totalHP + copyOfCurrentTeam[i].adjustedStats.adjHP;
+                        }
+                    }
+                }
+            } 
         }
 
         //Update the teams stat object, and update the state
@@ -293,9 +312,9 @@ const CharacterInventoryProvider = props =>{
             }
         }
 
-        cardCopy.adjustedStats.adjHP =  Math.round(hpAdjustment).toLocaleString();
-        cardCopy.adjustedStats.adjAtk = Math.round(atkAdjustment).toLocaleString();
-        cardCopy.adjustedStats.adjDef = Math.round(defAdjustment).toLocaleString();
+        cardCopy.adjustedStats.adjHP =  Math.round(hpAdjustment)
+        cardCopy.adjustedStats.adjAtk = Math.round(atkAdjustment)
+        cardCopy.adjustedStats.adjDef = Math.round(defAdjustment)
 
         return cardCopy;
     }
