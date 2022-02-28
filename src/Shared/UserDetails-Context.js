@@ -1,12 +1,38 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 const UserDetailsContext = createContext();
+
+const SECONDS_FOR_STAMINA_REPLENISH = 179;
 
 const UserDetailsProvider = props =>{
 
     const [ usersCoins, setUsersCoins ] = useState(500);
-    const [ userStamina, setUserStamina ] = useState(24);
-    const [ userBeatenSongs, setUserBeatenSongs ] = useState([])
+    const [ userStamina, setUserStamina ] = useState(22);
+    const [ userBeatenSongs, setUserBeatenSongs ] = useState([]);
+    const [ maxStamina, setMaxStamina ] = useState(24);
+    const [ timeRemainingTillReplenish, setTimeRemainingTillReplenish] = useState(SECONDS_FOR_STAMINA_REPLENISH);
+
+    useEffect(() => {
+        let timePassed = 0;
+        let replenishStamina = setInterval(() =>{
+            if(userStamina < maxStamina){
+                if(timePassed < SECONDS_FOR_STAMINA_REPLENISH){
+                    timePassed = timePassed + 1;
+                    setTimeRemainingTillReplenish(SECONDS_FOR_STAMINA_REPLENISH - timePassed);
+                } else {
+                    setUserStamina(prevState => prevState + 1);
+                    if(userStamina === maxStamina){
+                        clearInterval(replenishStamina);
+                    } 
+                }
+            } else {
+                setTimeRemainingTillReplenish(0);
+                clearInterval(replenishStamina);
+            }
+        }, 1000);
+
+        return () => clearInterval(replenishStamina)
+    }, [userStamina]);
 
     const updateUsersCoins = (numberRolls, costOptions) =>{
         //charge them for their rolls; they either do a roll 1 or 10.
@@ -58,12 +84,10 @@ const UserDetailsProvider = props =>{
         setUserBeatenSongs(beatenSongs);
     }
 
-    console.log(userBeatenSongs)
-
     return <UserDetailsContext.Provider value={{
         usersCoins, updateUsersCoins, 
         userStamina, updateUserStamina,
-        userBeatSongHandler
+        userBeatSongHandler, timeRemainingTillReplenish, maxStamina
     }}>
         {props.children}
     </UserDetailsContext.Provider>

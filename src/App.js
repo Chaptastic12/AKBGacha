@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 
 import CharacterSummon from './components/CharacterSummon/CharacterSummon';
 import CharacterInventory from './components/Inventory/Characters/CharacterInventory';
-import NavBar from './components/NavBar/navbar';
+import NavBar from './components/NavBar/NavBar';
 import CharacterDetails from './components/CharacterDetails/CharacterDetails';
 import SongChallenge from './components/SongChallenge/SongChallenge';
 
