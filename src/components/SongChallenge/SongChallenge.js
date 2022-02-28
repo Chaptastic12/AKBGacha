@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import { useHistory, useParams } from 'react-router-dom';
+import { UserDetailsContext } from '../../Shared/UserDetails-Context';
 
 import './SongChallenge.css'
 
@@ -10,6 +11,7 @@ const SongChallenge = props => {
     //If they lose, give them an option to pay some gems to continue ( remove the next 3s of notes of they do ), and if they don't push them to a new page with their stats anyways
     const history = useHistory();
     const { songID } = useParams();
+    const { userBeatSongHandler } = useContext(UserDetailsContext)
 
     let keyDown = { a: false, s: false, d: false, j: false, k: false, l: false, ' ': false }
     let hits = { perfect: 0, good: 0, bad: 0, miss: 0 }
@@ -105,8 +107,12 @@ const SongChallenge = props => {
 
     const loadedSong = {
         // sheet: [ a, s, d, space, j, k, l ],
+        id: 1,
         sheet: [ a, s ],
-        duration: 6
+        duration: 6,
+        staminaCost: 8,
+        winningReward: {},
+        firstTimeWinReward: {}
     }
 
     const resetAll = () =>{
@@ -309,7 +315,10 @@ const SongChallenge = props => {
     const gameOverWin = () =>{
         console.log('won!');
         //Delay for cleanup to happen
-        setTimeout(() => { history.push('/banners') }, 1000);
+        setTimeout(() => { 
+            userBeatSongHandler({ id: loadedSong.id, score: score, maxCombo: maxCombo });
+            history.push('/banners') ;
+        }, 1000);
     }
 
     const updateMaxCombo = () =>{

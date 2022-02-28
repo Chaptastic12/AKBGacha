@@ -10,6 +10,8 @@
 
 # When a song is selected, apply the team stats to the song
 
+# Add system for paying a cost to upgrade a character rather than it just being free
+## Will be doable with item drops from beating levels
 
 # Completed
 
