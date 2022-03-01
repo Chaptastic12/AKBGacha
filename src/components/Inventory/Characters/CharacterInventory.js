@@ -175,9 +175,10 @@ const CharacterInventory = props =>{
             <button onClick={()=>sortCharactersInInventory('search')}>Search</button>
             <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
         </div>}
-
-        <div>
+            <br/>
+        <div style={{display: 'inline-flex'}}>
             <button onClick={() => setShowMoreIdols(prevState => prevState !== 1 ? prevState -1 : prevState )} disabled={showMoreIdols === 1}>Prev 14</button>
+            <p style={{margin: '0 5px'}}>{sortedInventory.length} idols</p>
             <button onClick={() => setShowMoreIdols(prevState => prevState !== charaNumberOfPages ? prevState + 1 : charaNumberOfPages )} disabled={showMoreIdols === charaNumberOfPages}>Next 14</button>
         </div>
 

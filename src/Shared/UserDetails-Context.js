@@ -56,9 +56,10 @@ const UserDetailsProvider = props =>{
     }
 
     const updateUserStamina = (staminaCost) =>{
+
         let updatedStamina = userStamina - staminaCost;
 
-        if(updateUserStamina < 0){ return false }
+        if(updatedStamina < 0){ return false }
 
         setUserStamina(updatedStamina);
         return true;
