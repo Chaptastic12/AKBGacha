@@ -11,40 +11,21 @@ const CharacterInventory = props =>{
     const { charactersInPlayerInventory, setCharactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, setError, likeCharacter } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
-    //const [ sortType, setSortType ] = useState('');
     const [ showSearchBar, setShowSearchBar ] = useState(false);
     const [ searchFilter, setSearchFilter ] = useState('name');
     const [ searchText, setSearchText ] = useState('');
-    const [ indexForTeam, setIndexForTeam ] = useState(userTeamIndex);
     const [ showCard, setShowCard ] = useState(charactersInPlayerInventory[0]);
     const [ showMoreIdols, setShowMoreIdols ] = useState(1);
 
-    useEffect(()=>{
-        saveUserTeamIndex(indexForTeam);
-    },[indexForTeam, saveUserTeamIndex, charactersInPlayerInventory])
-    
-    //Ensure that we are looking at the right time to update by changing the index that we use to pick the right team in the array
-    const changeIndex = (change) =>{
-        switch(change){
-            //If we are already at the end team, break out. Otherwise, increment
-            case 'add': if(indexForTeam === 7){ break; } else { setIndexForTeam(prevState => prevState + 1) } break;
-            //If we are already at the beginning of the team, break out. Otherwise, decrement
-            case 'decrease': if(indexForTeam === 0){ break } else { setIndexForTeam(prevState => prevState - 1) } break;
-            //Throw an error if we run into some kind of issue
-            default: alert('ERROR in changing Index'); break;
-        }
-    }
-
     const addCharacterToTeam = (charaId) =>{
-        addCharaToTeam(indexForTeam, charaId);
+        addCharaToTeam(userTeamIndex, charaId);
     }
 
     const removeCharacterFromTeam = (charaId) =>{
-        removeCharaFromTeam(indexForTeam, charaId);
+        removeCharaFromTeam(userTeamIndex, charaId);
     }
 
     const nameSorter = ( sortedInv ) => {
-
         sortedInv.sort((a, b) => {
             let nameA = a.name.toUpperCase(); // ignore upper and lowercase
             let nameB = b.name.toUpperCase(); // ignore upper and lowercase
@@ -55,6 +36,21 @@ const CharacterInventory = props =>{
         }); 
 
         return sortedInv;
+    }
+
+    const raritySorter = ( sortedInv ) => {
+        sortedInv.sort((a,b) =>{
+            let rarityA = a.rarity;
+            let rarityB = b.rarity;
+
+            if(rarityA === 'UR'){ return -1; }
+            if(rarityA === 'SSR' && rarityB !== 'UR'){ return -1; }
+            if(rarityA === 'SR' && rarityB !== ('SSR' || 'UR')){ return -1; }
+            if(rarityA === 'R' && rarityB !== ('SR' || 'SSR' || 'UR')){ return -1; }
+            return 0;
+        });
+
+        return sortedInv
     }
 
     //Sort our characters dependent on how the user wants to sort it
@@ -73,6 +69,7 @@ const CharacterInventory = props =>{
             case 'saved':
                 //Sort by Name so like rarity cards are next to each other
                 nameSorter(sortedInv);
+                raritySorter(sortedInv);
                 sortedInv.sort((a,b) =>{
                     let savedA = a.saved;
                     let savedB = b.saved;
@@ -84,17 +81,7 @@ const CharacterInventory = props =>{
             case 'rarity':
                 //Sort by Name so like rarity cards are next to each other
                 nameSorter(sortedInv);
-
-                sortedInv.sort((a,b) =>{
-                    let rarityA = a.rarity;
-                    let rarityB = b.rarity;
-
-                    if(rarityA === 'UR'){ return -1; }
-                    if(rarityA === 'SSR' && rarityB !== 'UR'){ return -1; }
-                    if(rarityA === 'SR' && rarityB !== ('SSR' || 'UR')){ return -1; }
-                    if(rarityA === 'R' && rarityB !== ('SR' || 'SSR' || 'UR')){ return -1; }
-                });
-                
+                raritySorter(sortedInv);
                 setCharactersInPlayerInventory(sortedInv)
                 setSortedInventory(sortedInv);
                 break;
@@ -127,7 +114,7 @@ const CharacterInventory = props =>{
     }
 
     //Based off the index we get by hitting the left our right arrows in UserTeams, grab our team in the userTeams index
-    let chosenTeam = userTeams[indexForTeam];
+    let chosenTeam = userTeams[userTeamIndex];
 
     //Next three lines are needed for pagination
     const idolsPerPage = 14
@@ -153,7 +140,8 @@ const CharacterInventory = props =>{
     return(<>
         {error && <Error close={() => setError('') }>{ error }</Error>}
         
-        <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
+        {/* <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} /> */}
+        <UserTeams removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
 
         <button onClick={()=>sortCharactersInInventory('saved')}>Sort by Liked</button>
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>

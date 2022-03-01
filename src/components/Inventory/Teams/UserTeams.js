@@ -5,18 +5,26 @@ import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Co
 import CharacterCard from '../../CharacterSummon/CharacterCard/CharacterCard';
 
 const UserTeams = props =>{
-    const { userTeams, setUserTeams, userTeamIndex, adjustSelectedTeamStats } = useContext(CharacterInventoryContext);
+    const { userTeams, setUserTeams, userTeamIndex, saveUserTeamIndex, adjustSelectedTeamStats } = useContext(CharacterInventoryContext);
 
+    const [ indexForTeam, setIndexForTeam ] = useState(userTeamIndex);
     const [ cardToMoveIndex, setCardToMoveIndex ] = useState();
     const [ moveCardToIndex, setMoveCardToIndex ] = useState();
     const [ teamAdjust, setTeamAdjust ] = useState(false);
+
+    //Based off the index we get by hitting the left our right arrows in UserTeams, grab our team in the userTeams index
+    let chosenTeam = userTeams[indexForTeam];
+
+    useEffect(()=>{
+        saveUserTeamIndex(indexForTeam);
+    },[indexForTeam, saveUserTeamIndex,])
 
     //The below checks if we are attempting to move a card or not
     //If we are, we right click on the card to move, and right click the card it replaces
     //So we get those indexs, and just swap the card there. Then, update the team and clear the state
     useEffect(()=>{
         //Copy our existing team, as well as all of the teams
-        let teamCopy = [...props.teamData];
+        let teamCopy = [...chosenTeam];
         let userTeamsCopy = [...userTeams];
 
         //If we select the same card to move, reset everything
@@ -28,17 +36,17 @@ const UserTeams = props =>{
 
         //Get the actual index of the cards selected
         let cardIndex, replaceIndex;
-        for(let i = 0; i < props.teamData.length; i++){
-            if(props.teamData[i].id === cardToMoveIndex){
+        for(let i = 0; i < chosenTeam.length; i++){
+            if(chosenTeam[i].id === cardToMoveIndex){
                 cardIndex = i;
-            } else if( props.teamData[i].id === moveCardToIndex){
+            } else if( chosenTeam[i].id === moveCardToIndex){
                 replaceIndex = i;
             }
         }
 
         //Get the card currently sitting in that index in the array
-        let cardToMove = props.teamData[cardIndex];
-        let replaceCard = props.teamData[replaceIndex];
+        let cardToMove = chosenTeam[cardIndex];
+        let replaceCard = chosenTeam[replaceIndex];
         //Swap the indexes of the two cards
         teamCopy[replaceIndex] = cardToMove;
         teamCopy[cardIndex] = replaceCard;
@@ -60,10 +68,23 @@ const UserTeams = props =>{
     // eslint-disable-next-line
     }, [teamAdjust])
 
+     //Ensure that we are looking at the right team to update by changing the index that we use to pick the right team in the array
+     const adjustIndex = (change) =>{
+        switch(change){
+            //If we are already at the end team, break out. Otherwise, increment
+            case 'add': if(indexForTeam === 7){ break; } else { setIndexForTeam(prevState => prevState + 1) } break;
+            //If we are already at the beginning of the team, break out. Otherwise, decrement
+            case 'decrease': if(indexForTeam === 0){ break } else { setIndexForTeam(prevState => prevState - 1) } break;
+            //Throw an error if we run into some kind of issue
+            default: alert('ERROR in changing Index'); break;
+        }
+    }
+
+
 
     let displayTeam
     if(!props.selectTeamForFight){
-        displayTeam = props.teamData.filter(x => x.id !== 'stats').map(character=>{
+        displayTeam = chosenTeam.filter(x => x.id !== 'stats').map(character=>{
 
             //Check if the card is one we are trying to move; We will apply styling based off this being true or not
             const cardSelectedForMove = (character.id === cardToMoveIndex);
@@ -80,7 +101,7 @@ const UserTeams = props =>{
                     teamView={true}/>
         });
     } else {
-        displayTeam = props.teamData.filter(x => x.id !== 'stats').map(character=>{
+        displayTeam = chosenTeam.filter(x => x.id !== 'stats').map(character=>{
    
             return <CharacterCard 
                     data={character}
@@ -92,17 +113,17 @@ const UserTeams = props =>{
 
     //Determine the leader text; If the card doesn't have one, set a warning message
     let teamLeaderSkill = 'Create a team with an SR+ Leader to see skill'
-    if(props.teamData[1]){
-        if(props.teamData[1].leaderSkillText !== undefined){
-            teamLeaderSkill = props.teamData[1].leaderSkillText;
+    if(chosenTeam[1]){
+        if(chosenTeam[1].leaderSkillText !== undefined){
+            teamLeaderSkill = chosenTeam[1].leaderSkillText;
         }
     }
 
     let totalTeamStats;
-    if(props.teamData.length > 1){
-        let totalAtk = props.teamData[0].totalAtk.toLocaleString();
-        let totalDef = props.teamData[0].totalDef.toLocaleString();
-        let totalHp  = props.teamData[0].totalHP.toLocaleString();
+    if(chosenTeam.length > 1){
+        let totalAtk = chosenTeam[0].totalAtk.toLocaleString();
+        let totalDef = chosenTeam[0].totalDef.toLocaleString();
+        let totalHp  = chosenTeam[0].totalHP.toLocaleString();
 
         totalTeamStats = <><b>Total Hp: </b> {totalHp} <b>Total Atk: </b> { totalAtk } <b>Total Def: </b> { totalDef } </>
     }
@@ -113,9 +134,9 @@ const UserTeams = props =>{
                 <h3>AKB Unit #{ userTeamIndex + 1 }</h3>
             </div>
             <div>
-                <button onClick={()=>props.adjustIndex('decrease')}>Left</button>
+                <button onClick={()=>adjustIndex('decrease')}>Left</button>
                     { displayTeam.length > 0 ? displayTeam : <span> Select Idols below to form a team! </span> }
-                <button onClick={()=>props.adjustIndex('add')}>Right</button>
+                <button onClick={()=>adjustIndex('add')}>Right</button>
                 <div style={{marginTop: '10px'}}>
                     { totalTeamStats }
                 </div>

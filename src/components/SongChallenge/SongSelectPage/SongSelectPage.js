@@ -18,13 +18,8 @@ const SongSelectPage = props =>{
     const [ localError, setLocalError ] = useState('');
     const [ showModal, setShowModal ] = useState(false);
     const { updateUserStamina } = useContext(UserDetailsContext);
-    const { userTeams, userTeamIndex, saveUserTeamIndex } = useContext(CharacterInventoryContext)
-    const [ indexForTeam, setIndexForTeam ] = useState(userTeamIndex);
+    const { userTeams, userTeamIndex } = useContext(CharacterInventoryContext)
 
-    useEffect(()=>{
-        saveUserTeamIndex(indexForTeam);
-        // eslint-disable-next-line
-    },[indexForTeam])
 
     const handleSongSelect = (song, cost) =>{
         let canPlaySong = updateUserStamina(cost);
@@ -42,17 +37,6 @@ const SongSelectPage = props =>{
         return <SongSelectUI key={song.id} data={song} handleSongSelect={(song, cost) => handleSongSelect(song, cost) } />
     })
 
-    const changeIndex = (change) =>{
-        switch(change){
-            //If we are already at the end team, break out. Otherwise, increment
-            case 'add': if(indexForTeam === 7){ break; } else { setIndexForTeam(prevState => prevState + 1) } break;
-            //If we are already at the beginning of the team, break out. Otherwise, decrement
-            case 'decrease': if(indexForTeam === 0){ break } else { setIndexForTeam(prevState => prevState - 1) } break;
-            //Throw an error if we run into some kind of issue
-            default: alert('ERROR in changing Index'); break;
-        }
-    }
-
     if(!readyToPlay){
         return (
             <>
@@ -60,7 +44,7 @@ const SongSelectPage = props =>{
                     <ModalBackground>
                         <Modal>
                             <div>
-                                <UserTeams teamData={userTeams[indexForTeam]} selectTeamForFight={true} adjustIndex={(val) => changeIndex(val)}/>
+                                <UserTeams selectTeamForFight={true} />
                                 <button onClick={() => { setShowModal(false); setReadyToPlay(true)} }>Confirm Choice</button>
                             </div>
                         </Modal>
