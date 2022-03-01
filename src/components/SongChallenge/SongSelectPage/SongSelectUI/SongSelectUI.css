@@ -13,9 +13,12 @@
     border-radius: 25px;
 }
 
+.SongSelectUI:hover{
+    opacity: 0.8;
+}
+
 
 .SongSelectUI h1{
-    /* font-size: 54px; */
     position: absolute;
     top: 0;
     font-size: calc(28px + 1vw);

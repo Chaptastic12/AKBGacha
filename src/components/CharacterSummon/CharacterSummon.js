@@ -37,7 +37,7 @@ const CharacterSummon = () => {
      const { addGearRolledToPlayerInventory } = useContext(GearInventoryContext);
 
      //Grab our coins from the userContext
-     const { usersCoins, updateUsersCoins } = useContext(UserDetailsContext);
+     const { updateUsersCoins } = useContext(UserDetailsContext);
 
      const getSummonRates = () => {
           //Set the rate to be a number between 0 -> 100
@@ -171,7 +171,6 @@ const CharacterSummon = () => {
 
      return (
           <div> 
-               <p>Available Gems: { usersCoins }</p>
                { showModal && <div>
                     <ModalBackground>
                          <Modal>

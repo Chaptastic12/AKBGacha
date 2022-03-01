@@ -17,6 +17,7 @@ const CharacterInventory = props =>{
     const [ searchText, setSearchText ] = useState('');
     const [ indexForTeam, setIndexForTeam ] = useState(userTeamIndex);
     const [ showCard, setShowCard ] = useState(charactersInPlayerInventory[0]);
+    const [ showMoreIdols, setShowMoreIdols ] = useState(1);
 
     useEffect(()=>{
         saveUserTeamIndex(indexForTeam);
@@ -133,7 +134,13 @@ const CharacterInventory = props =>{
     //Based off the index we get by hitting the left our right arrows in UserTeams, grab our team in the userTeams index
     let chosenTeam = userTeams[indexForTeam];
 
-    let charactersInInventory = sortedInventory.map(character =>{
+    //Next three lines are needed for pagination
+    const idolsPerPage = 14
+    const charaIndexStart = (~idolsPerPage + 1) + (idolsPerPage * showMoreIdols);
+    const charaIndexEnd = charaIndexStart + idolsPerPage;
+    let charaNumberOfPages = Math.ceil((sortedInventory.length) / idolsPerPage);
+    
+    let charactersInInventory = sortedInventory.slice(charaIndexStart, charaIndexEnd).map(character =>{
 
         //Check if the card already exists in the current team; If it is, gray out and don't allow click;
         const checkInTeam = chosenTeam.some(teamChara => teamChara.id === character.id);
@@ -157,7 +164,7 @@ const CharacterInventory = props =>{
         <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
         <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
         <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
-        
+
         {showSearchBar && <div>
             <select onClick={(e)=>setSearchFilter(e.target.value)}>
                 <option value='name'>Name</option>
@@ -169,9 +176,14 @@ const CharacterInventory = props =>{
             <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
         </div>}
 
+        <div>
+            <button onClick={() => setShowMoreIdols(prevState => prevState !== 1 ? prevState -1 : prevState )} disabled={showMoreIdols === 1}>Prev 14</button>
+            <button onClick={() => setShowMoreIdols(prevState => prevState !== charaNumberOfPages ? prevState + 1 : charaNumberOfPages )} disabled={showMoreIdols === charaNumberOfPages}>Next 14</button>
+        </div>
+
         <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
 
-        <div style={{float: 'left', marginLeft: '50px', height: '100vh'}}>
+        <div style={{float: 'left', marginLeft: '50px', height: '100%'}}>
             { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} /> }
         </div>
         <div style={{marginRight: '175px'}}>

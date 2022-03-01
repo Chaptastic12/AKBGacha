@@ -147,7 +147,7 @@ const CharacterCard = (props) => {
                     onContextMenu={(e) => handleRightClick(e)}
                >
                     <div className='CharacterCardDetails'>
-                         <h4>{props.data.rarity}</h4>
+                         <h4>{props.data.rarity} <small>({props.data.numberMerges})</small></h4>
                          <h5>{props.data.name}<br/>
                          {props.data.specialty}</h5>
                     </div>

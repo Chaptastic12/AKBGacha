@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import FlyingGet from './Shared/imgs/Banners/FlyingGet.jpg'
 import KoiSuru from './Shared/imgs/Banners/KoiSuru.jpg'
+import AKBGear from './Shared/imgs/Banners/AKBGear.jpg' 
 
 //characterID will be needed so that we have a way to reference a card with a specific identifier; Will also be used for merging card levels together.
 export const gameBanners = [
@@ -86,6 +87,7 @@ export const gameBanners = [
         bannerDisplayName: 'アイドルの制服',
         bannerSubTitle: 'よっしゃー!準備しなくちゃいけない!',
         bannerType: 'gear', 
+        bannerImg: AKBGear,
         rates: { ssr: 1, sr: 13, r: 60 },
         cost: { single: 2, ten: 20 },
         SSR: [

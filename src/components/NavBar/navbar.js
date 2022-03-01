@@ -9,7 +9,8 @@ import './navbar.css';
 
 const NavBar = props =>{
 
-     const { userStamina, timeRemainingTillReplenish, maxStamina } = useContext(UserDetailsContext)
+     const { userStamina, usersCoins, timeRemainingTillReplenish, maxStamina } = useContext(UserDetailsContext);
+
      return (<>
           <div className='NavBar'>
                 <img src={AKBLogo} alt="AKB Logo" height="300px"/>
@@ -20,6 +21,7 @@ const NavBar = props =>{
                <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/banners'>Summon Idols & Gear</NavLink></div>
                <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/play/songBattle/'>Select a Show</NavLink></div>
                <div>Stamina: {userStamina}  {userStamina !== maxStamina && ' | Stamina Refresh: ' + timeRemainingTillReplenish + 's'}</div>
+               <div style={{marginLeft: '5px'}}>Available Gems: { usersCoins }</div>
           </div>
      </>);
 }
