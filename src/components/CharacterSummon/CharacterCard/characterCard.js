@@ -18,8 +18,7 @@ const CharacterCard = (props) => {
 
      const history = useHistory();
 
-     const showCardTimer = setTimeout(()=>{ setShowCard(true)}, 2000);
-
+     setTimeout(()=>{ setShowCard(true)}, 2000);
 
      //Set up special borders, animations and the background color dependent on the card rarity
      let specialCard = '';

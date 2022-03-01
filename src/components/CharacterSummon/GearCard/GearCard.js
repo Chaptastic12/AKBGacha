@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { v4 as uuid } from 'uuid';
+
 import './GearCard.css';
 
 const GearCard = props =>{
@@ -18,7 +20,7 @@ const GearCard = props =>{
 
     if(props.smallView){
         return (
-            <div className={props.data.rarity === 'SSR' ? 'GearCardSmall SSR' : 'GearCardSmall'} onClick={() => props.handleGearEquip()}>
+            <div key={uuid()} className={props.data.rarity === 'SSR' ? 'GearCardSmall SSR' : 'GearCardSmall'} onClick={() => props.handleGearEquip()}>
                 { showCard || props.revealed ?
                     <div className='GearCardDetails'>
                         <span className='Potential'> { props.data.numberMerges } </span>
@@ -35,7 +37,7 @@ const GearCard = props =>{
         )
     } else {
         return (
-            <div className={props.data.rarity === 'SSR' ? 'GearCard SSR' : 'GearCard'}>
+            <div key={uuid()} className={props.data.rarity === 'SSR' ? 'GearCard SSR' : 'GearCard'}>
                 { showCard || props.revealed ?
                     <div className='GearCardDetails'>
                         <span className='Potential'> { props.data.numberMerges } </span>

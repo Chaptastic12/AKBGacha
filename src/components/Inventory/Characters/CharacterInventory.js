@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 
 import CharacterCard from '../../CharacterSummon/CharacterCard/CharacterCard';
 import UserTeams from '../Teams/UserTeams';
@@ -8,7 +8,7 @@ import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Co
 
 const CharacterInventory = props =>{
 
-    const { charactersInPlayerInventory, setCharactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, saveUserTeamIndex, error, setError, likeCharacter } = useContext(CharacterInventoryContext);
+    const { charactersInPlayerInventory, setCharactersInPlayerInventory, userTeams, addCharaToTeam, removeCharaFromTeam, userTeamIndex, error, setError, likeCharacter } = useContext(CharacterInventoryContext);
 
     const [ sortedInventory, setSortedInventory ] = useState(charactersInPlayerInventory);
     const [ showSearchBar, setShowSearchBar ] = useState(false);
@@ -135,45 +135,49 @@ const CharacterInventory = props =>{
                 inTeam={checkInTeam} 
                 data={character}
                 inv={true} />
-        });
+    });
     
-    return(<>
-        {error && <Error close={() => setError('') }>{ error }</Error>}
-        
-        {/* <UserTeams adjustIndex={changeIndex} teamData={chosenTeam} removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} /> */}
-        <UserTeams removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
+    return(
+        <>
+            {error && <Error close={() => setError('') }>{ error }</Error>}
+            <div style={{float: 'left', marginLeft: '50px', height: '100%'}}>
+                { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} /> }
+            </div>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <div>
+                    <UserTeams removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
 
-        <button onClick={()=>sortCharactersInInventory('saved')}>Sort by Liked</button>
-        <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
-        <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
-        <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
+                    <button onClick={()=>sortCharactersInInventory('saved')}>Sort by Liked</button>
+                    <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
+                    <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
+                    <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
 
-        {showSearchBar && <div>
-            <select onClick={(e)=>setSearchFilter(e.target.value)}>
-                <option value='name'>Name</option>
-                <option value='specialty'>Speciality</option>
-                <option value='rarity'>Rarity</option>
-            </select> 
-            <input type='text' value={searchText} onChange={(e)=>setSearchText(e.target.value)}/>
-            <button onClick={()=>sortCharactersInInventory('search')}>Search</button>
-            <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
-        </div>}
-            <br/>
-        <div style={{display: 'inline-flex'}}>
-            <button onClick={() => setShowMoreIdols(prevState => prevState !== 1 ? prevState -1 : prevState )} disabled={showMoreIdols === 1}>Prev 14</button>
-            <p style={{margin: '0 5px'}}>{sortedInventory.length} idols</p>
-            <button onClick={() => setShowMoreIdols(prevState => prevState !== charaNumberOfPages ? prevState + 1 : charaNumberOfPages )} disabled={showMoreIdols === charaNumberOfPages}>Next 14</button>
-        </div>
+                    {showSearchBar && <div>
+                        <select onClick={(e)=>setSearchFilter(e.target.value)}>
+                            <option value='name'>Name</option>
+                            <option value='specialty'>Speciality</option>
+                            <option value='rarity'>Rarity</option>
+                        </select> 
+                        <input type='text' value={searchText} onChange={(e)=>setSearchText(e.target.value)}/>
+                        <button onClick={()=>sortCharactersInInventory('search')}>Search</button>
+                        <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
+                    </div>}
+                        <br/>
+                    <div style={{display: 'inline-flex'}}>
+                        <button onClick={() => setShowMoreIdols(prevState => prevState !== 1 ? prevState -1 : prevState )} disabled={showMoreIdols === 1}>Prev 14</button>
+                        <p style={{margin: '0 5px'}}>{sortedInventory.length} idols</p>
+                        <button onClick={() => setShowMoreIdols(prevState => prevState !== charaNumberOfPages ? prevState + 1 : charaNumberOfPages )} disabled={showMoreIdols === charaNumberOfPages}>Next 14</button>
+                    </div>
 
-        <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
-
-        <div style={{float: 'left', marginLeft: '50px', height: '100%'}}>
-            { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} /> }
-        </div>
-        <div style={{marginRight: '175px'}}>
-            {charactersInInventory}
-        </div>
-    </>)
+                </div>
+            </div>
+         
+            <div>
+                <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
+                {charactersInInventory}
+            </div>
+        </>
+    )
 }
 
 export default CharacterInventory;

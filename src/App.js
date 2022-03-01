@@ -10,7 +10,6 @@ import SongChallenge from './components/SongChallenge/SongChallenge';
 import CharacterInventoryProvider from '../src/Shared/CharacterInventory-Context';
 import UserDetailsProvider from '../src/Shared/UserDetails-Context';
 import GearInventoryProvider from './Shared/GearInventory-Context';
-// import SongChallengeProvider from './Shared/SongChallenge-Context';
 
 import './App.css';
 

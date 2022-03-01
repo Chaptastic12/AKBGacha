@@ -7,7 +7,7 @@ const CHARACTERS_PER_TEAM = 8; //First slot is taken, so we want 7 total charact
 const CharacterInventoryProvider = props =>{
     
     const baseTeamStats = { id: 'stats', totalHP: 0, totalAtk: 0, totalDef: 0 };
-    let USER_IDOL_INVENTORY_MAX_SIZE = 50
+    let USER_IDOL_INVENTORY_MAX_SIZE = 100
 
     const [ charactersInPlayerInventory, setCharactersInPlayerInventory] = useState([]);
     const [ userTeams, setUserTeams ] = useState([ [baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats],[baseTeamStats] ]);
@@ -173,6 +173,7 @@ const CharacterInventoryProvider = props =>{
     const likeCharacter = (id) =>{
         //Copy our inventory
         let copyInventory = [ ...charactersInPlayerInventory ];
+        let copyOfTeams = [ ...userTeams ];
         //Get the card we want to likes index
         const cardIndex = copyInventory.findIndex(chara => chara.id === id );
         //Get the card itself
@@ -181,8 +182,18 @@ const CharacterInventoryProvider = props =>{
         //Determine if we are liking, or unliking it
         card.saved = !card.saved;
 
+        //Update the teams as well so a card is reflected as liked there too
+        for(let i=0; i < copyOfTeams.length; i++){
+            for(let j=0; j < copyOfTeams[i].length; j++){
+                if(copyOfTeams[i][j].id === card.id){
+                    copyOfTeams[i][j] = card;
+                }
+            }
+        }
+
         //Set the updated card to the correct spot and save
         copyInventory[cardIndex] = card;
+        setUserTeams(copyOfTeams);
         setCharactersInPlayerInventory(copyInventory);
    }
 
