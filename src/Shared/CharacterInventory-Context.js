@@ -118,6 +118,7 @@ const CharacterInventoryProvider = props =>{
         const copyOfCurrentTeam = [...userTeams ][userTeamIndex];
         const copyOfTeams = [ ...userTeams ];
         let stats = baseTeamStats;
+        let dontAddBaseStats = [ ...copyOfCurrentTeam];
 
         //Determine if our leader skill applies to the card
         //If it does, apply it; if it doesn't just add the current stat
@@ -132,6 +133,7 @@ const CharacterInventoryProvider = props =>{
                     for(let l=0; l < copyOfCurrentTeam[1].appliesTo.length; l++){
                         //Check if the current idol falls in an acceptable skill
                         if( (copyOfCurrentTeam[i].specialty[j] === copyOfCurrentTeam[1].appliesTo[l]) || (copyOfCurrentTeam[1].appliesTo === undefined)){
+                            dontAddBaseStats = dontAddBaseStats.filter(chara => chara.id !== copyOfCurrentTeam[i].id).filter(chara => chara.id !== 'stats');
                             for(let k=0; k < copyOfCurrentTeam[1].leaderSkill.skills.length; k++){
                                 //Check if the leader skill will impact an the atk stat or not
                                 if(copyOfCurrentTeam[1].leaderSkill.skills[k].type === 'atk'){ stats.totalAtk = stats.totalAtk + Math.round(copyOfCurrentTeam[i].adjustedStats.adjAtk * copyOfCurrentTeam[1].leaderSkill.skills[k].value) } 
@@ -143,15 +145,17 @@ const CharacterInventoryProvider = props =>{
                                 if(copyOfCurrentTeam[1].leaderSkill.skills[k].type === 'hp'){  stats.totalHP =  stats.totalHP + Math.round(copyOfCurrentTeam[i].adjustedStats.adjHP  * copyOfCurrentTeam[1].leaderSkill.skills[k].value) }
                                     else {  stats.totalHP = stats.totalHP + Math.round(copyOfCurrentTeam[i].adjustedStats.adjHP) }
                             }
-                        } else {
-                            //If there are no leader skills, or the current idols skill does not match the leader, we can just add up the atk and defense of the idols
-                            stats.totalAtk = stats.totalAtk + copyOfCurrentTeam[i].adjustedStats.adjAtk;
-                            stats.totalDef = stats.totalDef + copyOfCurrentTeam[i].adjustedStats.adjDef;
-                            stats.totalHP = stats.totalHP + copyOfCurrentTeam[i].adjustedStats.adjHP;
-                        }
+                        } 
                     }
                 }
             } 
+        }
+
+        //For those that don't fit the leader skill, just add their skills in
+        for(let m=0; m < dontAddBaseStats.length; m++){
+            stats.totalAtk = stats.totalAtk + dontAddBaseStats[m].adjustedStats.adjAtk;
+            stats.totalDef = stats.totalDef + dontAddBaseStats[m].adjustedStats.adjDef;
+            stats.totalHP = stats.totalHP + dontAddBaseStats[m].adjustedStats.adjHP;
         }
 
         //Update the teams stat object, and update the state
