@@ -85,21 +85,16 @@ const CharacterInventory = props =>{
                 //Sort by Name so like rarity cards are next to each other
                 nameSorter(sortedInv);
 
-                //Run it thrice to ensure correct results
-                for(let i=0; i<10; i++){
-                    sortedInv.sort((a,b) =>{
-                        let rarityA = a.rarity;
-                        let rarityB = b.rarity;
-    
-                        if(rarityA === 'UR'){ return -1; }
-                        if(rarityA === 'SSR' && rarityB !== 'UR'){ return -1; }
-                        if(rarityA === 'SR' && rarityB !== ('SSR' || 'UR')){ return -1; }
-                        if(rarityA === 'R' && rarityB !== ('SR' || 'SSR' || 'UR')){ return -1; }
-                        if(rarityA === 'C' && rarityB !== ('R' || 'SR' || 'SSR' || 'UR')){ return -1 }
-                        if(rarityA === rarityB){ return 0 };
-                        return 1;
-                    });
-                }
+                sortedInv.sort((a,b) =>{
+                    let rarityA = a.rarity;
+                    let rarityB = b.rarity;
+
+                    if(rarityA === 'UR'){ return -1; }
+                    if(rarityA === 'SSR' && rarityB !== 'UR'){ return -1; }
+                    if(rarityA === 'SR' && rarityB !== ('SSR' || 'UR')){ return -1; }
+                    if(rarityA === 'R' && rarityB !== ('SR' || 'SSR' || 'UR')){ return -1; }
+                });
+                
                 setCharactersInPlayerInventory(sortedInv)
                 setSortedInventory(sortedInv);
                 break;
