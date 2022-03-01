@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
@@ -18,10 +18,8 @@ const CharacterCard = (props) => {
 
      const history = useHistory();
 
-     useEffect(()=>{
-          const showCardTimer = setTimeout(()=>{ setShowCard(true)}, 2000);
-          return () => clearInterval(showCardTimer);
-     })
+     const showCardTimer = setTimeout(()=>{ setShowCard(true)}, 2000);
+
 
      //Set up special borders, animations and the background color dependent on the card rarity
      let specialCard = '';

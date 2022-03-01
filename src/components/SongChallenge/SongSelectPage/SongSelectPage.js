@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 
 import SongSelectUI from './SongSelectUI/SongSelectUI';
 import { UserDetailsContext } from '../../../Shared/UserDetails-Context';
@@ -7,7 +7,6 @@ import Error from '../../UI/Error/Error';
 import Modal from '../../UI/Modal/Modal';
 import ModalBackground from '../../UI/Modal/ModalBackground';
 import UserTeams from '../../Inventory/Teams/UserTeams';
-import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Context';
 
 import { songs } from '../../../songData';
 
@@ -18,8 +17,6 @@ const SongSelectPage = props =>{
     const [ localError, setLocalError ] = useState('');
     const [ showModal, setShowModal ] = useState(false);
     const { updateUserStamina } = useContext(UserDetailsContext);
-    const { userTeams, userTeamIndex } = useContext(CharacterInventoryContext)
-
 
     const handleSongSelect = (song, cost) =>{
         let canPlaySong = updateUserStamina(cost);
