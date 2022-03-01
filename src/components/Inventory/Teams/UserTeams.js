@@ -61,22 +61,34 @@ const UserTeams = props =>{
     }, [teamAdjust])
 
 
-    const displayTeam = props.teamData.filter(x => x.id !== 'stats').map(character=>{
+    let displayTeam
+    if(!props.selectTeamForFight){
+        displayTeam = props.teamData.filter(x => x.id !== 'stats').map(character=>{
 
-        //Check if the card is one we are trying to move; We will apply styling based off this being true or not
-        const cardSelectedForMove = (character.id === cardToMoveIndex);
-
-        return <CharacterCard 
-                data={character}
-                key={character.id}
-                removeCharacterFromTeam={props.removeCharacterFromTeam}
-                activeCardHandler={() => props.activeCardHandler(character)}
-                cardToMoveIndexChange={(id) => setCardToMoveIndex(id)}
-                cardToMoveIndex={cardToMoveIndex}
-                moveCardToIndexChange={(id) => setMoveCardToIndex(id)}
-                selectedToMove={cardSelectedForMove}
-                teamView={true}/>
-    });
+            //Check if the card is one we are trying to move; We will apply styling based off this being true or not
+            const cardSelectedForMove = (character.id === cardToMoveIndex);
+    
+            return <CharacterCard 
+                    data={character}
+                    key={character.id}
+                    removeCharacterFromTeam={props.removeCharacterFromTeam}
+                    activeCardHandler={() => props.activeCardHandler(character)}
+                    cardToMoveIndexChange={(id) => setCardToMoveIndex(id)}
+                    cardToMoveIndex={cardToMoveIndex}
+                    moveCardToIndexChange={(id) => setMoveCardToIndex(id)}
+                    selectedToMove={cardSelectedForMove}
+                    teamView={true}/>
+        });
+    } else {
+        displayTeam = props.teamData.filter(x => x.id !== 'stats').map(character=>{
+   
+            return <CharacterCard 
+                    data={character}
+                    key={character.id}
+                   />
+        });
+    }
+    
 
     //Determine the leader text; If the card doesn't have one, set a warning message
     let teamLeaderSkill = 'Create a team with an SR+ Leader to see skill'
