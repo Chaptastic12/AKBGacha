@@ -28,6 +28,7 @@ const CharacterInventoryProvider = props =>{
     //Eventually have useEffect so that when charactersInPlayerInventory updates, it will update the database record for this user and replace what is there with the new array
     //This will have to make a call to the player specific inventory and update that record
 
+    //Add cards that are summoned to the users inventory
     const addCardsRolledToPlayerInventory = (charactersFromRoll) =>{
         //Copy our old state and push the new cards into the array. Update our overall inventory with these new cards
         const previousState = [...charactersInPlayerInventory];
@@ -40,6 +41,7 @@ const CharacterInventoryProvider = props =>{
         setCharactersInPlayerInventory(previousState);
     }
 
+    //Allows a card to be sold. Returns reward
     const deleteCardFromInventory = characterId =>{
         //Copy our old state and find a character that matches the ID selected to be deleted.
         //When found, remove it from the Array and update our state
@@ -69,8 +71,10 @@ const CharacterInventoryProvider = props =>{
         setUserTeams(previousTeams);
         setCharactersInPlayerInventory(previousState);
         //Some kind of reward can be added here later for removing the card; IE, returning coins, getting supplies, etc
+        // return prize
     }
 
+    //Addes a character to a team
     const addCharaToTeam = (teamIndex, characterID) =>{
         setError('');
         let copyOfCurrentTeams = [...userTeams];
@@ -96,6 +100,7 @@ const CharacterInventoryProvider = props =>{
         adjustSelectedTeamStats()
     }
 
+    //Removes a character from a team
     const removeCharaFromTeam = (teamIndex, characterID) =>{
         setError('');
         let copyOfCurrentTeams = [...userTeams];
@@ -114,18 +119,21 @@ const CharacterInventoryProvider = props =>{
     }
     
     //First item in the array will hold all our data
+    //The below function will calculate the total hp, def and atk of our team, factoring in gear stats and leader skills if applicable
     const adjustSelectedTeamStats = () =>{
         const copyOfCurrentTeam = [...userTeams ][userTeamIndex];
         const copyOfTeams = [ ...userTeams ];
+        //Start with fresh stats
         let stats = baseTeamStats;
-        let dontAddBaseStats = [ ...copyOfCurrentTeam];
+        let dontAddBaseStats = [ ...copyOfCurrentTeam].splice(1,copyOfCurrentTeam.length);
 
         //Determine if our leader skill applies to the card
         //If it does, apply it; if it doesn't just add the current stat
         //Add up our total atk, def and hp
         for(let i=1; i < copyOfCurrentTeam.length; i++){
+            //Ensure we have the most updated version of the cards stats with equipment
             copyOfCurrentTeam[i] = adjustCardStats(copyOfCurrentTeam[i]);
-            //Ensure that a leadership skill would even exist
+            //Ensure that a leadership skill can even be applied by ensuring a card is in that spot, and if there is, that its leaderskill is populated
             if(copyOfCurrentTeam[1] !== undefined && copyOfCurrentTeam[1].leaderSkill !== undefined){
                 //Check the current idol if one of their specialities matches what the leader skill applies to, or if the leader skill applies to everyone
                 for(let j=0; j < copyOfCurrentTeam[i].specialty.length; j++){
@@ -133,7 +141,8 @@ const CharacterInventoryProvider = props =>{
                     for(let l=0; l < copyOfCurrentTeam[1].appliesTo.length; l++){
                         //Check if the current idol falls in an acceptable skill
                         if( (copyOfCurrentTeam[i].specialty[j] === copyOfCurrentTeam[1].appliesTo[l]) || (copyOfCurrentTeam[1].appliesTo === undefined)){
-                            dontAddBaseStats = dontAddBaseStats.filter(chara => chara.id !== copyOfCurrentTeam[i].id).filter(chara => chara.id !== 'stats');
+                            //If a card gets this far, it means they definitely match our leader skill, so remove them from the 'dontAddBaseStats' array
+                            dontAddBaseStats = dontAddBaseStats.filter(chara => chara.id !== copyOfCurrentTeam[i].id);
                             for(let k=0; k < copyOfCurrentTeam[1].leaderSkill.skills.length; k++){
                                 //Check if the leader skill will impact an the atk stat or not
                                 if(copyOfCurrentTeam[1].leaderSkill.skills[k].type === 'atk'){ stats.totalAtk = stats.totalAtk + Math.round(copyOfCurrentTeam[i].adjustedStats.adjAtk * copyOfCurrentTeam[1].leaderSkill.skills[k].value) } 
@@ -174,6 +183,7 @@ const CharacterInventoryProvider = props =>{
         return charactersInPlayerInventory.filter(chara => ( (chara.characterID === characterId) && (chara.id !== uniqueCardId) && chara.saved !== true) );
     }
 
+    //Like a character ( prevents it from being used as a potential unlocking idol or being sold )
     const likeCharacter = (id) =>{
         //Copy our inventory
         let copyInventory = [ ...charactersInPlayerInventory ];
@@ -201,6 +211,7 @@ const CharacterInventoryProvider = props =>{
         setCharactersInPlayerInventory(copyInventory);
    }
 
+   //Below function handles potential unlocking
    const mergeCharaHandler = (sacraficeCard) =>{
 
         if(sacraficeCard.saved === true){
@@ -255,6 +266,7 @@ const CharacterInventoryProvider = props =>{
         }
     }
 
+    //Below allows users to navigate forward or backwards when looking at character details
     const adjustLoadedCharacter = (direction) =>{
 
         //Get the index of the currently loaded card
@@ -286,6 +298,7 @@ const CharacterInventoryProvider = props =>{
         setLoadedCharacter(newLoadedCharacter);
     }
 
+    //Below function calculates equipping / unequipping gear to a character
     const handleCharacterGear = (gear, action) => {
         let loadedCharacterCopy = { ...loadedCharacter };
         const copyInventory = [ ...charactersInPlayerInventory ]
@@ -305,7 +318,7 @@ const CharacterInventoryProvider = props =>{
         setLoadedCharacter(loadedCharacterCopy);
     }
 
-    //Used to adjust the stats of a card to get the grand total amount
+    //Used to adjust the stats of a card to get the grand total amount based off base hp and gear
     const adjustCardStats = card =>{
         let cardCopy = { ...card };
         let hpAdjustment = cardCopy.hp;
