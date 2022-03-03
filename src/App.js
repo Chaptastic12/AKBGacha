@@ -6,6 +6,7 @@ import NavBar from './components/NavBar/NavBar';
 import CharacterDetails from './components/CharacterDetails/CharacterDetails';
 import SongSelectPage from './components/SongChallenge/SongSelectPage/SongSelectPage';
 import SongChallenge from './components/SongChallenge/SongChallenge';
+import GearInventory from './components/Inventory/Gear/GearInventory';
 
 import CharacterInventoryProvider from '../src/Shared/CharacterInventory-Context';
 import UserDetailsProvider from '../src/Shared/UserDetails-Context';
@@ -24,7 +25,7 @@ function App() {
                 <NavBar />
                 <Switch>
                   <Route path='/:playerID/inventory/idols' exact component={CharacterInventory} />
-                  <Route path='/:playerID/inventory/gear' exact component={CharacterInventory} />
+                  <Route path='/:playerID/inventory/items' exact component={GearInventory} />
                   <Route path='/:playerID/inventory/character/:characterName' exact component={CharacterDetails} />
                   <Route path='/banners' exact component={CharacterSummon} />
                   <Route path='/play/songBattle/' exact component={SongSelectPage} />

@@ -17,7 +17,7 @@ const NavBar = props =>{
           </div>
           <div className='NavBar__Links'>
                <div  className='NavBar__Link'><NavLink to='/nplayerID/inventory/idols'>View your Idols</NavLink></div>
-               <div  className='NavBar__Link'><NavLink to='/nplayerID/inventory/gear'>View your Gear</NavLink></div>
+               <div  className='NavBar__Link'><NavLink to='/nplayerID/inventory/items'>View your Items</NavLink></div>
                <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/banners'>Summon Idols & Gear</NavLink></div>
                <div  className='NavBar__Link'><NavLink className='NavBar__Link' to='/play/songBattle/'>Select a Show</NavLink></div>
           </div>
