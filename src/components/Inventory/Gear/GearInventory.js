@@ -9,7 +9,6 @@ const GearInventory = props =>{
     const { gearInPlayerInventory } = useContext(GearInventoryContext);
 
     const gearToShow = gearInPlayerInventory.map(gear => {
-        console.log(gear)
         return <GearCard key={gear.id} data={gear} revealed={true} smallView={true}  />
     })
 
