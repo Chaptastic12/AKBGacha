@@ -5,6 +5,7 @@ import UserTeams from '../Teams/UserTeams';
 import Error from '../../UI/Error/Error';
 
 import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Context';
+import { Droppable } from 'react-beautiful-dnd';
 
 const CharacterInventory = props =>{
 
@@ -37,7 +38,6 @@ const CharacterInventory = props =>{
 
         return sortedInv;
     }
-
     const raritySorter = ( sortedInv ) => {
         sortedInv.sort((a,b) =>{
             let rarityA = a.rarity;
@@ -122,12 +122,13 @@ const CharacterInventory = props =>{
     const charaIndexEnd = charaIndexStart + idolsPerPage;
     let charaNumberOfPages = Math.ceil((sortedInventory.length) / idolsPerPage);
     
-    let charactersInInventory = sortedInventory.slice(charaIndexStart, charaIndexEnd).map(character =>{
+    let charactersInInventory = sortedInventory.slice(charaIndexStart, charaIndexEnd).map((character, index) =>{
 
         //Check if the card already exists in the current team; If it is, gray out and don't allow click;
         const checkInTeam = chosenTeam.some(teamChara => teamChara.id === character.id);
 
-        return <CharacterCard 
+        return <CharacterCard
+                index={index}
                 key={character.id}
                 addCharacterToTeam={addCharacterToTeam}
                 teamView={false}
@@ -137,47 +138,107 @@ const CharacterInventory = props =>{
                 inv={true} />
     });
     
-    return(
-        <>
-            {error && <Error close={() => setError('') }>{ error }</Error>}
-            <div style={{float: 'left', marginLeft: '50px', height: '100%'}}>
-                { showCard && <CharacterCard data={showCard} fullSizedCard={true} showFullCard={true} likeCharacter={(id) => likeCharacter(id)} /> }
+    return (
+      <>
+        {error && <Error close={() => setError("")}>{error}</Error>}
+        <div style={{ float: "left", marginLeft: "50px", height: "100%" }}>
+          {showCard && (
+            <CharacterCard
+              data={showCard}
+              fullSizedCard={true}
+              showFullCard={true}
+              likeCharacter={(id) => likeCharacter(id)}
+            />
+          )}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div>
+                  <UserTeams
+                    removeCharacterFromTeam={removeCharacterFromTeam}
+                    activeCardHandler={setShowCard}
+                  />
+
+            <button onClick={() => sortCharactersInInventory("saved")}>
+              Sort by Liked
+            </button>
+            <button onClick={() => sortCharactersInInventory("name")}>
+              Sort by Name
+            </button>
+            <button onClick={() => sortCharactersInInventory("rarity")}>
+              Sort by Rarity
+            </button>
+            <button onClick={() => setShowSearchBar((prevState) => !prevState)}>
+              Search By
+            </button>
+
+            {showSearchBar && (
+              <div>
+                <select onClick={(e) => setSearchFilter(e.target.value)}>
+                  <option value="name">Name</option>
+                  <option value="specialty">Speciality</option>
+                  <option value="rarity">Rarity</option>
+                </select>
+                <input
+                  type="text"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
+                <button onClick={() => sortCharactersInInventory("search")}>
+                  Search
+                </button>
+                <button onClick={() => sortCharactersInInventory("reset")}>
+                  Reset
+                </button>
+              </div>
+            )}
+            <br />
+            <div style={{ display: "inline-flex" }}>
+              <button
+                onClick={() =>
+                  setShowMoreIdols((prevState) =>
+                    prevState !== 1 ? prevState - 1 : prevState
+                  )
+                }
+                disabled={showMoreIdols === 1}
+              >
+                Prev 14
+              </button>
+              <p style={{ margin: "0 5px" }}>{sortedInventory.length} idols</p>
+              <button
+                onClick={() =>
+                  setShowMoreIdols((prevState) =>
+                    prevState !== charaNumberOfPages
+                      ? prevState + 1
+                      : charaNumberOfPages
+                  )
+                }
+                disabled={showMoreIdols === charaNumberOfPages}
+              >
+                Next 14
+              </button>
             </div>
-            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <div>
-                    <UserTeams removeCharacterFromTeam={removeCharacterFromTeam} activeCardHandler={setShowCard} />
+          </div>
+        </div>
 
-                    <button onClick={()=>sortCharactersInInventory('saved')}>Sort by Liked</button>
-                    <button onClick={()=>sortCharactersInInventory('name')}>Sort by Name</button>
-                    <button onClick={()=>sortCharactersInInventory('rarity')}>Sort by Rarity</button>
-                    <button onClick={()=>setShowSearchBar(prevState=>!prevState)}>Search By</button>
+        <div>
+          <p>
+            <small>
+              Click to add to a Unit if room available; Right click to open the
+              card details
+            </small>
+          </p>
 
-                    {showSearchBar && <div>
-                        <select onClick={(e)=>setSearchFilter(e.target.value)}>
-                            <option value='name'>Name</option>
-                            <option value='specialty'>Speciality</option>
-                            <option value='rarity'>Rarity</option>
-                        </select> 
-                        <input type='text' value={searchText} onChange={(e)=>setSearchText(e.target.value)}/>
-                        <button onClick={()=>sortCharactersInInventory('search')}>Search</button>
-                        <button onClick={()=>sortCharactersInInventory('reset')}>Reset</button>
-                    </div>}
-                        <br/>
-                    <div style={{display: 'inline-flex'}}>
-                        <button onClick={() => setShowMoreIdols(prevState => prevState !== 1 ? prevState -1 : prevState )} disabled={showMoreIdols === 1}>Prev 14</button>
-                        <p style={{margin: '0 5px'}}>{sortedInventory.length} idols</p>
-                        <button onClick={() => setShowMoreIdols(prevState => prevState !== charaNumberOfPages ? prevState + 1 : charaNumberOfPages )} disabled={showMoreIdols === charaNumberOfPages}>Next 14</button>
-                    </div>
-
-                </div>
-            </div>
+          {charactersInInventory}
          
-            <div>
-                <p><small>Click to add to a Unit if room available; Right click to open the card details</small></p>
-                {charactersInInventory}
-            </div>
-        </>
-    )
+        </div>
+      </>
+    );
 }
 
 export default CharacterInventory;

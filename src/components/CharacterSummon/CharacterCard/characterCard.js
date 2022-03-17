@@ -8,6 +8,7 @@ import ModalBackground from '../../UI/Modal/ModalBackground';
 import { CharacterInventoryContext } from '../../../Shared/CharacterInventory-Context';
 
 import './characterCard.css';
+import { Draggable } from 'react-beautiful-dnd';
 
 const CharacterCard = (props) => {
 
@@ -119,37 +120,67 @@ const CharacterCard = (props) => {
           }
      }
 
+     console.log(props.index)
      //fullSizedCard is currently only passed from CharacterSummon.js and now CharacterInventory.js
      if(props.fullSizedCard === true){
           return(fullCard)
      }else{
-          return(<>
-          { showModal && <div onClick={() => setShowModal(false)}>
-               <ModalBackground>
+          return (
+            <>
+              {showModal && (
+                <div onClick={() => setShowModal(false)}>
+                  <ModalBackground>
                     <Modal>
-                         <div className='CharacterCard-Modal'>
-                              <div>
-                                   <h1>Merge Confirmation</h1>
-                                   <p>Are you sure you'd like to merge these Idols?</p>
-                                   <button onClick={() => { setShowModal(false); props.mergeCharaHandler(props.data) } }>Confirm</button>
-                                   <button onClick={() => setShowModal(false)}>Cancel</button>
-                              </div>
-                         </div>
+                      <div className="CharacterCard-Modal">
+                        <div>
+                          <h1>Merge Confirmation</h1>
+                          <p>Are you sure you'd like to merge these Idols?</p>
+                          <button
+                            onClick={() => {
+                              setShowModal(false);
+                              props.mergeCharaHandler(props.data);
+                            }}
+                          >
+                            Confirm
+                          </button>
+                          <button onClick={() => setShowModal(false)}>
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
                     </Modal>
-               </ModalBackground>
-          </div>}
-               <div className={`CharacterCardSmall ${specialCard} ${props.inTeam === true ? 'CardInTeam' : ''} ${props.selectedToMove === true ? 'MovingCard' : ''} ${props.data.saved === true ? 'CardSaved' : ''}`}
+                  </ModalBackground>
+                </div>
+              )}
+
+               <div
+                    className={`CharacterCardSmall ${specialCard} ${
+                    props.inTeam === true ? "CardInTeam" : ""
+                    } ${
+                    props.selectedToMove === true
+                    ? "MovingCard"
+                    : ""
+                    } ${
+                    props.data.saved === true ? "CardSaved" : ""
+                    }`}
                     onClick={() => handleLeftClick(props.data.id)}
                     onMouseOver={() => handleMouseOver(props.data)}
                     onContextMenu={(e) => handleRightClick(e)}
                >
-                    <div className='CharacterCardDetails'>
-                         <h4>{props.data.rarity} <small>({props.data.numberMerges})</small></h4>
-                         <h5>{props.data.name}<br/>
-                         {props.data.specialty}</h5>
+                    <div className="CharacterCardDetails">
+                    <h4>
+                    {props.data.rarity}{" "}
+                    <small>({props.data.numberMerges})</small>
+                    </h4>
+                    <h5>
+                    {props.data.name}
+                    <br />
+                    {props.data.specialty}
+                    </h5>
                     </div>
                </div>
-          </>)
+            </>
+          );
      }
 }
 

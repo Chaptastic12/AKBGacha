@@ -84,12 +84,13 @@ const UserTeams = props =>{
 
     let displayTeam
     if(!props.selectTeamForFight){
-        displayTeam = chosenTeam.filter(x => x.id !== 'stats').map(character=>{
+        displayTeam = chosenTeam.filter(x => x.id !== 'stats').map((character, index)=>{
 
             //Check if the card is one we are trying to move; We will apply styling based off this being true or not
             const cardSelectedForMove = (character.id === cardToMoveIndex);
     
             return <CharacterCard 
+                    index={index}
                     data={character}
                     key={character.id}
                     removeCharacterFromTeam={props.removeCharacterFromTeam}
@@ -101,9 +102,10 @@ const UserTeams = props =>{
                     teamView={true}/>
         });
     } else {
-        displayTeam = chosenTeam.filter(x => x.id !== 'stats').map(character=>{
+        displayTeam = chosenTeam.filter(x => x.id !== 'stats').map((character, index)=>{
    
             return <CharacterCard 
+                    index={index}
                     data={character}
                     key={character.id}
                    />

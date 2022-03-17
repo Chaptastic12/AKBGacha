@@ -18,25 +18,45 @@ function App() {
   //As this is the highest component in our app, we could load ourstate here and pass it through all props..
   //...or use redux instead
   return (
-        <GearInventoryProvider>
-          <UserDetailsProvider>
-            <CharacterInventoryProvider>
-              <Router>
-                <NavBar />
-                <Switch>
-                  <Route path='/:playerID/inventory/idols' exact component={CharacterInventory} />
-                  <Route path='/:playerID/inventory/items' exact component={GearInventory} />
-                  <Route path='/:playerID/inventory/character/:characterName' exact component={CharacterDetails} />
-                  <Route path='/banners' exact component={CharacterSummon} />
-                  <Route path='/play/songBattle/' exact component={SongSelectPage} />
-                  <Route path='/play/songBattle/song' exact component={SongChallenge} />
-                  <Redirect to='/banners' exact />
-                </Switch>
-              </Router>
-            </CharacterInventoryProvider>
-          </UserDetailsProvider>
-        </GearInventoryProvider>
-    )
+      <GearInventoryProvider>
+        <UserDetailsProvider>
+          <CharacterInventoryProvider>
+            <Router>
+              <NavBar />
+              <Switch>
+                <Route
+                  path="/:playerID/inventory/idols"
+                  exact
+                  component={CharacterInventory}
+                />
+                <Route
+                  path="/:playerID/inventory/items"
+                  exact
+                  component={GearInventory}
+                />
+                <Route
+                  path="/:playerID/inventory/character/:characterName"
+                  exact
+                  component={CharacterDetails}
+                />
+                <Route path="/banners" exact component={CharacterSummon} />
+                <Route
+                  path="/play/songBattle/"
+                  exact
+                  component={SongSelectPage}
+                />
+                <Route
+                  path="/play/songBattle/song"
+                  exact
+                  component={SongChallenge}
+                />
+                <Redirect to="/banners" exact />
+              </Switch>
+            </Router>
+          </CharacterInventoryProvider>
+        </UserDetailsProvider>
+      </GearInventoryProvider>
+  );
 }
 
 export default App;
